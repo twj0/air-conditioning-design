@@ -1,0 +1,9 @@
+{
+  "city": "chengdu",
+  "city_name": "Chengdu",
+  "climate_zone": "hot_summer_cold_winter",
+  "weather_package": "CHN_SC_Chengdu.562940_CSWD",
+  "weather_root": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_SC_Chengdu\\CHN_SC_Chengdu.562940_CSWD",
+  "epw_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_SC_Chengdu\\CHN_SC_Chengdu.562940_CSWD\\CHN_SC_Chengdu.562940_CSWD.epw",
+  "ddy_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_SC_Chengdu\\CHN_SC_Chengdu.562940_CSWD\\CHN_SC_Chengdu.562940_CSWD.ddy"
+}
