@@ -12,6 +12,7 @@ MODELS_CITY_ROOT = REPO_ROOT / "models" / "cities"
 MODELS_SYSTEM_ROOT = REPO_ROOT / "models" / "systems"
 RESULTS_RAW_ROOT = REPO_ROOT / "results" / "raw"
 RESULTS_PROCESSED_ROOT = REPO_ROOT / "results" / "processed"
+RESULTS_PLOTS_ROOT = RESULTS_PROCESSED_ROOT / "plots"
 TESTS_ROOT = REPO_ROOT / "tests"
 
 REFERENCE_MEDIUM_OFFICE_IDF = Path(
@@ -57,6 +58,12 @@ def summary_path_for_case(case_id: str) -> Path:
     return RESULTS_PROCESSED_ROOT / f"{case_id}_summary.csv"
 
 
+REPORT_CASE_MATRIX_PATH = RESULTS_PROCESSED_ROOT / "report_case_matrix.csv"
+REPORT_IDEAL_LOADS_PATH = RESULTS_PROCESSED_ROOT / "report_ideal_loads_comparison.csv"
+REPORT_SYSTEM_ENERGY_PATH = RESULTS_PROCESSED_ROOT / "report_system_energy_comparison.csv"
+REPORT_EQUIPMENT_SUMMARY_PATH = RESULTS_PROCESSED_ROOT / "report_equipment_summary.csv"
+
+
 TIANJIN_WEATHER_PACKAGE = (
     WEATHER_ROOT / "CHN_TJ_Tianjin" / "CHN_TJ_Tianjin.545270_CSWD"
 )
@@ -87,6 +94,7 @@ def ensure_directories() -> None:
         MODELS_SYSTEM_ROOT,
         RESULTS_RAW_ROOT,
         RESULTS_PROCESSED_ROOT,
+        RESULTS_PLOTS_ROOT,
         TESTS_ROOT,
     ):
         directory.mkdir(parents=True, exist_ok=True)

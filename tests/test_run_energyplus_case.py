@@ -110,6 +110,88 @@ def test_run_case_supports_chengdu_ideal_loads(monkeypatch, tmp_path: Path) -> N
     assert str(tmp_path / "chengdu.epw") in commands[0]
 
 
+def test_run_case_supports_shenzhen_ideal_loads(monkeypatch, tmp_path: Path) -> None:
+    built: list[str] = []
+    output_dir = RESULTS_RAW_ROOT / "_pytest_shenzhen_ideal_loads"
+    idf_path = tmp_path / "shenzhen__ideal_loads.idf"
+    idf_path.write_text("Version,23.2;", encoding="utf-8")
+
+    def fake_builder(city_id: str) -> Path:
+        built.append(city_id)
+        return idf_path
+
+    commands: list[list[str]] = []
+
+    monkeypatch.setattr(runner, "build_ideal_loads_case", fake_builder)
+    monkeypatch.setattr(
+        runner,
+        "load_weather_manifest",
+        lambda city_id: {"epw_path": str(tmp_path / f"{city_id}.epw")},
+    )
+    monkeypatch.setattr(runner, "system_model_path", lambda case_id: idf_path)
+    monkeypatch.setattr(runner, "results_dir_for_case", lambda case_id: output_dir)
+    monkeypatch.setattr(runner, "resolve_energyplus_executable", lambda: Path("energyplus"))
+    monkeypatch.setattr(
+        runner,
+        "_safe_reset_output_dir",
+        lambda path: path.mkdir(parents=True, exist_ok=True),
+    )
+    monkeypatch.setattr(
+        runner.subprocess,
+        "run",
+        lambda command, check: commands.append(command),
+    )
+
+    result = runner.run_case("shenzhen__ideal_loads")
+
+    assert built == ["shenzhen"]
+    assert result == output_dir
+    assert commands
+    assert str(idf_path) in commands[0]
+    assert str(tmp_path / "shenzhen.epw") in commands[0]
+
+
+def test_run_case_supports_shenyang_ideal_loads(monkeypatch, tmp_path: Path) -> None:
+    built: list[str] = []
+    output_dir = RESULTS_RAW_ROOT / "_pytest_shenyang_ideal_loads"
+    idf_path = tmp_path / "shenyang__ideal_loads.idf"
+    idf_path.write_text("Version,23.2;", encoding="utf-8")
+
+    def fake_builder(city_id: str) -> Path:
+        built.append(city_id)
+        return idf_path
+
+    commands: list[list[str]] = []
+
+    monkeypatch.setattr(runner, "build_ideal_loads_case", fake_builder)
+    monkeypatch.setattr(
+        runner,
+        "load_weather_manifest",
+        lambda city_id: {"epw_path": str(tmp_path / f"{city_id}.epw")},
+    )
+    monkeypatch.setattr(runner, "system_model_path", lambda case_id: idf_path)
+    monkeypatch.setattr(runner, "results_dir_for_case", lambda case_id: output_dir)
+    monkeypatch.setattr(runner, "resolve_energyplus_executable", lambda: Path("energyplus"))
+    monkeypatch.setattr(
+        runner,
+        "_safe_reset_output_dir",
+        lambda path: path.mkdir(parents=True, exist_ok=True),
+    )
+    monkeypatch.setattr(
+        runner.subprocess,
+        "run",
+        lambda command, check: commands.append(command),
+    )
+
+    result = runner.run_case("shenyang__ideal_loads")
+
+    assert built == ["shenyang"]
+    assert result == output_dir
+    assert commands
+    assert str(idf_path) in commands[0]
+    assert str(tmp_path / "shenyang.epw") in commands[0]
+
+
 def test_run_case_supports_chengdu_vrf(monkeypatch, tmp_path: Path) -> None:
     built: list[str] = []
     output_dir = RESULTS_RAW_ROOT / "_pytest_chengdu_vrf"
