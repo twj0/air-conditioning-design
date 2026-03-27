@@ -1,0 +1,7 @@
+{
+  "city": "tianjin",
+  "climate_zone": "cold",
+  "weather_root": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_TJ_Tianjin\\CHN_TJ_Tianjin.545270_CSWD",
+  "epw_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_TJ_Tianjin\\CHN_TJ_Tianjin.545270_CSWD\\CHN_TJ_Tianjin.545270_CSWD.epw",
+  "ddy_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_TJ_Tianjin\\CHN_TJ_Tianjin.545270_CSWD\\CHN_TJ_Tianjin.545270_CSWD.ddy"
+}
