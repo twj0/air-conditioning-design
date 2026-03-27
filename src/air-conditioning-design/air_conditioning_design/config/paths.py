@@ -1,4 +1,4 @@
-# Ref: docs/spec/task.md (Task-ID: IMPL-TIANJIN-FCU-001)
+# Ref: docs/spec/task.md (Task-ID: IMPL-MULTICITY-CORE-001)
 from __future__ import annotations
 
 import shutil
@@ -21,24 +21,60 @@ DEFAULT_ENERGYPLUS_EXE = Path(r"D:/energyplus/2320/energyplus.exe")
 VRF_DOAS_DONOR_IDF = Path(r"D:/energyplus/2320/ExampleFiles/DOAToVRF.idf")
 FCU_DOAS_DONOR_IDF = Path(r"D:/energyplus/2320/ExampleFiles/DOAToFanCoilInlet.idf")
 
+CASE_ID_SEPARATOR = "__"
+
+
+def build_case_id(city_id: str, system_id: str) -> str:
+    return f"{city_id}{CASE_ID_SEPARATOR}{system_id}"
+
+
+def split_case_id(case_id: str) -> tuple[str, str]:
+    if CASE_ID_SEPARATOR not in case_id:
+        raise ValueError(f"Invalid case id: {case_id}")
+    city_id, system_id = case_id.split(CASE_ID_SEPARATOR, 1)
+    if not city_id or not system_id:
+        raise ValueError(f"Invalid case id: {case_id}")
+    return city_id, system_id
+
+
+def weather_manifest_path(city_id: str) -> Path:
+    return INTERIM_ROOT / f"{city_id}_weather_manifest.json"
+
+
+def city_model_path(city_id: str) -> Path:
+    return MODELS_CITY_ROOT / city_id / f"medium_office_{city_id}.idf"
+
+
+def system_model_path(case_id: str) -> Path:
+    return MODELS_SYSTEM_ROOT / f"{case_id}.idf"
+
+
+def results_dir_for_case(case_id: str) -> Path:
+    return RESULTS_RAW_ROOT / case_id
+
+
+def summary_path_for_case(case_id: str) -> Path:
+    return RESULTS_PROCESSED_ROOT / f"{case_id}_summary.csv"
+
+
 TIANJIN_WEATHER_PACKAGE = (
     WEATHER_ROOT / "CHN_TJ_Tianjin" / "CHN_TJ_Tianjin.545270_CSWD"
 )
 TIANJIN_EPW = TIANJIN_WEATHER_PACKAGE / "CHN_TJ_Tianjin.545270_CSWD.epw"
 TIANJIN_DDY = TIANJIN_WEATHER_PACKAGE / "CHN_TJ_Tianjin.545270_CSWD.ddy"
-TIANJIN_MANIFEST = INTERIM_ROOT / "tianjin_weather_manifest.json"
+TIANJIN_MANIFEST = weather_manifest_path("tianjin")
 NEUTRAL_MODEL_PATH = MODELS_BASE_ROOT / "medium_office_neutral.idf"
 NEUTRAL_METADATA_PATH = MODELS_BASE_ROOT / "medium_office_neutral_metadata.json"
-TIANJIN_CITY_MODEL_PATH = MODELS_CITY_ROOT / "tianjin" / "medium_office_tianjin.idf"
-TIANJIN_IDEAL_LOADS_PATH = MODELS_SYSTEM_ROOT / "tianjin__ideal_loads.idf"
-TIANJIN_VRF_PATH = MODELS_SYSTEM_ROOT / "tianjin__vrf.idf"
-TIANJIN_FCU_DOAS_PATH = MODELS_SYSTEM_ROOT / "tianjin__fcu_doas.idf"
-TIANJIN_RESULTS_ROOT = RESULTS_RAW_ROOT / "tianjin__ideal_loads"
-TIANJIN_VRF_RESULTS_ROOT = RESULTS_RAW_ROOT / "tianjin__vrf"
-TIANJIN_FCU_DOAS_RESULTS_ROOT = RESULTS_RAW_ROOT / "tianjin__fcu_doas"
-TIANJIN_SUMMARY_PATH = RESULTS_PROCESSED_ROOT / "tianjin__ideal_loads_summary.csv"
-TIANJIN_VRF_SUMMARY_PATH = RESULTS_PROCESSED_ROOT / "tianjin__vrf_summary.csv"
-TIANJIN_FCU_DOAS_SUMMARY_PATH = RESULTS_PROCESSED_ROOT / "tianjin__fcu_doas_summary.csv"
+TIANJIN_CITY_MODEL_PATH = city_model_path("tianjin")
+TIANJIN_IDEAL_LOADS_PATH = system_model_path("tianjin__ideal_loads")
+TIANJIN_VRF_PATH = system_model_path("tianjin__vrf")
+TIANJIN_FCU_DOAS_PATH = system_model_path("tianjin__fcu_doas")
+TIANJIN_RESULTS_ROOT = results_dir_for_case("tianjin__ideal_loads")
+TIANJIN_VRF_RESULTS_ROOT = results_dir_for_case("tianjin__vrf")
+TIANJIN_FCU_DOAS_RESULTS_ROOT = results_dir_for_case("tianjin__fcu_doas")
+TIANJIN_SUMMARY_PATH = summary_path_for_case("tianjin__ideal_loads")
+TIANJIN_VRF_SUMMARY_PATH = summary_path_for_case("tianjin__vrf")
+TIANJIN_FCU_DOAS_SUMMARY_PATH = summary_path_for_case("tianjin__fcu_doas")
 
 MEDIUM_OFFICE_FLOOR_AREA_M2 = 4982.0
 
@@ -47,7 +83,7 @@ def ensure_directories() -> None:
     for directory in (
         INTERIM_ROOT,
         MODELS_BASE_ROOT,
-        MODELS_CITY_ROOT / "tianjin",
+        MODELS_CITY_ROOT,
         MODELS_SYSTEM_ROOT,
         RESULTS_RAW_ROOT,
         RESULTS_PROCESSED_ROOT,
