@@ -201,3 +201,21 @@ def test_build_report_figures_writes_svg_files(monkeypatch, tmp_path: Path) -> N
         assert path.exists()
         assert path.suffix == ".svg"
         assert "<svg" in path.read_text(encoding="utf-8")
+
+
+def test_build_report_figures_supports_png_output(monkeypatch, tmp_path: Path) -> None:
+    _patch_report_paths(monkeypatch, tmp_path)
+    _seed_report_fixtures(tmp_path)
+
+    output_root = tmp_path / "plots_png"
+    outputs = report_plots.build_report_figures(
+        output_root=output_root,
+        city_ids=("tianjin", "shenzhen"),
+        file_format="png",
+    )
+
+    assert len(outputs) == 6
+    for path in outputs:
+        assert path.exists()
+        assert path.suffix == ".png"
+        assert path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")

@@ -19,12 +19,12 @@ from air_conditioning_design.analysis.report_data import (
 from air_conditioning_design.config.paths import RESULTS_PLOTS_ROOT, ensure_directories
 
 PLOT_FILENAMES = {
-    "peak_cooling_load": "peak_cooling_load_by_city.svg",
-    "peak_cooling_density": "peak_cooling_load_density_by_city.svg",
-    "annual_loads": "annual_ideal_loads_by_city.svg",
-    "system_electricity": "system_electricity_by_city.svg",
-    "system_electricity_per_m2": "system_electricity_per_m2_by_city.svg",
-    "design_cooling_capacity": "design_cooling_capacity_by_city.svg",
+    "peak_cooling_load": "peak_cooling_load_by_city",
+    "peak_cooling_density": "peak_cooling_load_density_by_city",
+    "annual_loads": "annual_ideal_loads_by_city",
+    "system_electricity": "system_electricity_by_city",
+    "system_electricity_per_m2": "system_electricity_per_m2_by_city",
+    "design_cooling_capacity": "design_cooling_capacity_by_city",
 }
 
 SYSTEM_ORDER = ("fcu_doas", "vrf")
@@ -34,8 +34,8 @@ COOLING_COLOR = "#d66a35"
 HEATING_COLOR = "#4e8c63"
 
 
-def _figure_path(output_root: Path, key: str) -> Path:
-    return output_root / PLOT_FILENAMES[key]
+def _figure_path(output_root: Path, key: str, file_format: str) -> Path:
+    return output_root / f"{PLOT_FILENAMES[key]}.{file_format}"
 
 
 def _base_axes(figsize: tuple[float, float] = (9, 5)) -> tuple[plt.Figure, plt.Axes]:
@@ -47,9 +47,9 @@ def _base_axes(figsize: tuple[float, float] = (9, 5)) -> tuple[plt.Figure, plt.A
     return fig, ax
 
 
-def _save(fig: plt.Figure, path: Path) -> Path:
+def _save(fig: plt.Figure, path: Path, *, file_format: str) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=200, format="svg")
+    fig.savefig(path, dpi=200, format=file_format)
     plt.close(fig)
     return path
 
@@ -66,6 +66,7 @@ def _plot_single_series(
     ylabel: str,
     output_path: Path,
     color: str,
+    file_format: str,
 ) -> Path:
     fig, ax = _base_axes()
     labels = _city_labels(rows)
@@ -75,7 +76,7 @@ def _plot_single_series(
     ax.set_xticks(positions, labels)
     ax.set_title(title)
     ax.set_ylabel(ylabel)
-    return _save(fig, output_path)
+    return _save(fig, output_path, file_format=file_format)
 
 
 def _plot_grouped_system_series(
@@ -85,6 +86,7 @@ def _plot_grouped_system_series(
     title: str,
     ylabel: str,
     output_path: Path,
+    file_format: str,
 ) -> Path:
     grouped: dict[str, dict[str, dict[str, float | int | str]]] = {}
     for row in rows:
@@ -114,13 +116,14 @@ def _plot_grouped_system_series(
     ax.set_title(title)
     ax.set_ylabel(ylabel)
     ax.legend(frameon=False)
-    return _save(fig, output_path)
+    return _save(fig, output_path, file_format=file_format)
 
 
 def build_report_figures(
     *,
     output_root: Path | None = None,
     city_ids: Iterable[str] | None = None,
+    file_format: str = "svg",
 ) -> list[Path]:
     ensure_directories()
     target_root = output_root or RESULTS_PLOTS_ROOT
@@ -136,16 +139,18 @@ def build_report_figures(
             field="peak_cooling_load_kw",
             title="Peak Cooling Load by City",
             ylabel="Peak Cooling Load (kW)",
-            output_path=_figure_path(target_root, "peak_cooling_load"),
+            output_path=_figure_path(target_root, "peak_cooling_load", file_format),
             color=CITY_COLOR,
+            file_format=file_format,
         ),
         _plot_single_series(
             ideal_rows,
             field="peak_cooling_load_per_m2_w_m2",
             title="Peak Cooling Load Density by City",
             ylabel="Peak Cooling Load Density (W/m²)",
-            output_path=_figure_path(target_root, "peak_cooling_density"),
+            output_path=_figure_path(target_root, "peak_cooling_density", file_format),
             color=CITY_COLOR,
+            file_format=file_format,
         ),
     ]
 
@@ -173,7 +178,13 @@ def build_report_figures(
     ax.set_title("Annual Ideal Loads by City")
     ax.set_ylabel("Load (kWh)")
     ax.legend(frameon=False)
-    outputs.append(_save(fig, _figure_path(target_root, "annual_loads")))
+    outputs.append(
+        _save(
+            fig,
+            _figure_path(target_root, "annual_loads", file_format),
+            file_format=file_format,
+        )
+    )
 
     outputs.append(
         _plot_grouped_system_series(
@@ -181,7 +192,8 @@ def build_report_figures(
             field="annual_hvac_electricity_kwh",
             title="Annual HVAC Electricity by City",
             ylabel="Annual HVAC Electricity (kWh)",
-            output_path=_figure_path(target_root, "system_electricity"),
+            output_path=_figure_path(target_root, "system_electricity", file_format),
+            file_format=file_format,
         )
     )
     outputs.append(
@@ -190,7 +202,8 @@ def build_report_figures(
             field="annual_hvac_electricity_per_m2_kwh_m2",
             title="Annual HVAC Electricity per Area by City",
             ylabel="HVAC Electricity Intensity (kWh/m²)",
-            output_path=_figure_path(target_root, "system_electricity_per_m2"),
+            output_path=_figure_path(target_root, "system_electricity_per_m2", file_format),
+            file_format=file_format,
         )
     )
     outputs.append(
@@ -199,7 +212,8 @@ def build_report_figures(
             field="design_cooling_capacity_kw",
             title="Design Cooling Capacity by City",
             ylabel="Design Cooling Capacity (kW)",
-            output_path=_figure_path(target_root, "design_cooling_capacity"),
+            output_path=_figure_path(target_root, "design_cooling_capacity", file_format),
+            file_format=file_format,
         )
     )
     return outputs

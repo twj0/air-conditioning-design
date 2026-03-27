@@ -14,6 +14,7 @@ def main() -> None:
     parser.add_argument("--plot-output-root", type=Path)
     parser.add_argument("--city-id", action="append", dest="city_ids")
     parser.add_argument("--force-case-summaries", action="store_true")
+    parser.add_argument("--format", default="svg", dest="file_format")
     args = parser.parse_args()
 
     for path in write_report_data(
@@ -23,5 +24,9 @@ def main() -> None:
     ):
         print(path)
 
-    for path in build_report_figures(output_root=args.plot_output_root, city_ids=args.city_ids):
+    for path in build_report_figures(
+        output_root=args.plot_output_root,
+        city_ids=args.city_ids,
+        file_format=args.file_format,
+    ):
         print(path)
