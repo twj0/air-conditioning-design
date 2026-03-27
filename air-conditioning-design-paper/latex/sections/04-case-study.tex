@@ -1,0 +1,94 @@
+\section{算例分析与讨论}
+
+\subsection{四个气候分区下的理想负荷基线}
+
+理想负荷结果汇总如表\ref{tab:ideal-results}所示。由图\ref{fig:peak-density}可见，深圳的峰值冷负荷最高，达到\SI{327.092}{\kilo\watt}，对应峰值冷负荷密度为\SI{65.655}{\watt\per\square\meter}；沈阳的峰值冷负荷最低，为\SI{255.090}{\kilo\watt}。图\ref{fig:annual-loads}进一步表明，不同气候分区下全年冷热需求构成存在显著差异。沈阳的年热负荷最高，为\SI{454752.566}{\kilo\watt\hour}，热负荷占年总理想负荷的约51.5\%。与之相对，深圳全年以制冷为主，年冷负荷达到\SI{855779.030}{\kilo\watt\hour}，而年热负荷仅为\SI{29254.403}{\kilo\watt\hour}，约占年总理想负荷的3.3\%。
+
+尽管成都的峰值冷负荷略高于天津，但其年总理想负荷强度最低，仅为\SI{133.344}{\kilo\watt\hour\per\square\meter}。这说明建筑全年热负荷水平并不完全由峰值冷负荷决定。天津则表现为典型的冷热并重过渡工况，其制冷占比高于沈阳，但全年供热需求仍不可忽视。由于四个城市当前采用相同的建筑原型和运行边界，因此这些差异可以主要解释为区域气候条件及设计日条件带来的影响。
+
+\begin{table}[htbp]
+\centering
+\caption{四个城市理想负荷比较结果}
+\label{tab:ideal-results}
+\footnotesize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+城市 & $Q_{\mathrm{pc}}$ (\si{kW}) & $q_{\mathrm{pc}}$ (\si{W/m^2}) & $E_{\mathrm{cool}}$ (\si{kWh}) & $E_{\mathrm{heat}}$ (\si{kWh}) & $E_{\mathrm{total}}/A_{\mathrm{f}}$ (\si{kWh/m^2}) \\
+\midrule
+沈阳 & 255.090 & 51.202 & 427651.444 & 454752.566 & 177.118 \\
+天津 & 275.184 & 55.236 & 539982.673 & 268931.951 & 162.367 \\
+成都 & 278.626 & 55.927 & 563448.688 & 100870.651 & 133.344 \\
+深圳 & 327.092 & 65.655 & 855779.030 & 29254.403 & 177.646 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{peak_cooling_load_density_by_city.pdf}
+\caption{各城市理想负荷基线下的峰值冷负荷密度}
+\label{fig:peak-density}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{annual_ideal_loads_by_city.pdf}
+\caption{四个城市的年冷负荷与年热负荷比较}
+\label{fig:annual-loads}
+\end{figure}
+
+\subsection{系统电耗与设备容量比较}
+
+实际空调系统的比较结果见表\ref{tab:system-results}。由图\ref{fig:system-intensity}可知，在当前仅统计空调电耗的口径下，FCU+DOAS在四个城市中都表现出更低的年空调电耗强度。VRF+DOAS的年空调电耗强度从沈阳的\SI{115.174}{\kilo\watt\hour\per\square\meter}上升到深圳的\SI{173.566}{\kilo\watt\hour\per\square\meter}，而FCU+DOAS仅为\SIrange{10.489}{12.367}{\kilo\watt\hour\per\square\meter}。两者差异在深圳最为明显，VRF+DOAS的电耗强度约为FCU+DOAS的14.0倍。但需要强调的是，这一差异仍必须结合FCU+DOAS尚未计入锅炉燃料消耗这一事实加以理解。
+
+图\ref{fig:capacity}给出了自动选型得到的设计冷量。随着制冷需求增强，设计冷量总体呈上升趋势，由沈阳VRF方案的\SI{464.250}{\kilo\watt}增加到深圳FCU+DOAS方案的\SI{711.085}{\kilo\watt}。在同一城市内，FCU+DOAS的冷源设计冷量通常略高于VRF方案，对应差值约在\SI{3.888}{\kilo\watt}至\SI{17.489}{\kilo\watt}之间。这说明在相同建筑和相同气象输入条件下，两类方案在冷量配置上的差异并不大，但在当前电耗口径下的运行指标表现差异较大。
+
+还需指出，系统比较不仅反映能耗指标，也反映系统组织复杂度。VRF+DOAS不涉及水系统环路，而FCU+DOAS包含冷冻水系统、热水系统以及相应冷热源设备。由于两类系统在服务分区数和新风量边界上保持一致，因此本文比较结果可理解为“相同建筑对象下的电耗表现、冷量需求与系统复杂度”的综合比较。
+
+\begin{table}[htbp]
+\centering
+\caption{系统电耗强度与设计冷量比较结果}
+\label{tab:system-results}
+\begin{threeparttable}
+\footnotesize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+城市 & VRF $I_{\mathrm{elec}}$ (\si{kWh/m^2}) & FCU $I_{\mathrm{elec}}$ (\si{kWh/m^2})\tnote{a} & VRF $P_{\mathrm{c,des}}$ (\si{kW}) & FCU $P_{\mathrm{c,des}}$ (\si{kW}) \\
+\midrule
+沈阳 & 115.174 & 10.489 & 464.250 & 479.681 \\
+天津 & 135.784 & 11.485 & 589.118 & 604.258 \\
+成都 & 123.508 & 10.951 & 538.864 & 556.353 \\
+深圳 & 173.566 & 12.367 & 707.197 & 711.085 \\
+\bottomrule
+\end{tabular}%
+}
+\begin{tablenotes}
+\item[a] FCU+DOAS当前仅统计空调电耗，尚未纳入锅炉燃料消耗。
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{system_electricity_per_m2_by_city.pdf}
+\caption{四个城市中VRF+DOAS与FCU+DOAS的年空调电耗强度比较}
+\label{fig:system-intensity}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{design_cooling_capacity_by_city.pdf}
+\caption{不同城市下两类系统的设计冷量比较}
+\label{fig:capacity}
+\end{figure}
+
+\subsection{面向气候分区的适宜性评价}
+
+基于上述结果可以认为，两类系统应继续保持完全并列的比较关系，而不宜在研究开始前预设优劣。在沈阳和天津所代表的北方地区中，全年供热仍占较大比重，因此FCU+DOAS未纳入锅炉燃料消耗这一问题尤为关键。也就是说，当前仅凭电耗指标尚不足以直接得出最终的技术优选结论，但可作为比较不同城市冷热需求强弱、设计冷量水平和系统复杂度的重要依据。
+
+在成都和深圳所代表的南方地区中，全年需求明显更偏向制冷，因此电耗强度和设计冷量可以作为更直接的初步筛选指标。深圳在理想负荷和实际系统两层结果中都表现出最强的制冷需求，因此可视为制冷工况最不利的代表城市。成都则表现出四个城市中最低的年总理想负荷强度，说明在当前统一建筑原型下，其全年综合冷热需求相对最温和。
+
+但本文的适宜性评价仍存在两个明确限制。第一，当前四个城市采用同一围护结构和运行边界，因此结果更适合解释气候差异和系统差异，而尚未完整体现GB~50189-2015所要求的围护结构分区化设计。第二，FCU+DOAS的锅炉燃料消耗尚未合并到统一比较指标中。因此，本文更适合作为面向气候分区的方案筛选与方法论比较基础，而最终工程推荐仍有待在围护结构细化和全口径能耗补齐之后进一步完成。

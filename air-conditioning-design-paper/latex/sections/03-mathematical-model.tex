@@ -1,0 +1,30 @@
+\section{数学模型与评价指标}
+
+为表征气候驱动建筑负荷，本文对理想负荷工况输出结果进行逐时汇总。对每个城市而言，各空调分区的显热冷负荷与显热热负荷分别在每一个时刻求和，峰值冷负荷定义为
+\begin{equation}
+Q_{\mathrm{pc}} = \max_t \left( \sum_z \dot{Q}_{\mathrm{cool},z}(t) \right) / 1000,
+\end{equation}
+式中，$Q_{\mathrm{pc}}$单位为\si{kW}。对应的峰值冷负荷密度为
+\begin{equation}
+q_{\mathrm{pc}} = \frac{1000 \, Q_{\mathrm{pc}}}{A_{\mathrm{f}}},
+\end{equation}
+其中，$A_{\mathrm{f}}$为空调服务建筑面积，单位为\si{m^2}。
+
+全年理想冷、热负荷分别由逐时结果在全年范围内积分得到：
+\begin{equation}
+E_{\mathrm{cool}} = \sum_t \sum_z \dot{Q}_{\mathrm{cool},z}(t)\Delta t,
+\qquad
+E_{\mathrm{heat}} = \sum_t \sum_z \dot{Q}_{\mathrm{heat},z}(t)\Delta t,
+\end{equation}
+本文采用逐时输出，因此$\Delta t=\SI{1}{hour}$。进一步定义年总理想负荷为
+\begin{equation}
+E_{\mathrm{total}} = E_{\mathrm{cool}} + E_{\mathrm{heat}}.
+\end{equation}
+
+对两类实际空调系统，年空调电耗指标由系统计量结果整理得到，其面积归一化形式定义为
+\begin{equation}
+I_{\mathrm{elec}} = \frac{E_{\mathrm{elec}}}{A_{\mathrm{f}}},
+\end{equation}
+其中，$E_{\mathrm{elec}}$为年空调电耗，单位为\si{kWh}。需要特别说明的是，当前FCU+DOAS工况统计的是空调相关电耗，并未纳入锅炉燃料消耗。因此，本文中的FCU+DOAS结果应理解为电耗口径指标，而非完整系统综合能耗指标。
+
+设备容量方面，本文以系统自动选型结果中的设计冷量作为初步设备选型指标。对VRF方案，设计冷量来自室外机选型结果；对FCU+DOAS方案，设计冷量来自冷水机组选型结果。该指标与年空调电耗强度、系统构成复杂度以及统一的新风量一起构成本文的综合比较依据。
