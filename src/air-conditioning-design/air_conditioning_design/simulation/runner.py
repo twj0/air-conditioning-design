@@ -11,20 +11,15 @@ from pathlib import Path
 from air_conditioning_design.config.cities import has_city
 from air_conditioning_design.config.paths import (
     RESULTS_RAW_ROOT,
-    TIANJIN_EPW,
-    TIANJIN_FCU_DOAS_PATH,
-    TIANJIN_FCU_DOAS_RESULTS_ROOT,
-    TIANJIN_VRF_PATH,
-    TIANJIN_VRF_RESULTS_ROOT,
     ensure_directories,
     results_dir_for_case,
     resolve_energyplus_executable,
     split_case_id,
     system_model_path,
 )
-from air_conditioning_design.models.tianjin_fcu_doas import build_tianjin_fcu_doas_case
-from air_conditioning_design.models.tianjin_vrf import build_tianjin_vrf_case
+from air_conditioning_design.models.systems.fcu_doas import build_fcu_doas_case
 from air_conditioning_design.models.systems.ideal_loads import build_ideal_loads_case
+from air_conditioning_design.models.systems.vrf import build_vrf_case
 from air_conditioning_design.weather.catalog import load_weather_manifest
 
 
@@ -79,34 +74,17 @@ def _run_energyplus_case(
 def run_case(case_id: str) -> Path:
     ensure_directories()
     city_id, system_id = split_case_id(case_id)
-    if system_id == "ideal_loads" and has_city(city_id):
-        build_ideal_loads_case(city_id)
+    if system_id in {"ideal_loads", "vrf", "fcu_doas"} and has_city(city_id):
+        if system_id == "ideal_loads":
+            build_ideal_loads_case(city_id)
+        elif system_id == "vrf":
+            build_vrf_case(city_id)
+        else:
+            build_fcu_doas_case(city_id)
         manifest = load_weather_manifest(city_id)
         return _run_energyplus_case(
             idf_path=system_model_path(case_id),
             output_dir=results_dir_for_case(case_id),
             weather_path=Path(manifest["epw_path"]),
         )
-
-    case_builders = {
-        "tianjin__vrf": (
-            build_tianjin_vrf_case,
-            TIANJIN_VRF_PATH,
-            TIANJIN_VRF_RESULTS_ROOT,
-        ),
-        "tianjin__fcu_doas": (
-            build_tianjin_fcu_doas_case,
-            TIANJIN_FCU_DOAS_PATH,
-            TIANJIN_FCU_DOAS_RESULTS_ROOT,
-        ),
-    }
-    if case_id not in case_builders:
-        raise ValueError(f"Unsupported case id for current task: {case_id}")
-
-    builder, idf_path, output_dir = case_builders[case_id]
-    builder()
-    return _run_energyplus_case(
-        idf_path=idf_path,
-        output_dir=output_dir,
-        weather_path=TIANJIN_EPW,
-    )
+    raise ValueError(f"Unsupported case id for current task: {case_id}")
