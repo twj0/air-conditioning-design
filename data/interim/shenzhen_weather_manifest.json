@@ -1,0 +1,9 @@
+{
+  "city": "shenzhen",
+  "city_name": "Shenzhen",
+  "climate_zone": "hot_summer_warm_winter",
+  "weather_package": "CHN_GD_Shenzhen.592870_CSWD",
+  "weather_root": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_GD_Shenzhen\\CHN_GD_Shenzhen.592870_CSWD",
+  "epw_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_GD_Shenzhen\\CHN_GD_Shenzhen.592870_CSWD\\CHN_GD_Shenzhen.592870_CSWD.epw",
+  "ddy_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_GD_Shenzhen\\CHN_GD_Shenzhen.592870_CSWD\\CHN_GD_Shenzhen.592870_CSWD.ddy"
+}

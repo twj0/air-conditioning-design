@@ -1,0 +1,9 @@
+{
+  "city": "shenyang",
+  "city_name": "Shenyang",
+  "climate_zone": "severe_cold",
+  "weather_package": "CHN_LN_Shenyang.543420_CSWD",
+  "weather_root": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_LN_Shenyang\\CHN_LN_Shenyang.543420_CSWD",
+  "epw_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_LN_Shenyang\\CHN_LN_Shenyang.543420_CSWD\\CHN_LN_Shenyang.543420_CSWD.epw",
+  "ddy_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_LN_Shenyang\\CHN_LN_Shenyang.543420_CSWD\\CHN_LN_Shenyang.543420_CSWD.ddy"
+}
