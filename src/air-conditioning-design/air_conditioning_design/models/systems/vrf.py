@@ -473,6 +473,7 @@ def _build_zone_mixer(
 def _build_vrf_condenser(
     donor_objects: list[IdfObject],
     city_name: str,
+    climate_zone: str,
     master_zone: str,
     zone_names: list[str],
 ) -> IdfObject:
@@ -483,6 +484,11 @@ def _build_vrf_condenser(
     # The Miami donor's -5 C cooling cutoff is too warm for the colder shoulder seasons
     # seen in this shared office prototype, so keep the stabilized lower cutoff.
     condenser.fields[4] = "-15"
+    # Severe-cold cities need a lower heating lockout than the donor's -20 C limit,
+    # otherwise the shared VRF case spends long winter stretches disabled in warmup
+    # and annual simulation.
+    if climate_zone == "severe_cold":
+        condenser.fields[19] = "-25"
     condenser.fields[33] = master_zone
     condenser.fields[36] = "VRF Heat Pump TU List"
     return condenser
@@ -609,7 +615,9 @@ def build_vrf_case(city_id: str, output_root: Path | None = None) -> Path:
         )
 
     vrf_objects = [
-        _build_vrf_condenser(donor_objects, city.display_name, master_zone, zone_names),
+        _build_vrf_condenser(
+            donor_objects, city.display_name, city.climate_zone, master_zone, zone_names
+        ),
         _build_terminal_unit_list(zone_names),
         _build_zone_splitter(zone_names),
         _build_zone_mixer(zone_names, zone_node_map),
