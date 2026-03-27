@@ -3,15 +3,15 @@
 
   SimulationControl,
     YES,
-    YES,
-    YES,
+    NO,
+    NO,
     YES,
     YES,
     No,
     1;
 
   Building,
-    Shenzhen Medium Office FCU DOAS Pilot,
+    Shenzhen Medium Office Ideal Loads Pilot,
     0.0000,
     City,
     0.0400,
@@ -5463,6 +5463,141 @@
     Dimensionless,
     Dimensionless;
 
+  Coil:Heating:Electric,
+    Core_bottom VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Core_bottom VAV Box Damper Node,
+    Core_bottom VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Core_mid VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Core_mid VAV Box Damper Node,
+    Core_mid VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Core_top VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Core_top VAV Box Damper Node,
+    Core_top VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_bot_ZN_1 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_bot_ZN_1 VAV Box Damper Node,
+    Perimeter_bot_ZN_1 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_bot_ZN_2 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_bot_ZN_2 VAV Box Damper Node,
+    Perimeter_bot_ZN_2 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_bot_ZN_3 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_bot_ZN_3 VAV Box Damper Node,
+    Perimeter_bot_ZN_3 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_bot_ZN_4 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_bot_ZN_4 VAV Box Damper Node,
+    Perimeter_bot_ZN_4 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_mid_ZN_1 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_mid_ZN_1 VAV Box Damper Node,
+    Perimeter_mid_ZN_1 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_mid_ZN_2 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_mid_ZN_2 VAV Box Damper Node,
+    Perimeter_mid_ZN_2 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_mid_ZN_3 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_mid_ZN_3 VAV Box Damper Node,
+    Perimeter_mid_ZN_3 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_mid_ZN_4 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_mid_ZN_4 VAV Box Damper Node,
+    Perimeter_mid_ZN_4 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_top_ZN_1 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_top_ZN_1 VAV Box Damper Node,
+    Perimeter_top_ZN_1 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_top_ZN_2 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_top_ZN_2 VAV Box Damper Node,
+    Perimeter_top_ZN_2 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_top_ZN_3 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_top_ZN_3 VAV Box Damper Node,
+    Perimeter_top_ZN_3 VAV Box Outlet Node Name,
+    ;
+
+  Coil:Heating:Electric,
+    Perimeter_top_ZN_4 VAV Box Reheat Coil,
+    ALWAYS_ON,
+    1,
+    AUTOSIZE,
+    Perimeter_top_ZN_4 VAV Box Damper Node,
+    Perimeter_top_ZN_4 VAV Box Outlet Node Name,
+    ;
+
   Sizing:Zone,
     Core_bottom,
     SupplyAirTemperature,
@@ -5494,10 +5629,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Core_bottom,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.661690;
+    ;
 
   Sizing:Zone,
     Core_mid,
@@ -5530,10 +5665,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Core_mid,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.661690;
+    ;
 
   Sizing:Zone,
     Core_top,
@@ -5566,10 +5701,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Core_top,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.661690;
+    ;
 
   Sizing:Zone,
     Perimeter_bot_ZN_1,
@@ -5602,10 +5737,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_bot_ZN_1,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.139490;
+    ;
 
   Sizing:Zone,
     Perimeter_bot_ZN_2,
@@ -5638,10 +5773,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_bot_ZN_2,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.088309;
+    ;
 
   Sizing:Zone,
     Perimeter_bot_ZN_3,
@@ -5674,10 +5809,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_bot_ZN_3,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.139490;
+    ;
 
   Sizing:Zone,
     Perimeter_bot_ZN_4,
@@ -5710,10 +5845,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_bot_ZN_4,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.088303;
+    ;
 
   Sizing:Zone,
     Perimeter_mid_ZN_1,
@@ -5746,10 +5881,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_mid_ZN_1,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.139490;
+    ;
 
   Sizing:Zone,
     Perimeter_mid_ZN_2,
@@ -5782,10 +5917,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_mid_ZN_2,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.088309;
+    ;
 
   Sizing:Zone,
     Perimeter_mid_ZN_3,
@@ -5818,10 +5953,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_mid_ZN_3,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.139490;
+    ;
 
   Sizing:Zone,
     Perimeter_mid_ZN_4,
@@ -5854,10 +5989,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_mid_ZN_4,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.088303;
+    ;
 
   Sizing:Zone,
     Perimeter_top_ZN_1,
@@ -5890,10 +6025,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_top_ZN_1,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.139490;
+    ;
 
   Sizing:Zone,
     Perimeter_top_ZN_2,
@@ -5926,10 +6061,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_top_ZN_2,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.088309;
+    ;
 
   Sizing:Zone,
     Perimeter_top_ZN_3,
@@ -5962,10 +6097,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_top_ZN_3,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.139490;
+    ;
 
   Sizing:Zone,
     Perimeter_top_ZN_4,
@@ -5998,10 +6133,10 @@
 
   DesignSpecification:OutdoorAir,
     SZ DSOA Perimeter_top_ZN_4,
-    Flow/Zone,
+    Flow/Person,
+    0.0125,
     ,
-    ,
-    0.088303;
+    ;
 
   ZoneControl:Thermostat,
     Core_bottom Thermostat,
@@ -6259,6 +6394,66 @@
     0.0,
     1.0;
 
+  NodeList,
+    Core_bottom Inlet Nodes,
+    Core_bottom VAV Box Outlet Node Name;
+
+  NodeList,
+    Core_mid Inlet Nodes,
+    Core_mid VAV Box Outlet Node Name;
+
+  NodeList,
+    Core_top Inlet Nodes,
+    Core_top VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_bot_ZN_1 Inlet Nodes,
+    Perimeter_bot_ZN_1 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_bot_ZN_2 Inlet Nodes,
+    Perimeter_bot_ZN_2 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_bot_ZN_3 Inlet Nodes,
+    Perimeter_bot_ZN_3 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_bot_ZN_4 Inlet Nodes,
+    Perimeter_bot_ZN_4 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_mid_ZN_1 Inlet Nodes,
+    Perimeter_mid_ZN_1 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_mid_ZN_2 Inlet Nodes,
+    Perimeter_mid_ZN_2 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_mid_ZN_3 Inlet Nodes,
+    Perimeter_mid_ZN_3 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_mid_ZN_4 Inlet Nodes,
+    Perimeter_mid_ZN_4 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_top_ZN_1 Inlet Nodes,
+    Perimeter_top_ZN_1 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_top_ZN_2 Inlet Nodes,
+    Perimeter_top_ZN_2 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_top_ZN_3 Inlet Nodes,
+    Perimeter_top_ZN_3 VAV Box Outlet Node Name;
+
+  NodeList,
+    Perimeter_top_ZN_4 Inlet Nodes,
+    Perimeter_top_ZN_4 VAV Box Outlet Node Name;
+
   Schedule:Compact,
     Dual Zone Control Type Sched,
     Control Type,
@@ -6371,6 +6566,347 @@
     For: AllDays,
     Until: 24:00,
     12.8;
+
+  WaterHeater:Mixed,
+    SWHSys1 Water Heater,
+    0.3785,
+    SWHSys1 Water Heater Setpoint Temperature Schedule Name,
+    2.0,
+    82.2222,
+    Cycle,
+    845000,
+    ,
+    ,
+    ,
+    NATURALGAS,
+    0.8,
+    ,
+    20,
+    NATURALGAS,
+    0.8,
+    ,
+    NATURALGAS,
+    ,
+    SCHEDULE,
+    SWHSys1 Water Heater Ambient Temperature Schedule Name,
+    ,
+    ,
+    6.0,
+    ,
+    6.0,
+    ,
+    ,
+    ,
+    ,
+    SWHSys1 Pump-SWHSys1 Water HeaterNode,
+    SWHSys1 Supply Equipment Outlet Node,
+    1.0,
+    ,
+    ,
+    1.0,
+    AUTOSIZE,
+    AUTOSIZE,
+    1.5;
+
+  WaterUse:Equipment,
+    Core_bottom Water Equipment,
+    ,
+    1.04e-005,
+    BLDG_SWH_SCH,
+    Water Equipment Temp Sched,
+    Water Equipment Hot Supply Temp Sched,
+    ,
+    Core_bottom,
+    Water Equipment Sensible fract sched,
+    Water Equipment Latent fract sched;
+
+  WaterUse:Equipment,
+    Core_mid Water Equipment,
+    ,
+    1.04e-005,
+    BLDG_SWH_SCH,
+    Water Equipment Temp Sched,
+    Water Equipment Hot Supply Temp Sched,
+    ,
+    Core_mid,
+    Water Equipment Sensible fract sched,
+    Water Equipment Latent fract sched;
+
+  WaterUse:Equipment,
+    Core_top Water Equipment,
+    ,
+    1.04e-005,
+    BLDG_SWH_SCH,
+    Water Equipment Temp Sched,
+    Water Equipment Hot Supply Temp Sched,
+    ,
+    Core_top,
+    Water Equipment Sensible fract sched,
+    Water Equipment Latent fract sched;
+
+  Pump:ConstantSpeed,
+    SWHSys1 Pump,
+    SWHSys1 Supply Inlet Node,
+    SWHSys1 Pump-SWHSys1 Water HeaterNodeviaConnector,
+    AUTOSIZE,
+    179352,
+    AUTOSIZE,
+    0.85,
+    0.0,
+    Intermittent,
+    ;
+
+  PlantEquipmentList,
+    SWHSys1 Equipment List,
+    WaterHeater:Mixed,
+    SWHSys1 Water Heater;
+
+  Sizing:Plant,
+    SWHSys1,
+    Heating,
+    60,
+    5.0;
+
+  SetpointManager:Scheduled,
+    SWHSys1 Loop Setpoint Manager,
+    Temperature,
+    SWHSys1-Loop-Temp-Schedule,
+    SWHSys1 Supply Outlet Node;
+
+  PlantEquipmentOperationSchemes,
+    SWHSys1 Loop Operation Scheme List,
+    PlantEquipmentOperation:HeatingLoad,
+    SWHSys1 Operation Scheme,
+    ALWAYS_ON;
+
+  PlantEquipmentOperation:HeatingLoad,
+    SWHSys1 Operation Scheme,
+    0.0,
+    1000000000000000,
+    SWHSys1 Equipment List;
+
+  PlantLoop,
+    SWHSys1,
+    Water,
+    ,
+    SWHSys1 Loop Operation Scheme List,
+    SWHSys1 Supply Outlet Node,
+    60.0,
+    10.0,
+    AUTOSIZE,
+    0.0,
+    AUTOSIZE,
+    SWHSys1 Supply Inlet Node,
+    SWHSys1 Supply Outlet Node,
+    SWHSys1 Supply Branches,
+    SWHSys1 Supply Connectors,
+    SWHSys1 Demand Inlet Node,
+    SWHSys1 Demand Outlet Node,
+    SWHSys1 Demand Branches,
+    SWHSys1 Demand Connectors,
+    Optimal;
+
+  BranchList,
+    SWHSys1 Demand Branches,
+    SWHSys1 Demand Inlet Branch,
+    SWHSys1 Demand Load Branch 1,
+    SWHSys1 Demand Load Branch 2,
+    SWHSys1 Demand Load Branch 3,
+    SWHSys1 Demand Bypass Branch,
+    SWHSys1 Demand Outlet Branch;
+
+  BranchList,
+    SWHSys1 Supply Branches,
+    SWHSys1 Supply Inlet Branch,
+    SWHSys1 Supply Equipment Branch,
+    SWHSys1 Supply Equipment Bypass Branch,
+    SWHSys1 Supply Outlet Branch;
+
+  Branch,
+    SWHSys1 Demand Bypass Branch,
+    ,
+    Pipe:Adiabatic,
+    SWHSys1 Demand Bypass Pipe,
+    SWHSys1 Demand Bypass Pipe Inlet Node,
+    SWHSys1 Demand Bypass Pipe Outlet Node;
+
+  Branch,
+    SWHSys1 Demand Inlet Branch,
+    ,
+    Pipe:Adiabatic,
+    SWHSys1 Demand Inlet Pipe,
+    SWHSys1 Demand Inlet Node,
+    SWHSys1 Demand Inlet Pipe-SWHSys1 Demand Mixer;
+
+  Branch,
+    SWHSys1 Demand Load Branch 1,
+    ,
+    WaterUse:Connections,
+    Core_bottom Water Equipment,
+    Core_bottom Water Equipment Water Inlet Node,
+    Core_bottom Water Equipment Water Outlet Node;
+
+  Branch,
+    SWHSys1 Demand Load Branch 2,
+    ,
+    WaterUse:Connections,
+    Core_mid Water Equipment,
+    Core_mid Water Equipment Water Inlet Node,
+    Core_mid Water Equipment Water Outlet Node;
+
+  Branch,
+    SWHSys1 Demand Load Branch 3,
+    ,
+    WaterUse:Connections,
+    Core_top Water Equipment,
+    Core_top Water Equipment Water Inlet Node,
+    Core_top Water Equipment Water Outlet Node;
+
+  Branch,
+    SWHSys1 Demand Outlet Branch,
+    ,
+    Pipe:Adiabatic,
+    SWHSys1 Demand Outlet Pipe,
+    SWHSys1 Demand Mixer-SWHSys1 Demand Outlet Pipe,
+    SWHSys1 Demand Outlet Node;
+
+  Branch,
+    SWHSys1 Supply Equipment Branch,
+    ,
+    WaterHeater:Mixed,
+    SWHSys1 Water Heater,
+    SWHSys1 Pump-SWHSys1 Water HeaterNode,
+    SWHSys1 Supply Equipment Outlet Node;
+
+  Branch,
+    SWHSys1 Supply Equipment Bypass Branch,
+    ,
+    Pipe:Adiabatic,
+    SWHSys1 Supply Equipment Bypass Pipe,
+    SWHSys1 Supply Equip Bypass Inlet Node,
+    SWHSys1 Supply Equip Bypass Outlet Node;
+
+  Branch,
+    SWHSys1 Supply Inlet Branch,
+    ,
+    Pump:ConstantSpeed,
+    SWHSys1 Pump,
+    SWHSys1 Supply Inlet Node,
+    SWHSys1 Pump-SWHSys1 Water HeaterNodeviaConnector;
+
+  Branch,
+    SWHSys1 Supply Outlet Branch,
+    ,
+    Pipe:Adiabatic,
+    SWHSys1 Supply Outlet Pipe,
+    SWHSys1 Supply Mixer-SWHSys1 Supply Outlet Pipe,
+    SWHSys1 Supply Outlet Node;
+
+  ConnectorList,
+    SWHSys1 Demand Connectors,
+    Connector:Splitter,
+    SWHSys1 Demand Splitter,
+    Connector:Mixer,
+    SWHSys1 Demand Mixer;
+
+  ConnectorList,
+    SWHSys1 Supply Connectors,
+    Connector:Splitter,
+    SWHSys1 Supply Splitter,
+    Connector:Mixer,
+    SWHSys1 Supply Mixer;
+
+  WaterUse:Connections,
+    Core_bottom Water Equipment,
+    Core_bottom Water Equipment Water Inlet Node,
+    Core_bottom Water Equipment Water Outlet Node,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    Core_bottom Water Equipment;
+
+  WaterUse:Connections,
+    Core_mid Water Equipment,
+    Core_mid Water Equipment Water Inlet Node,
+    Core_mid Water Equipment Water Outlet Node,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    Core_mid Water Equipment;
+
+  WaterUse:Connections,
+    Core_top Water Equipment,
+    Core_top Water Equipment Water Inlet Node,
+    Core_top Water Equipment Water Outlet Node,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    ,
+    Core_top Water Equipment;
+
+  Connector:Splitter,
+    SWHSys1 Demand Splitter,
+    SWHSys1 Demand Inlet Branch,
+    SWHSys1 Demand Load Branch 1,
+    SWHSys1 Demand Load Branch 2,
+    SWHSys1 Demand Load Branch 3,
+    SWHSys1 Demand Bypass Branch;
+
+  Connector:Splitter,
+    SWHSys1 Supply Splitter,
+    SWHSys1 Supply Inlet Branch,
+    SWHSys1 Supply Equipment Branch,
+    SWHSys1 Supply Equipment Bypass Branch;
+
+  Connector:Mixer,
+    SWHSys1 Demand Mixer,
+    SWHSys1 Demand Outlet Branch,
+    SWHSys1 Demand Load Branch 1,
+    SWHSys1 Demand Load Branch 2,
+    SWHSys1 Demand Load Branch 3,
+    SWHSys1 Demand Bypass Branch;
+
+  Connector:Mixer,
+    SWHSys1 Supply Mixer,
+    SWHSys1 Supply Outlet Branch,
+    SWHSys1 Supply Equipment Branch,
+    SWHSys1 Supply Equipment Bypass Branch;
+
+  Pipe:Adiabatic,
+    SWHSys1 Demand Bypass Pipe,
+    SWHSys1 Demand Bypass Pipe Inlet Node,
+    SWHSys1 Demand Bypass Pipe Outlet Node;
+
+  Pipe:Adiabatic,
+    SWHSys1 Demand Inlet Pipe,
+    SWHSys1 Demand Inlet Node,
+    SWHSys1 Demand Inlet Pipe-SWHSys1 Demand Mixer;
+
+  Pipe:Adiabatic,
+    SWHSys1 Demand Outlet Pipe,
+    SWHSys1 Demand Mixer-SWHSys1 Demand Outlet Pipe,
+    SWHSys1 Demand Outlet Node;
+
+  Pipe:Adiabatic,
+    SWHSys1 Supply Equipment Bypass Pipe,
+    SWHSys1 Supply Equip Bypass Inlet Node,
+    SWHSys1 Supply Equip Bypass Outlet Node;
+
+  Pipe:Adiabatic,
+    SWHSys1 Supply Outlet Pipe,
+    SWHSys1 Supply Mixer-SWHSys1 Supply Outlet Pipe,
+    SWHSys1 Supply Outlet Node;
 
   Schedule:Compact,
     BLDG_SWH_SCH,
