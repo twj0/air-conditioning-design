@@ -1,0 +1,13 @@
+{
+  "source_idf": "D:\\energyplus\\2320\\ExampleFiles\\RefBldgMediumOfficeNew2004_Chicago.idf",
+  "target_idf": "C:\\Windows\\Temp\\pytest-of-86138\\pytest-33\\test_neutralize_reference_mode0\\medium_office_neutral.idf",
+  "removed_classes": [
+    "Site:Location",
+    "RunPeriodControl:DaylightSavingTime",
+    "RunPeriodControl:SpecialDays",
+    "SizingPeriod:*",
+    "Output:Variable",
+    "Output:Table:SummaryReports",
+    "OutputControl:Table:Style"
+  ]
+}
