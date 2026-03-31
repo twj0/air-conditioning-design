@@ -1,0 +1,9 @@
+{
+  "city": "chongqing",
+  "city_name": "Chongqing",
+  "climate_zone": "hot_summer_cold_winter",
+  "weather_package": "CHN_CQ_Chongqing.Shapingba.575160_CSWD",
+  "weather_root": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_CQ_Chongqing\\CHN_CQ_Chongqing.Shapingba.575160_CSWD",
+  "epw_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_CQ_Chongqing\\CHN_CQ_Chongqing.Shapingba.575160_CSWD\\CHN_CQ_Chongqing.Shapingba.575160_CSWD.epw",
+  "ddy_path": "D:\\py_work\\2026\\AirConditioningDesign\\data\\raw\\weather\\CHN_CQ_Chongqing\\CHN_CQ_Chongqing.Shapingba.575160_CSWD\\CHN_CQ_Chongqing.Shapingba.575160_CSWD.ddy"
+}
