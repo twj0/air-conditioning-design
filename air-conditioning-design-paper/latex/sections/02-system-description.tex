@@ -1,6 +1,6 @@
 \section{系统描述}
 
-为保证多城市比较的公平性，本文以同一中型办公建筑参考原型为基础构建共享母版建筑，并在此基础上派生出四个城市分支\cite{deru2011reference,field2010reference}。当前模型中，空调服务建筑面积取\SI{4982}{\meter^2}，总共形成12个工况，包括4个理想负荷基线工况、4个VRF+DOAS工况和4个FCU+DOAS工况。
+为保证多城市比较的公平性，本文以同一中型办公建筑参考原型为基础构建共享母版建筑，并在此基础上派生出五个城市分支\cite{deru2011reference,field2010reference}。当前模型中，空调服务建筑面积取\SI{4982}{\meter^2}，总共形成15个工况，包括5个理想负荷基线工况、5个VRF+DOAS工况和5个FCU+DOAS工况。
 
 城市矩阵见表\ref{tab:city-matrix}。每个城市均引入自身的逐时气象数据和设计日条件，而建筑几何、围护结构、热分区以及内部运行条件保持一致。这样的处理方式有意将比较重点集中在区域气候差异及系统方案差异上，为后续进一步引入围护结构分区化优化预留空间。
 
@@ -16,11 +16,33 @@
 沈阳 & 严寒地区 & CSWD \\
 天津 & 寒冷地区 & CSWD \\
 成都 & 夏热冬冷地区 & CSWD \\
+重庆 & 夏热冬冷地区 & CSWD \\
 深圳 & 夏热冬暖地区 & CSWD \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{medium_office_building_model_structure.pdf}
+\caption{基于共享办公建筑母版提取的建筑模型表达，包括各层平面、屋顶平面、四向立面和纵向剖面}
+\label{fig:building-structure}
+\end{figure}
+
 为更清晰地识别气候驱动负荷，首先对共享建筑原型进行理想负荷计算。该层结果不包含具体空调系统效率影响，只反映不同城市条件下建筑本体的峰值冷负荷、年冷负荷和年热负荷。因此，理想负荷层构成了后续两类实际系统比较的统一基线。
 
 在同一城市分支上，本文进一步建立两类实际空调系统。其一为VRF+DOAS方案，由集中设置的VRF室外机、各空调分区的末端设备以及带热回收的新风系统组成\cite{energyplus232docs}。其二为FCU+DOAS方案，由四管制风机盘管、冷冻水系统、热水系统以及独立新风系统组成。两类系统服务的空调分区数量相同，均为15个，设计新风量也保持一致，取\SI{3.35185}{\meter^3\per\second}（\SI{12066.66}{\meter^3\per\hour}）。因此，本文的比较边界可视为“相同建筑服务对象下的不同系统组织形式比较”。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{medium_office_typical_floor_vrf_doas.pdf}
+\caption{VRF+DOAS方案在建筑多视图底图上的系统组织表达，突出屋顶室外机集中布置与冷媒竖向服务关系}
+\label{fig:vrf-structure}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{medium_office_typical_floor_fcu_doas.pdf}
+\caption{FCU+DOAS方案在建筑多视图底图上的系统组织表达，突出独立新风竖井与冷热水管井的分离布置}
+\label{fig:fcu-structure}
+\end{figure}

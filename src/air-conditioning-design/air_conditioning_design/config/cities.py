@@ -43,6 +43,13 @@ CITY_CONFIGS: dict[str, CityConfig] = {
         weather_parent_dir="CHN_SC_Chengdu",
         weather_package_dir="CHN_SC_Chengdu.562940_CSWD",
     ),
+    "chongqing": CityConfig(
+        city_id="chongqing",
+        display_name="Chongqing",
+        climate_zone="hot_summer_cold_winter",
+        weather_parent_dir="CHN_CQ_Chongqing",
+        weather_package_dir="CHN_CQ_Chongqing.Shapingba.575160_CSWD",
+    ),
     "shenzhen": CityConfig(
         city_id="shenzhen",
         display_name="Shenzhen",

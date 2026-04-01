@@ -12,7 +12,9 @@ MODELS_CITY_ROOT = REPO_ROOT / "models" / "cities"
 MODELS_SYSTEM_ROOT = REPO_ROOT / "models" / "systems"
 RESULTS_RAW_ROOT = REPO_ROOT / "results" / "raw"
 RESULTS_PROCESSED_ROOT = REPO_ROOT / "results" / "processed"
+RESULTS_FIGURES_ROOT = RESULTS_PROCESSED_ROOT / "figures"
 RESULTS_PLOTS_ROOT = RESULTS_PROCESSED_ROOT / "plots"
+PAPER_FIGURES_ROOT = REPO_ROOT / "air-conditioning-design-paper" / "latex" / "figures"
 TESTS_ROOT = REPO_ROOT / "tests"
 
 REFERENCE_MEDIUM_OFFICE_IDF = Path(
@@ -58,6 +60,26 @@ def summary_path_for_case(case_id: str) -> Path:
     return RESULTS_PROCESSED_ROOT / f"{case_id}_summary.csv"
 
 
+def results_figure_path(
+    figure_name: str,
+    file_format: str = "svg",
+    *,
+    output_root: Path | None = None,
+) -> Path:
+    target_root = output_root or RESULTS_FIGURES_ROOT
+    return target_root / f"{figure_name}.{file_format}"
+
+
+def paper_figure_path(
+    figure_name: str,
+    file_format: str = "pdf",
+    *,
+    output_root: Path | None = None,
+) -> Path:
+    target_root = output_root or PAPER_FIGURES_ROOT
+    return target_root / f"{figure_name}.{file_format}"
+
+
 REPORT_CASE_MATRIX_PATH = RESULTS_PROCESSED_ROOT / "report_case_matrix.csv"
 REPORT_IDEAL_LOADS_PATH = RESULTS_PROCESSED_ROOT / "report_ideal_loads_comparison.csv"
 REPORT_SYSTEM_ENERGY_PATH = RESULTS_PROCESSED_ROOT / "report_system_energy_comparison.csv"
@@ -94,7 +116,9 @@ def ensure_directories() -> None:
         MODELS_SYSTEM_ROOT,
         RESULTS_RAW_ROOT,
         RESULTS_PROCESSED_ROOT,
+        RESULTS_FIGURES_ROOT,
         RESULTS_PLOTS_ROOT,
+        PAPER_FIGURES_ROOT,
         TESTS_ROOT,
     ):
         directory.mkdir(parents=True, exist_ok=True)

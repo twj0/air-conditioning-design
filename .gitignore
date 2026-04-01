@@ -30,3 +30,4 @@ ${workspaceFolder}/
 tmp*
 *.bak
 results/
+.worktrees/*
