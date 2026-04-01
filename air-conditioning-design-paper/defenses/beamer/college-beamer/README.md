@@ -1,0 +1,159 @@
+# College Beamer
+
+Hi👋 Here are some beamer templates which are secondary creations of [SINTEF Presentation](https://www.overleaf.com/latex/templates/sintef-presentation/jhbhdffczpnx) template. Thanks [Federico Zenith](federico.zenith@sintef.no) for creating such well-designed works. To use it in my and my friends' schools/institutes, I rewrote and added some icons and features to adapt to specific surroundings✨.
+
+## Colleges & institutes
+
+- The Hong Kong Polytechnic University (香港理工大学)
+![PolyU](/gallery/PolyU.png?raw=true)
+- Southwest University (西南大学)
+![SWU](/gallery/SWU.png?raw=true)
+- Shenzhen University (深圳大学)
+![SZU](/gallery/SZU.png?raw=true)
+- Shenzhen Academic of Environmental Science (深圳环境科学院)
+![SAES](/gallery/SAES.png?raw=true)
+- Harbin Institute of Technology (哈尔滨工业大学)
+![HIT](/gallery/HIT.png?raw=true)
+  > Thanks to [LeeWlving](https://github.com/LeeWlving) for contributing this template!
+- Zhejiang A&F University (浙江农林大学)
+![ZAFU](/gallery/ZAFU.png?raw=true)
+  > Thanks to [ke1ewang](https://github.com/ke1ewang) for contributing this template!
+- Northwestern Polytechnic University (西北工业大学)
+![NWPU](/gallery/NWPU.png?raw=true)
+  > Thanks to [chellyzzz](https://github.com/chellyzzz) for contributing this template!
+- Chongqing University (重庆大学)
+![CQU](/gallery/CQU.png?raw=true)
+  > Thanks to [ZackH2002](https://github.com/ZackH2002) for contributing this template!
+- Harbin Engineering University (哈尔滨工程大学)
+![HEU](/gallery/HEU.png?raw=true)
+  > Thanks to [Rui Yann](https://github.com/Shu1L0n9) for contributing this template!
+- Dongguan University of Technology (东莞理工学院)
+![DGUT](/gallery/DGUT.png?raw=true)
+  > Thanks to [Penn Lam](https://github.com/Penn-Lam) for contributing this template!
+- Zhejiang University of Technology (浙江工业大学)
+![ZJUT](/gallery/ZJUT.png?raw=true)
+  > Thanks to [Wei Hu](https://github.com/prexhu) for contributing this template!
+- China University of Oceanography (中国海洋大学)
+![OUC](/gallery/OUC.png?raw=true)
+  > Thanks to [ziao-huang](https://github.com/ziao-huang) for contributing this template!
+- Beijing Jiaotong University (北京交通大学)
+![BJTU](/gallery/BJTU.png?raw=true)
+  > Thanks to [mochuishle](https://github.com/mochuishle) for contributing this template!
+- Xiamen University (厦门大学)
+![XMU](/gallery/XMU.png?raw=true)
+  > Thanks to [Marquis03](https://github.com/Marquis03) for contributing this template!
+- Zhenzhou University (郑州大学)
+![ZZU](/gallery/ZZU.png?raw=true)
+  > Thanks to [wzhyhxn](https://github.com/wzhyhxn) for contributing this template!
+- Tianjin Normal University (天津师范大学)
+![TNU](/gallery/TNU.png?raw=true)
+  > Thanks to [zhangb-dev](https://github.com/zhangb-dev) for contributing this template!
+- Tsinghua University (清华大学)
+  ![THU](/gallery/THU.png?raw=true)
+  > Thanks to [Ziyi Chen](https://github.com/chenziyiTHU) for contributing this template!
+- ShanghaiTech University (上海科技大学)
+  ![ShanghaiTech](/gallery/ShanghaiTech.png?raw=true)
+  > Thanks to [Hanwei He](https://github.com/nogiveme) for contributing this template!
+- CityUHK (香港城市大学)
+  ![CityUHK](/gallery/CityUHK.png?raw=true)
+  > Thanks to [Li Yanru](https://github.com/UrnayIl) for contributing this template!
+
+Some of these templates have been submitted to [Overleaf](https://cs.overleaf.com/gallery), please check them here👇
+
+- [The Honk Kong Polytechnic University (PolyU) Beamer Presentation Theme](https://www.overleaf.com/latex/templates/the-honk-kong-polytechnic-university-polyu-beamer-presentation-theme/vywngqprjwrq)
+- [西南大学 SWU Beamer 模板](https://www.overleaf.com/latex/templates/xi-nan-da-xue-swu-beamer-mo-ban-zhu-ti/bgprxfbyhqsb)
+- [深圳大学 SZU Beamer 模板](https://www.overleaf.com/latex/templates/shen-zhen-da-xue-szu-beamer-mo-ban/bjwzmkpsgygf)
+- [深圳环境科学院 SAES Beamer 模版](https://www.overleaf.com/latex/templates/shen-zhen-huan-jing-ke-xue-yuan-saes-beamer-zhu-ti/gqfgpdwcrcpt)
+- [哈尔滨工业大学 Beamer 模版](https://www.overleaf.com/latex/templates/harbin-institute-of-technology-hit-beamer-presentation-theme/prwxqwfdzkqj)
+- [浙江农林大学 ZAFU Beamer 模版](https://www.overleaf.com/latex/templates/zafu-beamer-theme-beta/rcxzphbhnddf)
+
+_P.S. Sadly, Overleaf no longer accepts institute-related templates from non-official accounts._
+
+## Options & usage
+
+### Switch college/institute
+
+Switching between different college/institute is quite easy, just add college/institute name (all lower case) to the `collegeBeamer` package. For example, to switch to the PolyU theme, add `polyu` to the package:
+
+```
+\usepackage[polyu,en]{collegeBeamer}
+```
+
+### Language Selection
+
+To change the language of the slides, simply set the option to en (English) or zh (Chinese).
+All necessary configurations are already handled in the .sty file.
+
+Note:
+If you select zh (Chinese), please use the XeLaTeX compiler for proper font support.
+
+### Switch language
+
+To switch the language, just change the language option in the `collegeBeamer` package. For example:
+
+```
+\usepackage[heu,en]{collegeBeamer} % For English
+```
+
+or
+
+```
+\usepackage[heu,zh]{collegeBeamer} % For Chinese (requires XeLaTeX)
+```
+
+### Page elements
+
+- Table of Contents
+
+  At the beginning of each section, the table of contents will be shown with the current chapter highlighted.
+![toc](/gallery/table%20of%20contents.png?raw=true)
+- Sub-section page
+![ssec](/gallery/subsection.png?raw=true)
+- Math equation
+![math](/gallery/math.png?raw=true)
+- Code block
+![code](/gallery/code.png?raw=true)
+- End page
+![end](/gallery/end.png?raw=true)
+
+## Add your own college?
+
+Would like to make your own theme on top of these themes? It's quite easy, only a few steps are needed:
+
+### Step 1: Get the files
+
+To get the files, you can fork & clone the repository to your computer.
+
+Alternatively, you can open the templates' Overleaf webpages and click `Open as Template`.
+
+### Step 2: Place logos and background
+
+Create a subfolder under `src/` named as your college. Place `color-logo.png` (logo image with background color), `trans-logo.png` (logo image with transparent background), and `background.png` (background image on the cover page) into it.
+
+### Step 3: Add college/institute option
+
+Starting from the 37-th line of `collegebeamer.sty`, all college/institute options are defined. Add your college/institute name in the same format, e.g.:
+
+```
+\DeclareOption{polyu}{
+  \renewcommand{\maincolorRGB}{128, 57, 61}  % the theme's main color in RGB
+  \renewcommand{\colorlogoPath}{src/PolyU/color-logo.png}  % path to the logo image with background color
+  \renewcommand{\translogoPath}{src/PolyU/trans-logo.png}  % path to the logo image with transparent background
+  \renewcommand{\backgroundPath}{src/PolyU/background.png}  % path to the background image
+}
+```
+
+Noted that the theme's main color will be used in the front-ground of titles and background colors of the sectional page.
+
+> _P.S. You may also choose to use a logo with white background for `\translogoPath`. Please refer to [issue #8](https://github.com/liu-qilong/college-beamer/issues/8) for considerations._
+
+Now you have your brand new template 👏🎉
+
+## Issues & suggestions
+
+If you have any revision suggestions, please create an issue in this repository. Thanks indeed🤝
+
+We also welcome any contributions to this repository. If you have created a new college/institute theme, please consider making a pull request to add it to this repository. Thanks a lot🙏
+
+
+_P.S. Sadly, Overleaf no longer accepts institute-related templates from non-official accounts. Your contributed templates would only be available from this repository._
