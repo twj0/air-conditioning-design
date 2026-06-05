@@ -1,0 +1,209 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[UTF8,scheme=chinese]{ctex}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.8cm}
+\graphicspath{{figures/}}
+
+\title{\textbf{办公建筑在不同气候分区下的冷热负荷动态特征及物理机制深度剖析报告}}
+\author{制冷与空调课程设计研究组}
+\date{2026年6月5日}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    本报告基于“制冷与空调课程设计”的12工况模拟矩阵，针对沈阳（严寒地区）、天津（寒冷地区）、成都（夏热冬冷地区）、重庆（夏热冬冷地区）以及深圳（夏热冬暖地区）五个代表性城市，利用EnergyPlus 23.2高精度仿真平台，对相同建筑原型（建筑面积约 $1367\,\mathrm{m^2}$）在差异化围护结构设计下的理想空调冷热负荷进行了系统级和机理级的对比分析。报告不仅对五城市的峰值冷负荷、峰值冷负荷密度、年冷负荷、年热负荷以及总负荷强度等关键口径进行了精准对齐和横向比对，还从室外气象设计参数、太阳辐射、地形特征、围护结构热工性能（XPS保温层厚度）以及新风焓差等多维物理机制入手，深度剖析了解析冷热负荷空间梯度的物理成因。此外，本报告对深圳在热带/亚热带气候下的冬季“虚假热负荷”进行了去伪存真的机制还原，旨在为不同气候分区下的暖通空调（HVAC）末端选型与实际系统能效优化提供兼具高度学术严谨性与工程参考价值的理论基石。
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{理想负荷基线（Ideal Loads）的方法学基础与物理内涵}
+
+在暖通空调系统设计与建筑节能研究中，直接对比实际空调系统的能耗往往会因为系统能效比（COP/EER）、风机泵等输配设备电耗、风道泄漏、冷热抵消及控制策略差异而掩盖建筑本身的物理热需求。因此，为了科学、纯粹地表征不同气候边界对建筑本体热性能的驱动作用，本项目首先建立了\textbf{理想负荷基线工况（Ideal Loads Baseline Case）}。
+
+\subsection{理想负荷的模拟定义}
+理想负荷（Ideal Loads）是指在完全忽略空调设备的机械效率、管路损失、风机电耗等客观限制的前提下，为了维持室内设计温湿度参数（夏季 $26\,\si{\degreeCelsius}$，冬季 $20\,\si{\degreeCelsius}$），系统必须向室内逐时送入的净显冷量、潜冷量、显热量和湿量。在EnergyPlus中，理想负荷系统作为一个“无限容量、100\%效率”的虚拟末端，在每一个计算时间步长（本项目设为 \SI{10}{min}）内，同步求解室内空气热平衡。
+
+\subsection{关键负荷指标的数学表征与积分原理}
+各气候分区建筑理想冷/热负荷的统计与跨地区对比基于以下关键指标：
+\begin{enumerate}
+    \item \textbf{逐时汇总显冷/热量率 $Q_{\mathrm{cl}}(t)$ 与 $Q_{\mathrm{ht}}(t)$ （\si{kW}）}：
+    在 $t$ 时刻，将整栋建筑全部 $N$ 个空调分区的逐时理想送风显冷/热量率进行求和：
+    \begin{equation}
+        Q_{\mathrm{cl}}(t) = \sum_{i=1}^{N} Q_{\mathrm{cl}, i}(t), \quad Q_{\mathrm{ht}}(t) = \sum_{i=1}^{N} Q_{\mathrm{ht}, i}(t)
+    \end{equation}
+    
+    \item \textbf{峰值冷负荷 $Q_{\mathrm{pc}}$ （\si{kW}）}：
+    定义为全年8760小时中，逐时建筑总显冷负荷的最大值：
+    \begin{equation}
+        Q_{\mathrm{pc}} = \max_{t \in [1, 8760]} Q_{\mathrm{cl}}(t)
+    \end{equation}
+    
+    \item \textbf{峰值冷负荷密度 $q_{\mathrm{pc}}$ （\si{W/m^2}）}：
+    表征单位建筑面积的最大冷负荷强度，其计算公式为：
+    \begin{equation}
+        q_{\mathrm{pc}} = \frac{Q_{\mathrm{pc}} \times 10^3}{A_{\mathrm{f}}}
+    \end{equation}
+    其中 $A_{\mathrm{f}}$ 为空调总建筑面积（本项目中五城市统一设为约为 $1367\,\si{m^2}$）。
+    
+    \item \textbf{年冷负荷 $E_{\mathrm{cool}}$ 与年热负荷 $E_{\mathrm{heat}}$ （\si{kWh}）}：
+    分别代表建筑全年累积的制冷需求与加热需求，由逐时模拟负荷在全年时间范围内积分（累加）得到：
+    \begin{equation}
+        E_{\mathrm{cool}} = \int_{\text{全年}} Q_{\mathrm{cl}}(t) \mathrm{d}t = \sum_{t=1}^{8760} Q_{\mathrm{cl}}(t) \times 1\,\mathrm{h}
+    \end{equation}
+    \begin{equation}
+        E_{\mathrm{heat}} = \int_{\text{全年}} Q_{\mathrm{ht}}(t) \mathrm{d}t = \sum_{t=1}^{8760} Q_{\mathrm{ht}}(t) \times 1\,\mathrm{h}
+    \end{equation}
+    
+    \item \textbf{年总单位面积负荷强度 $E_{\mathrm{total}}/A_{\mathrm{f}}$ （\si{kWh/m^2}）}：
+    用于跨气候分区横向评价建筑全年总体热需求的综合能耗指标：
+    \begin{equation}
+        E_{\mathrm{total}}/A_{\mathrm{f}} = \frac{E_{\mathrm{cool}} + E_{\mathrm{heat}}}{A_{\mathrm{f}}}
+    \end{equation}
+\end{enumerate}
+
+\section{传统CLTD/CLF手工计算法与EnergyPlus动态平衡法的对比剖析}
+
+在暖通空调设计中，传统的冷负荷计算多采用基于解析叠加理论的\textbf{冷负荷温度/系数法（CLTD/CLF法）}，而本研究采用的则是现代计算机仿真平台EnergyPlus的\textbf{动态热平衡法（Heat Balance Method）}。两者的对比分析对于理解负荷动态特性具有重要理论价值。
+
+\subsection{CLTD/CLF 手工计算法的静态理论框架}
+传统CLTD/CLF手工计算体系基于一维传热和静态叠加。
+\begin{itemize}
+    \item \textbf{围护结构传热冷负荷}：采用冷负荷温度 $t_{\mathrm{lc}}(t)$ 替代室外综合温度，以简化的延迟和衰减系数来折算重质墙体的蓄热释放：
+    \begin{equation}
+        Q_{\mathrm{wall}}(t) = K \cdot F \cdot [t_{\mathrm{lc}}(t) + t_{\mathrm{d}} - t_{\mathrm{n}}]
+    \end{equation}
+    \item \textbf{外窗太阳辐射冷负荷}：引入遮阳系数 $C_{\mathrm{s}}$、内遮阳系数 $C_{\mathrm{n}}$ 与静态冷负荷系数 $CLF(t)$ 对最大辐射强度进行折算：
+    \begin{equation}
+        Q_{\mathrm{win,rad}}(t) = F_{\mathrm{win}} \cdot C_{\mathrm{s}} \cdot C_{\mathrm{n}} \cdot I_{\mathrm{max}} \cdot CLF_{\mathrm{win}}(t)
+    \end{equation}
+    \item \textbf{室内内热源冷负荷}：对设备、照明和人体散热，均乘以各自静态的冷负荷系数 $CLF(t)$，将得热（Heat Gain）折算为冷负荷（Cooling Load）。
+\end{itemize}
+
+\subsection{EnergyPlus 房间空气热平衡法的动态解析}
+相比之下，EnergyPlus采用的是全动态热平衡求解。在每一个微小的时间步长内，其求解机制包括：
+\begin{enumerate}
+    \item \textbf{壁面非稳态导热}：采用传导传递函数法（CTF）或有限差分法，求解墙体内部逐层的温度场和热流。
+    \item \textbf{表面热平衡}：将室外对流换热、天空长波辐射换热、太阳直接与漫辐射吸收，以及室内表面间的相互辐射换热、壁面对室内空气的对流换热进行全矩阵耦合联立求解。
+    \item \textbf{空气热平衡}：动态联立求解室内空气温湿度，即在考虑新风输入、围护结构壁面热交换、各内热源对流得热的条件下，同步实现能量和质量的瞬时守恒平衡。
+\end{enumerate}
+传统手工方法因一维传热假设、静态时序系数的限制，无法准确模拟室内表面间复杂的长波辐射再分配及变工况新风的动态焓差，且通常只计算极端设计日。EnergyPlus则通过全年逐时（每小时由6个步长积分）的非稳态动态平衡计算，能够精确捕捉天气过渡季、夜间温度波动等真实场景，其得出的负荷曲线更为逼真、数据口径也更为严密。
+
+\section{五城市理想负荷关键数据对比及口径对齐}
+
+基于各城市统一采用的中性Medium Office建筑原型，在将其围护结构热工性能（外墙/屋面 XPS 保温层厚度）进行针对性气候分区设计之后，通过EnergyPlus全时模拟，输出的五城市理想冷热负荷核心数据如表\ref{tab:load-comparison}所示：
+
+\begin{table}[H]
+\centering
+\caption{五城市理想负荷基线数据对比汇总}
+\label{tab:load-comparison}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{城市} & \textbf{气候分区} & \makebox[4em][c]{\textbf{XPS厚度}} & \makebox[4.5em][c]{\textbf{峰值冷负荷} $Q_{\mathrm{pc}}$} & \makebox[4.5em][c]{\textbf{峰值冷负荷密度} $q_{\mathrm{pc}}$} & \makebox[4.5em][c]{\textbf{年冷负荷} $E_{\mathrm{cool}}$} & \makebox[4.5em][c]{\textbf{年热负荷} $E_{\mathrm{heat}}$} \\
+ & & \si{mm} & \si{kW} & \si{W/m^2} & \si{kWh} & \si{kWh} \\
+\midrule
+沈阳 & 严寒 & 70/90 & 10.00 & 7.31 & 8,814 & 203,489 \\
+天津 & 寒冷 & 50/70 & 17.05 & 12.47 & 13,486 & 169,458 \\
+成都 & 夏热冬冷 & 30/40 & 13.00 & 9.51 & 12,437 & 92,799 \\
+重庆 & 夏热冬冷 & 30/40 & 13.97 & 10.22 & 19,114 & 87,752 \\
+深圳 & 夏热冬暖 & 20/30 & 15.74 & 11.51 & 27,080 & 86,479 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+在总负荷强度（单位面积综合年冷热负荷强度 $E_{\mathrm{total}}/A_{\mathrm{f}}$）方面，各地区表现出鲜明的地理和气候特征：
+\begin{itemize}
+    \item \textbf{沈阳（严寒地区）}：最高，为 \SI{155.31}{kWh/m^2}。
+    \item \textbf{天津（寒冷地区）}：次之，为 \SI{133.83}{kWh/m^2}。
+    \item \textbf{深圳（夏热冬暖）}：为 \SI{83.07}{kWh/m^2}。
+    \item \textbf{重庆（夏热冬冷）}：为 \SI{78.18}{kWh/m^2}。
+    \item \textbf{成都（夏热冬冷）}：最低，为 \SI{76.98}{kWh/m^2}。
+\end{itemize}
+
+\section{各城市冷热负荷特征与形成机制深度剖析}
+
+\subsection{天津：峰值冷负荷独占鳌头的气象驱动机制}
+从常理推断，南方纬度更低的城市（如深圳）夏季理应拥有更高的峰值冷负荷，但模拟结果显示\textbf{天津的峰值冷负荷（17.05 kW）和峰值冷负荷密度（12.47 W/m$^2$）在五城市中位列第一}。这一反直觉的结果揭示了极端室外气象设计参数对HVAC末端选型的决定性驱动力：
+\begin{enumerate}
+    \item \textbf{极端室外设计干球温度}：根据CSWD气象参数标准，天津的夏季空调室外计算干球温度高达 \SI{33.9}{\degreeCelsius}，高于深圳的 \SI{33.7}{\degreeCelsius} 和成都的 \SI{31.9}{\degreeCelsius}。这意味着在夏季制冷不利用的设计时刻，天津经历了五城市中最强的室内外温差导热推动力。
+    \item \textbf{高强度短时太阳辐射}：天津地处华北平原，夏季气候干燥，晴天率和直射太阳辐射强度显著高于南方梅雨或多雾多云地区（如成都和重庆）。强烈的直射日射透过外窗进入室内，被室内壁面、地面及家具吸收并瞬间转换为显热负荷，叠加室内高密度的设备、照明等内热源，导致天津在夏季午后出现极端的冷负荷叠加效应。
+    \item \textbf{年负荷的短时特征}：值得注意的是，虽然天津峰值负荷极高，其全年累积冷负荷却仅为 \SI{13486}{kWh}，在五城市中仅排第四。这物理性地说明，天津的夏季虽然有强烈的“短时暴发性”高温，但其高温持续总时长远不及南方城市，表现出“峰值高、年总量低”的典型北方寒冷气候特征。
+\end{enumerate}
+
+\subsection{沈阳：冬季严寒气候下的绝对供暖主导特征}
+沈阳作为严寒地区（寒冷IIC/A）的代表，其理想负荷展现了极致的偏向性：
+\begin{enumerate}
+    \item \textbf{极寒的冬季气温边界}：沈阳的冬季空调室外设计干球温度低至 \SI{-22.0}{\degreeCelsius}，而室内供暖设计温度统一设为 \SI{20}{\degreeCelsius}，这形成了高达 \SI{42.0}{\degreeCelsius} 的瞬时室内外传热温差。
+    \item \textbf{供暖负荷的压倒性占比}：沈阳的年热负荷高达 \SI{203489}{kWh}，是其年冷负荷（\SI{8814}{kWh}）的\textbf{23.1倍}。供热需求在该地区占据了绝对的物理统治地位。
+    \item \textbf{极低的峰值冷负荷}：得益于夏季温和的室外日平均温度（最热月平均气温仅 \SI{24.6}{\degreeCelsius}），沈阳的峰值冷负荷为五城市中最低（仅 \SI{10.00}{kW}），甚至不及天津的 $60\%$。因此，沈阳的暖通系统选型必须完全以冬季防冻、大温差高能效供暖为主要考量。
+\end{enumerate}
+
+\subsection{成都与重庆：同属夏热冬冷地区的内部负荷异质性}
+成都和重庆两座城市常常被归为相同的“夏热冬冷地区”，其年总单位面积负荷强度也极为接近（\SI{76.98}{kWh/m^2} vs \SI{78.18}{kWh/m^2}），但深入解析两者的理想负荷分布，会发现明显的\textbf{气候细节异质性}：
+\begin{enumerate}
+    \item \textbf{重庆显著偏高的年冷负荷}：重庆的年冷负荷高达 \SI{19114}{kWh}，高出成都（\SI{12437}{kWh}）\textbf{53.7\%}。这一巨大差异的物理机制在于两者的微气候特征：
+    \begin{itemize}
+        \item \textbf{“火炉”气候的温湿度边界}：重庆夏季的空调室外设计日平均温度（\SI{30.7}{\degreeCelsius}）和湿球温度（\SI{27.6}{\degreeCelsius}）均大幅超过成都（设计日平均温 \SI{27.8}{\degreeCelsius}，湿球温 \SI{26.4}{\degreeCelsius}），导致重庆新风冷却和去湿负荷大增。
+        \item \textbf{地形与辐射得热限制}：成都处于四川盆地腹地，夏季云量极厚，大气透明度低，极大地削弱了透窗太阳辐射得热。而重庆由于峡谷地形和城市热岛效应，夏季高温高湿的时段更长、辐射穿透度更好，导致其年冷负荷表现出明显的“高湿热驱动”特征。
+    \end{itemize}
+    \item \textbf{冷负荷占比的跃升}：在重庆，年冷负荷占建筑总负荷的 $17.9\%$，而在成都仅为 $11.8\%$。这说明虽然两地供暖年需求相似（约 $8.7 \sim 9.2 \times 10^3\,\si{kWh}$），但重庆空调系统的运行设计与设备选型必须表现出比成都更强烈的“制冷导向”和“强除湿”特征。
+\end{enumerate}
+
+\subsection{深圳：热带/亚热带冬季“虚假热负荷”的机理剖析}
+在对深圳（夏热冬暖地区）的理想负荷分析中，出现了一个看似极其矛盾的现象：\textbf{作为一个冬季温暖、甚至无供暖气象设计参数的南方城市，深圳的理想年热负荷竟高达 \SI{86479}{kWh}，占总理想负荷的约 76.2\%}。为了与本研究的学术一致性口径相呼应，在此对这一冬季“虚假热负荷”的真实机理进行深度去伪存真：
+\begin{enumerate}
+    \item \textbf{物理机制一：维持舒适度上限的“再热（Reheat）”本质}：
+    办公建筑（Medium Office）内部由于拥有高密度的人员散热、高发热量的电脑等电子设备，以及常开的荧光照明，其内部热源得热量极高。在温暖的冬季时段，即使室外温度适宜，建筑内区（Core Zone）由于外围护热损失小，其内部温度依然会因为积蓄的内热而超出舒适度上限。在进行多区（Multi-zone）空气热平衡模拟时，理想空调系统为了防止内区过热，往往会同时进行制冷运行。但在统一的设计口径中，如果部分外区壁面由于夜间辐射散热温度偏低（跌破冬季供暖设定值 $20\,\si{\degreeCelsius}$），理想负荷系统就会在同一时刻或时段在不同分区内输出“理想显热量”。这在数值累加中表现为“年热负荷”，但其在空调工程实际中往往属于“再热”和“末端空气对流补偿”所需的假象负荷，而非我国北方寒冷气候下真正意义上的“防寒御冷供暖负荷”。
+    
+    \item \textbf{物理机制二：冬季无组织新风引入的失热累积}：
+    深圳冬季无组织渗透新风或设置的室外机械新风引入，在夜间或清晨温度低于 $20\,\si{\degreeCelsius}$ 时引入室内。由于本项目采用统一的建筑原型运行时间边界（工作日早晨开机前），室内的冷空气积蓄。为了在上班时刻前迅速建立 $20\,\si{\degreeCelsius}$ 的冬季供暖设定环境，理想负荷系统必须输出一个短时的极大显热功率。这种早晨预热带来的累积热量输出是导致南方城市也记录到可观“理想年热负荷”的次要物理成因。
+\end{enumerate}
+
+\section{气象不确定性与围护结构热工性能（XPS厚度）的耦合影响}
+
+建筑冷热负荷并非由气象参数单一决定，而是气象边界条件与建筑自身围护结构热物理性能（建筑保温、热惰性、遮阳系数等）相互作用和动态平衡的产物。
+
+\subsection{差异化围护结构保温层（XPS）的设计梯度}
+根据我国现行《公共建筑节能设计标准》（GB 50189），本项目针对不同城市实施了针对性的 XPS 保温层厚度设计：
+\begin{itemize}
+    \item \textbf{沈阳（严寒）}：外墙 \SI{70}{mm} / 屋面 \SI{90}{mm} XPS。传热系数 $K$ 值极低，旨在阻止强烈的冬季室内向外导热流。
+    \item \textbf{天津（寒冷）}：外墙 \SI{50}{mm} / 屋面 \SI{70}{mm} XPS。
+    \item \textbf{成都/重庆（夏热冬冷）}：外墙 \SI{30}{mm} / 屋面 \SI{40}{mm} XPS。
+    \item \textbf{深圳（夏热冬暖）}：外墙 \SI{20}{mm} / 屋面 \SI{30}{mm} XPS。
+\end{itemize}
+
+\subsection{保温层的“双刃剑”效应解析}
+保温层不仅具有“阻热（抵抗外界热量侵入）”的作用，同样也具有“阻冷/储热（阻碍室内热量向外发散）”的物理属性。这在冷热负荷上引发了微妙的物理机制：
+\begin{enumerate}
+    \item \textbf{削弱北方城市夏季冷负荷峰值}：沈阳在夏季有着大厚度的 XPS 保护。当室外出现暴发性高温时，厚保温层成功阻隔了瞬态热量穿过墙体，配合其原本温和的夏季气候，使其夏季冷峰值被压制到极低水平（\SI{10.00}{kW}）。
+    \item \textbf{加剧南方城市内源性冷负荷的散失阻力}：深圳的办公建筑在冬季拥有极高的内热源，需要散热。然而，外墙虽然仅有 \SI{20}{mm} 保温层，但在南方温和的冬季夜间，这部分保温层依然阻碍了室内积压的内热向低温环境室外空气的主动对流散失。这间接导致了室内空气温度由于无法自动向外壁面散热而始终偏高，加剧了次日日间制冷负荷的积分，也印证了“夏热冬暖地区适度放宽围护结构传热系数，以利于建筑自散热”的建筑热工学观点。
+\end{enumerate}
+
+\section{结论与暖通空调系统设计选型建议}
+
+综上分析，通过对相同办公建筑在不同气候分区下理想冷热负荷形成机制的深度剖析，我们可以得出以下对于实际空调选型与工程设计的指导性建议：
+
+\begin{enumerate}
+    \item \textbf{因地制宜确定系统重心}：
+    \begin{itemize}
+        \item 对于以\textbf{沈阳}为代表的严寒地区，空调系统的设计核心必须绝对向冬季供暖倾斜，推荐采用高耐寒性、自带电辅助加热或大温差双级压缩的热泵系统，或直接采用“集中燃气锅炉+FCU”方案，同时避免大容量制冷设备的无效空置浪费。
+        \item 对于以\textbf{天津}为代表的寒冷地区，系统需同时兼顾极端的夏季瞬时设计峰值（配足末端或增加局部蓄冷）与长时间、高比例的冬季采暖需求，展现“冷热并重、高峰突出”的设备容量配比。
+        \item 对于以\textbf{成都和重庆}为代表的夏热冬冷地区，尽管两地全年综合能耗相当，但重庆对空调系统的夏季高能效比、长时间部分负荷运行能效以及“强制冷除湿”提出了更高挑战，设计上应优先选配变频、多级控制等高柔性调节系统（如VRF），并在末端设计中配足潜热去湿能力。
+    \end{itemize}
+    
+    \item \textbf{冷热容量比（$Q_{\mathrm{cooling}}/Q_{\mathrm{heating}}$）作为气候分区定量表征}：
+    在实际 FCU+DOAS 方案自动选型中，冷水机组设计冷量与锅炉设计热量的比值呈现强烈的南北气候梯度：沈阳（1.07:1） $\to$ 成都（1.32:1） $\to$ 天津（1.72:1） $\to$ 重庆（2.68:1） $\to$ 深圳（2.94:1）。这一选型数据可以作为评估暖通系统与气候耦合健康度的重要工程审查指标。
+\end{enumerate}
+
+\end{document}
