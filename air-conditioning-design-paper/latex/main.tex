@@ -6,22 +6,25 @@
 \usepackage{threeparttable}
 \usepackage{amsmath}
 \usepackage{siunitx}
-\usepackage{hyperref}
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{xurl}
 \usepackage{float}
+\usepackage{longtable}
+\usepackage{array}
 
 \graphicspath{{figures/}}
 \biboptions{numbers,sort&compress}
 \sisetup{round-mode=places,round-precision=3}
 
-\journal{课程设计论文草稿}
+\journal{暖通空调课程设计}
 
 \begin{document}
 
 \begin{frontmatter}
 
-\title{基于共享办公建筑原型的中国不同气候分区\\VRF与FCU+DOAS空调方案比较研究}
+\title{基于不同气候分区的某办公楼中央空调系统设计\\——VRF+DOAS与FCU+DOAS方案比较研究}
 
-\author{}
+\author{指导教师：\quad 学生：}
 
 \begin{highlights}
 \input{sections/00-highlights}
@@ -32,19 +35,20 @@
 \end{abstract}
 
 \begin{keyword}
-EnergyPlus \sep 办公建筑 \sep 气候分区 \sep VRF \sep FCU+DOAS \sep 课程设计
+气候分区 \sep 办公建筑 \sep 冷负荷计算 \sep VRF \sep FCU+DOAS \sep EnergyPlus \sep 课程设计
+\sep Climate zone \sep Office building \sep Cooling load calculation \sep Variable refrigerant flow \sep Fan coil unit \sep Dedicated outdoor air system
 \end{keyword}
 
 \end{frontmatter}
 
-\section*{符号说明}
-\input{sections/00-nomenclature}
-
-\input{sections/01-introduction}
-\input{sections/02-system-description}
-\input{sections/03-mathematical-model}
-\input{sections/04-case-study}
-\input{sections/05-conclusion}
+\input{sections/01-project-overview}
+\input{sections/02-shenyang}
+\input{sections/03-tianjin}
+\input{sections/04-chengdu}
+\input{sections/05-chongqing}
+\input{sections/06-shenzhen}
+\input{sections/07-comparison}
+\input{sections/08-conclusion}
 \input{sections/06-appendix}
 \input{sections/99-declarations}
 

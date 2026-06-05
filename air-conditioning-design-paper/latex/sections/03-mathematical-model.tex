@@ -1,5 +1,62 @@
 \section{数学模型与评价指标}
 
+\subsection{传统课程设计的冷负荷计算原理（CLTD/CLF法）}
+
+暖通空调课程设计中，传统的逐时冷负荷计算通常采用冷负荷温度/冷负荷系数法（CLTD/CLF法）。这一传统计算体系是本项目进行多城市能耗仿真分析的重要理论背景。主要冷负荷得热源及逐时计算原理如下：
+
+\subsubsection{围护结构瞬变传热冷负荷}
+外墙与屋顶等不透光外围护结构由于室外气温波动与太阳辐射的联合作用，其传热引起的逐时冷负荷可表示为：
+\begin{equation}
+Q_{\mathrm{wall}}(t) = K \cdot F \cdot \left[ t_{\mathrm{lc}}(t) + t_{\mathrm{d}} - t_{\mathrm{n}} \right]
+\end{equation}
+式中：$K$为外墙或屋顶的传热系数，\si{W\per\square\meter\per\degreeCelsius}；$F$为围护结构面积，\si{\square\meter}；$t_{\mathrm{lc}}(t)$为外墙或屋面在$t$时刻的冷负荷计算温度，\si{\degreeCelsius}；$t_{\mathrm{d}}$为地点修正值，\si{\degreeCelsius}；$t_{\mathrm{n}}$为室内设计温度，\si{\degreeCelsius}。
+
+\subsubsection{外窗传热与外窗日射冷负荷}
+透过外窗的逐时冷负荷由两部分组成，即温差传热引起的显热负荷与太阳辐射引起的辐射热负荷。
+1) 外窗温差传热冷负荷：
+\begin{equation}
+Q_{\mathrm{win,con}}(t) = K_{\mathrm{win}} \cdot F_{\mathrm{win}} \cdot \left[ t_{\mathrm{l,win}}(t) + t_{\mathrm{d,win}} - t_{\mathrm{n}} \right]
+\end{equation}
+式中：$K_{\mathrm{win}}$为外窗的传热系数，\si{W\per\square\meter\per\degreeCelsius}；$F_{\mathrm{win}}$为外窗面积，\si{\square\meter}；$t_{\mathrm{l,win}}(t)$为外窗的逐时冷负荷计算温度，\si{\degreeCelsius}；$t_{\mathrm{d,win}}$为外窗的地点修正值，\si{\degreeCelsius}。
+
+2) 太阳辐射热部分冷负荷：
+\begin{equation}
+Q_{\mathrm{win,rad}}(t) = F_{\mathrm{win}} \cdot C_{\mathrm{s}} \cdot C_{\mathrm{n}} \cdot C_{\mathrm{a}} \cdot I_{\mathrm{max}} \cdot CLF_{\mathrm{win}}(t)
+\end{equation}
+式中：$C_{\mathrm{s}}$为窗玻璃遮挡系数；$C_{\mathrm{n}}$为窗内遮阳设施的遮阳系数；$C_{\mathrm{a}}$为窗的有效面积系数；$I_{\mathrm{max}}$为透过标准玻璃的最大太阳总辐射照度，\si{W\per\square\meter}；$CLF_{\mathrm{win}}(t)$为太阳辐射冷负荷系数。
+
+\subsubsection{室内设备、照明与人体冷负荷}
+室内热源得热包括设备散热、照明散热以及人体散热。
+1) 设备散热冷负荷：
+\begin{equation}
+Q_{\mathrm{equip}}(t) = N_{\mathrm{equip}} \cdot n_1 \cdot n_2 \cdot n_3 \cdot CLF_{\mathrm{equip}}(t)
+\end{equation}
+式中：$N_{\mathrm{equip}}$为设备安装功率，\si{W}；$n_1$为同时使用系数；$n_2$为安装系数；$n_3$为负荷系数；$CLF_{\mathrm{equip}}(t)$为设备散热冷负荷系数。
+
+2) 照明得热冷负荷（以荧光灯为例）：
+\begin{equation}
+Q_{\mathrm{light}}(t) = \left[ N_{\mathrm{light}} \cdot (1 + \eta) \right] \cdot CLF_{\mathrm{light}}(t)
+\end{equation}
+式中：$N_{\mathrm{light}}$为照明灯具的安装功率，\si{W}；$\eta$为镇流器消耗功率系数（一般取 0.2）；$CLF_{\mathrm{light}}(t)$为照明冷负荷系数。
+
+3) 人体散热冷负荷与湿负荷：
+人体显热散热冷负荷与潜热散热冷负荷计算如下：
+\begin{equation}
+Q_{\mathrm{p,sen}}(t) = n \cdot q_{\mathrm{sen}} \cdot C_{\mathrm{r}} \cdot CLF_{\mathrm{p}}(t)
+\end{equation}
+\begin{equation}
+Q_{\mathrm{p,lat}} = n \cdot q_{\mathrm{lat}} \cdot C_{\mathrm{r}}
+\end{equation}
+人体散湿量为：
+\begin{equation}
+W_{\mathrm{p}} = n \cdot w \cdot C_{\mathrm{r}}
+\end{equation}
+式中：$n$为室内人员数量；$q_{\mathrm{sen}}$与$q_{\mathrm{lat}}$分别为成年人均显热和潜热散热量，\si{W}；$w$为人均散湿量，\si{g\per\hour}；$C_{\mathrm{r}}$为群集系数；$CLF_{\mathrm{p}}(t)$为人体显热冷负荷系数。
+
+虽然 EnergyPlus 在底层采用的是更为复杂的数值有限差分传热方法（Finite Difference）与全空气房间热平衡法（Heat Balance Method），但上述传统 CLTD/CLF 设计法中关于各热源成分在全天内的物理积蓄与逐时释放关系（通过冷负荷系数 CLF 调节），仍是理解仿真负荷波动特性的理论和实际方法学基础。
+
+\subsection{EnergyPlus 逐时负荷积分与系统能耗评价指标}
+
 为表征气候驱动建筑负荷，本文对理想负荷工况输出结果进行逐时汇总。对每个城市而言，各空调分区的显热冷负荷与显热热负荷分别在每一个时刻求和，峰值冷负荷定义为
 \begin{equation}
 Q_{\mathrm{pc}} = \max_t \left( \sum_z \dot{Q}_{\mathrm{cool},z}(t) \right) / 1000,
