@@ -1,0 +1,301 @@
+\section{工程概况}
+
+\subsection{建筑概况}
+
+本课程设计以某实际办公楼工程图纸（AutoCAD 2024，天正暖通格式）为建筑原型。经DWG到DXF的几何转换与提取后，在EnergyPlus 23.2平台上构建了逐时建筑能耗仿真模型\cite{crawley2001energyplus,energyplus232docs}。该办公楼总服务建筑面积约\SI{1367}{\meter^2}，共三层，均为地上建筑。建筑占地面积\SI{32.0}{\meter} $\times$ \SI{14.24}{\meter}，建筑总高度\SI{11.4}{\meter}。首层层高\SI{4.2}{\meter}，二、三层层高均为\SI{3.6}{\meter}。建筑朝向为正南北向，南向主立面宽度\SI{32.0}{\meter}。首层建筑面积约\SI{455.7}{\meter^2}，二、三层建筑面积均为\SI{455.7}{\meter^2}。
+
+建筑采用钢筋混凝土框架结构，外围护结构由外墙、外窗和屋面构成。外墙采用200 mm砖墙加50 mm挤塑聚苯板（XPS）外保温构造；外窗为双层3 mm透明玻璃加12 mm空气间层的中空玻璃窗，南、北立面各均匀布置三组通高窗带（窗高\SI{3.36}{\meter}）；屋面采用XPS保温倒置式屋面。建筑的主要功能房间包括行政办公室、会议室、档案室、休息室等办公类用房。
+
+本课程设计考虑到各房间之间的温差不显著，因此不考虑内墙、内门、内窗和楼板的负荷参与计算。空调冷负荷计算中，由于设置新风系统导入室外新风，室内维持微正压，可防止室外空气无组织渗入，因此不考虑渗透冷负荷。
+
+\subsection{室内设计参数}
+
+参照GB~50189-2015《公共建筑节能设计标准》\cite{gb50189}及本课程设计任务书，室内设计参数统一设置如下：
+
+\begin{table}[tbp]
+\centering
+\caption{室内设计参数}
+\label{tab:indoor-params}
+\scriptsize
+\begin{tabular}{@{}ll@{}}
+\toprule
+参数 & 取值 \\
+\midrule
+夏季室内设计温度 & \SI{26}{\degreeCelsius} \\
+夏季室内设计相对湿度 & 60\% \\
+冬季室内设计温度（供暖） & \SI{21}{\degreeCelsius} \\
+冬季室内设计相对湿度（供暖） & 不控制 \\
+人均新风量 & \SI{30}{\meter^3\per\hour}/人 \\
+照明功率密度 & \SI{10}{\watt/m^2} \\
+设备功率密度 & \SI{15}{\watt/m^2} \\
+人员密度 & \SI{10}{\meter^2}/人 \\
+人员在室时间 & \SI{10}{h}（8:00--18:00） \\
+窗面积（标准） & \SI{5}{m^2} \\
+门面积（标准） & \SI{1.6}{m^2} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+上述室内设计参数在五个城市分支中均保持一致，以消除室内参数差异对横向比较的干扰，使得城市间的负荷差异主要来源于气候条件、室外设计参数和围护结构传热特性。
+
+\subsection{室外设计参数}
+
+五个城市分别位于我国四个不同的建筑热工设计气候分区（严寒地区、寒冷地区、夏热冬冷地区、夏热冬暖地区），其夏季室外气象设计参数依据CSWD标准气象年数据提取，详见表\ref{tab:outdoor-params}。
+
+\begin{table}[tbp]
+\centering
+\caption{五城市夏季室外设计参数}
+\label{tab:outdoor-params}
+\scriptsize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+参数 & 沈阳 & 天津 & 成都 & 重庆 & 深圳 \\
+\midrule
+气候分区 & 严寒 & 寒冷 & \multicolumn{2}{c}{夏热冬冷} & 夏热冬暖 \\
+\midrule
+夏季干球温度 (\si{\degreeCelsius}) & 31.5 & 33.9 & 31.9 & 35.5 & 33.7 \\
+夏季湿球温度 (\si{\degreeCelsius}) & 25.3 & 26.9 & 26.4 & 27.6 & 27.5 \\
+日平均温度 (\si{\degreeCelsius}) & 27.3 & 29.4 & 27.8 & 30.7 & 29.8 \\
+室外风速 (\si{m/s}) & 3.2 & 2.3 & 1.3 & 1.6 & 2.4 \\
+冬季干球温度 (\si{\degreeCelsius}) & -22.0 & -9.6 & 1.3 & 3.7 & 8.4 \\
+最热月平均 (\si{\degreeCelsius}) & 24.6 & 26.5 & 25.5 & 28.5 & 28.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+由表可见，从北（沈阳）到南（深圳），夏季室外设计温度总体上呈升高趋势，制冷设计条件趋于严峻；冬季室外设计温度则从\SI{-22.0}{\degreeCelsius}升至\SI{8.4}{\degreeCelsius}，供暖设计条件显著弱化。重庆夏季室外湿球计算温度最高（\SI{27.6}{\degreeCelsius}），表明其夏季高温高湿特征在五个城市中最为突出。
+
+\subsection{围护结构节能计算参数}
+
+依据GB~50189-2015对不同气候分区围护结构传热系数限值的要求\cite{gb50189}，本设计按四个气候分区进行围护结构差异化设定。外墙和屋面通过改变挤塑聚苯板（XPS）保温层厚度调节传热系数，外窗统一采用双层3 mm透明玻璃加12 mm空气间层的中空玻璃（$K$=2.72 \si{W\per\square\meter\per\degreeCelsius}）。各气候分区的围护结构构造层次及传热系数见表\ref{tab:envelope}。
+
+\begin{table}[tbp]
+\centering
+\caption{各气候分区围护结构构造层次与热工参数（GB~50189-2015）}
+\label{tab:envelope}
+\scriptsize
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+围护结构 & \makecell[c]{严寒\\（沈阳）} & \makecell[c]{寒冷\\（天津）} & \makecell[c]{夏热冬冷\\（成都、重庆）} & \makecell[c]{夏热冬暖\\（深圳）} \\
+\midrule
+\multicolumn{5}{l}{\textbf{外墙（由外至内）}} \\
+~~水泥砂浆 (mm) & 20 & 20 & 20 & 20 \\
+~~XPS保温层 (mm) & 70 & 50 & 30 & 20 \\
+~~砖墙 (mm) & 200 & 200 & 200 & 200 \\
+~~石膏抹灰 (mm) & 20 & 20 & 20 & 20 \\
+~~$K_{\mathrm{wall}}$ (\si{W/(m^2\cdot K)}) & 0.36 & 0.48 & 0.70 & 0.91 \\
+~~GB限值 & $\le$0.45 & $\le$0.50 & $\le$0.80 & $\le$1.5 \\
+\midrule
+\multicolumn{5}{l}{\textbf{屋面（由外至内）}} \\
+~~XPS保温层 (mm) & 90 & 70 & 40 & 30 \\
+~~钢筋混凝土 (mm) & 200 & 200 & 200 & 200 \\
+~~水泥砂浆 (mm) & 20 & 20 & 20 & 20 \\
+~~$K_{\mathrm{roof}}$ (\si{W/(m^2\cdot K)}) & 0.30 & 0.38 & 0.60 & 0.75 \\
+~~GB限值 & $\le$0.35 & $\le$0.45 & $\le$0.50 & $\le$0.80 \\
+\midrule
+\multicolumn{5}{l}{\textbf{外窗}} \\
+~~构造 & \multicolumn{4}{c}{双玻+空气} \\
+~~$K_{\mathrm{win}}$ (\si{W/(m^2\cdot K)}) & 2.72 & 2.72 & 2.72 & 2.72 \\
+~~GB限值 & $\le$2.5 & $\le$2.7 & $\le$3.0 & $\le$4.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+本设计中，严寒地区（沈阳）的外墙和屋面保温层最厚，传热系数最低，符合严寒气候的高保温要求；夏热冬暖地区（深圳）的外墙和屋面保温层最薄，传热系数最高，反映暖热气候的适度保温要求。围护结构参数的差异化处理使得各城市的建筑负荷特征更贴近实际工程的节能设计标准\cite{xu2013hscw_energy_standard,yang2012china_north_south}。
+
+\subsection{主要设计依据}
+
+本课程设计的主要设计依据及参考规范如下：
+\begin{itemize}
+    \item 《民用建筑供暖通风与空气调节设计规范》GB~50736-2012\cite{gb50736}
+    \item 《公共建筑节能设计标准》GB~50189-2015\cite{gb50189}
+    \item 《多联机空调系统工程技术规程》JGJ~174-2010\cite{jgj174}
+    \item 《实用供热空调设计手册》（第二版）
+    \item EnergyPlus\textsuperscript{\texttrademark} 23.2 技术文档及参考指南\cite{energyplus232docs}
+    \item ASHRAE Standard 90.1-2019: Energy Standard for Buildings
+    \item 中国建筑科学研究院. CSWD标准气象年数据\cite{onebuilding}
+\end{itemize}
+
+\subsection{建筑热工分区与面积}
+
+本课程设计将每层建筑平面划分为五个热工分区（thermal zones）：核心区（C）位于平面中央，不直接接触外墙，属于内区；东南西北四个周边区（S、N、W、E）各沿外墙方向布置，直接受室外气象条件影响。三层共计15个热工分区，每个分区独立进行负荷计算与空调末端选型。
+
+建筑分区命名规则为 ZF\{层号\}\_\{方位\}，例如ZF1\_S表示一层南侧周边区，ZF2\_C表示二层核心区。
+
+\begin{table}[tbp]
+\centering
+\caption{建筑各层分区面积表}
+\label{tab:zone-areas}
+\scriptsize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+楼层 & 核心区 C & 南周边 S & 北周边 N & 西周边 W & 东周边 E \\
+ & \si{m^2} & \si{m^2} & \si{m^2} & \si{m^2} & \si{m^2} \\
+\midrule
+一层（ZF1） & 174.6 & 115.2 & 115.2 & 25.3 & 25.3 \\
+二层（ZF2） & 174.6 & 115.2 & 115.2 & 25.3 & 25.3 \\
+三层（ZF3） & 174.6 & 115.2 & 115.2 & 25.3 & 25.3 \\
+\midrule
+合计 & 523.8 & 345.6 & 345.6 & 75.9 & 75.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+总空调服务建筑面积为\SI{1367}{\meter^2}。其中，核心区占总面积的约38.3\%，南、北周边区各占约25.3\%，东、西周边区各占约5.6\%。核心区由于四面均与空调相邻区域接触，其围护结构负荷主要来自屋面和楼板，受室外气温波动的直接影响最小；周边区则直接承受对应方向外墙和外窗的传热与日射负荷，其中南、北区因沿32 m主立面布置，面积和窗墙比较大，负荷占总负荷的主要部分。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{medium_office_building_model_structure.pdf}
+\caption{基于实际工程图纸提取的建筑模型多视图表达，包括各层平面、屋顶平面、四向立面和纵向剖面}
+\label{fig:building-structure}
+\end{figure}
+
+\subsection{冷负荷构成及计算原理}
+
+\subsubsection{传统冷负荷系数法（CLTD/CLF法）理论基础}
+
+暖通空调课程设计中，传统的逐时冷负荷计算通常采用冷负荷温度/冷负荷系数法（CLTD/CLF法）。本课程设计在利用EnergyPlus进行全尺度逐时仿真之前，先在此对传统手工设计方法的理论框架进行系统梳理。
+
+\textbf{一、围护结构瞬变传热冷负荷}
+
+外墙与屋面等不透光外围护结构由于室外气温波动和太阳辐射的联合作用，通过导热延迟和衰减后传入室内的逐时冷负荷可表示为：
+
+\begin{equation}
+Q_{\mathrm{wall}}(t)=K\cdot F\cdot\left[t_{\mathrm{lc}}(t)+t_{\mathrm{d}}-t_{\mathrm{n}}\right]
+\label{eq:wall}
+\end{equation}
+
+式中：$K$为围护结构的传热系数，\si{W\per\square\meter\per\degreeCelsius}；$F$为围护结构面积，\si{\square\meter}；$t_{\mathrm{lc}}(t)$为墙体或屋面在$t$时刻的冷负荷计算温度逐时值，\si{\degreeCelsius}；$t_{\mathrm{d}}$为围护结构的地点修正系数，\si{\degreeCelsius}；$t_{\mathrm{n}}$为室内设计温度，\si{\degreeCelsius}。
+
+\textbf{二、外窗冷负荷}
+
+透过外窗的逐时冷负荷由温差传热部分和太阳辐射热部分叠加而成。
+
+（1）温差传热冷负荷：
+
+\begin{equation}
+Q_{\mathrm{win,con}}(t)=K_{\mathrm{ch}}\cdot F_{\mathrm{ch}}\cdot\left[t_{\mathrm{lc}}(t)+t_{\mathrm{d}2}-t_{\mathrm{n}}\right]\cdot C_{K1}\cdot C_{K2}
+\label{eq:win-con}
+\end{equation}
+
+式中：$K_{\mathrm{ch}}$为外窗传热系数，\si{W\per\square\meter\per\degreeCelsius}；$F_{\mathrm{ch}}$为外窗面积，\si{\square\meter}；$t_{\mathrm{lc}}(t)$为外窗的逐时冷负荷计算温度，\si{\degreeCelsius}；$C_{K1}$、$C_{K2}$分别为窗框类型修正系数和有内遮阳设施的传热系数修正值。
+
+（2）太阳辐射热冷负荷：
+
+\begin{equation}
+Q_{\mathrm{win,rad}}(t)=F_{\mathrm{ch}}\cdot C_{\mathrm{s}}\cdot C_{\mathrm{n}}\cdot C_{\mathrm{a}}\cdot\left[J_{\mathrm{ch,zd}}(t)\cdot C_{\mathrm{cl,ch}}(t)+J_{\mathrm{sh,zd}}(t)\right]
+\label{eq:win-rad}
+\end{equation}
+
+式中：$C_{\mathrm{s}}$为窗玻璃遮挡系数；$C_{\mathrm{n}}$为窗内遮阳设施的遮阳系数；$C_{\mathrm{a}}$为窗的有效面积系数；$J_{\mathrm{ch,zd}}(t)$为透过标准窗玻璃的太阳总辐射照度，\si{W\per\square\meter}；$C_{\mathrm{cl,ch}}(t)$为冷负荷系数。
+
+\textbf{三、室内设备、照明与人体散热冷负荷}
+
+（1）设备散热冷负荷：
+
+\begin{equation}
+Q_{\mathrm{equip}}(t)=N_{\mathrm{equip}}\cdot n_{1}\cdot n_{2}\cdot n_{3}\cdot CLF_{\mathrm{equip}}(t)
+\label{eq:equip}
+\end{equation}
+
+式中：$N_{\mathrm{equip}}$为设备安装功率，\si{W}；$n_{1}$为同时使用系数（0.5--1.0）；$n_{2}$为安装系数（0.7--0.9）；$n_{3}$为负荷系数（0.4--0.5）；$CLF_{\mathrm{equip}}(t)$为设备散热冷负荷系数。
+
+（2）照明得热冷负荷（以荧光灯为例）：
+
+\begin{equation}
+Q_{\mathrm{light}}(t)=\left[N_{\mathrm{light}}\cdot(1+\eta)\right]\cdot CLF_{\mathrm{light}}(t)
+\label{eq:light}
+\end{equation}
+
+式中：$N_{\mathrm{light}}$为照明灯具安装功率，\si{W}；$\eta$为镇流器消耗功率系数，一般取0.2；$CLF_{\mathrm{light}}(t)$为照明冷负荷系数。
+
+（3）人体散热冷负荷与湿负荷：
+
+人体显热散热引起的逐时冷负荷为：
+
+\begin{equation}
+Q_{\mathrm{p,sen}}(t)=n\cdot q_{\mathrm{sen}}\cdot C_{\mathrm{r}}\cdot CLF_{\mathrm{p}}(t)
+\label{eq:p-sen}
+\end{equation}
+
+人体潜热散热冷负荷为：
+
+\begin{equation}
+Q_{\mathrm{p,lat}}=n\cdot q_{\mathrm{lat}}\cdot C_{\mathrm{r}}
+\label{eq:p-lat}
+\end{equation}
+
+人体散湿量为：
+
+\begin{equation}
+W_{\mathrm{p}}=n\cdot w\cdot C_{\mathrm{r}}
+\label{eq:wet}
+\end{equation}
+
+式中：$n$为空调房间内的人数；$q_{\mathrm{sen}}$、$q_{\mathrm{lat}}$分别为不同室温和劳动性质时成年男子的显热和潜热散热量，\si{W}；$w$为人均散湿量，\si{g\per\hour}；$C_{\mathrm{r}}$为群集系数；$CLF_{\mathrm{p}}(t)$为人体显热散热冷负荷系数。
+
+\textbf{四、新风冷负荷}
+
+新风冷负荷按下式计算：
+
+\begin{equation}
+Q_{\mathrm{oa}}=L\cdot\rho_{\mathrm{w}}\cdot(I_{\mathrm{w}}-I_{\mathrm{n}})
+\label{eq:oa}
+\end{equation}
+
+式中：$L$为新风量，\si{\meter^3\per\hour}；$\rho_{\mathrm{w}}$为夏季室外空调计算干球温度下的空气密度，一般取\SI{1.13}{\kg\per\cubic\meter}；$I_{\mathrm{w}}$、$I_{\mathrm{n}}$分别为室外和室内空气的焓值，\si{kJ\per\kg}。
+
+\subsubsection{基于EnergyPlus的全尺度逐时仿真方法}
+
+本文的实际工况仿真采用EnergyPlus 23.2平台的传导传递函数法（CTF）与房间空气热平衡法。与上述传统CLTD/CLF法以逐时系数表格手工叠加各冷热负荷成分不同，EnergyPlus在每一时间步（本文为\SI{10}{min}，输出汇总为\SI{1}{hour}）内同步求解围护结构非稳态导热、外表面辐射/对流耦合换热以及室内长波辐射、空气对流、各内热源和空调送风之间的联动热平衡。
+
+对各理想负荷工况，输出变量为各空调分区的逐时理想送风显冷量与显热量率。将全部分区的冷/热率分别求和后，全年积分可得年冷负荷$E_{\mathrm{cool}}$和年热负荷$E_{\mathrm{heat}}$，其逐时最大值即为峰值冷负荷$Q_{\mathrm{pc}}$：
+
+\begin{equation}
+Q_{\mathrm{pc}}=\frac{1}{1000}\max_t\left(\sum_z \dot{Q}_{\mathrm{cool},z}(t)\right)
+\label{eq:Qpc}
+\end{equation}
+
+\begin{equation}
+q_{\mathrm{pc}}=\frac{1000\cdot Q_{\mathrm{pc}}}{A_{\mathrm{f}}}
+\label{eq:qpc}
+\end{equation}
+
+对两类实际空调系统（VRF+DOAS、FCU+DOAS），年空调电耗$E_{\mathrm{elec}}$来自系统输出计量（Electricity:HVAC），其面积归一化指标定义为：
+
+\begin{equation}
+I_{\mathrm{elec}}=\frac{E_{\mathrm{elec}}}{A_{\mathrm{f}}}
+\label{eq:Ielec}
+\end{equation}
+
+需要指出，EnergyPlus的Conduction Transfer Function方法虽然在数值层面上与CLTD/CLF以相变延迟和衰减表示的物理概念方法不同，但二者对于各热源成分在全天内的物理积蓄与逐时释放关系的描述具有本质上的一致性\cite{crawley2001energyplus,wu2019china_cooling_load}。传统CLTD/CLF设计法是理解仿真负荷波动特性的理论和实际方法学基础。
+
+\subsection{空调系统方案概述}
+
+\subsubsection{VRF+DOAS方案}
+
+变制冷剂流量多联机配独立新风系统（VRF+DOAS）方案由集中设置的VRF室外机、各空调分区的直接膨胀式室内末端设备以及带全热回收转轮的新风处理系统组成\cite{aynur2010vrf_desiccant,kanisanchez2017vrf_whole_building}。室外机安装于屋顶机械平台，通过制冷剂管道竖向连接各层终端。新风由屋顶DOAS空气处理机组集中处理后，经竖向风道输送至各层分区，经风管支路与室内回风混合后送入各空调分区。
+
+每层5个空调分区各设置一台VRF末端设备（变制冷剂流量末端），三层共计15台末端。系统采用一台公用的VRF热泵室外机，室外机设计制冷/制热容量由自动选型确定。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{medium_office_typical_floor_vrf_doas.pdf}
+\caption{VRF+DOAS方案在建筑多视图底图上的系统组织表达，突出屋顶室外机集中布置与冷媒竖向服务关系}
+\label{fig:vrf-structure}
+\end{figure}
+
+\subsubsection{FCU+DOAS方案}
+
+风机盘管配独立新风系统（FCU+DOAS）方案由四管制风机盘管末端、集中冷冻水系统（含螺杆式冷水机组与冷却塔）、集中热水系统（含燃气锅炉）以及独立新风处理系统组成。每层5个分区各设置一台四管制风机盘管末端，通过冷冻水和热水供回水立管分别与集中冷热源站连接。新风系统与VRF方案采用相同的DOAS配置，由屋顶新风机组集中处理后输送至各分区。
+
+该方案包含两条集中水系统环路：冷冻水环路（供回水设计温度7/12\si{\degreeCelsius}）和热水环路（供回水设计温度82/60\si{\degreeCelsius}）。冷水机组和锅炉的容量均由自动选型确定。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{medium_office_typical_floor_fcu_doas.pdf}
+\caption{FCU+DOAS方案在建筑多视图底图上的系统组织表达，突出独立新风竖井与冷热水管井的分离布置}
+\label{fig:fcu-structure}
+\end{figure}
+
+两类系统方案的空调服务分区数量相同（均为15个）、设计新风量一致（约\SI{1.175}{\meter^3\per\second}，即\SI{4228}{\meter^3\per\hour}）、围护结构和室内设计参数完全相同。因此，本文的比较实质上是在“相同建筑载体、相同负荷边界”下对两类系统拓扑结构及运行性能的横向分析。

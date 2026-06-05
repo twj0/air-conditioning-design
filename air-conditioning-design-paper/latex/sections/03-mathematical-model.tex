@@ -53,7 +53,7 @@ W_{\mathrm{p}} = n \cdot w \cdot C_{\mathrm{r}}
 \end{equation}
 式中：$n$为室内人员数量；$q_{\mathrm{sen}}$与$q_{\mathrm{lat}}$分别为成年人均显热和潜热散热量，\si{W}；$w$为人均散湿量，\si{g\per\hour}；$C_{\mathrm{r}}$为群集系数；$CLF_{\mathrm{p}}(t)$为人体显热冷负荷系数。
 
-虽然 EnergyPlus 在底层采用的是更为复杂的数值有限差分传热方法（Finite Difference）与全空气房间热平衡法（Heat Balance Method），但上述传统 CLTD/CLF 设计法中关于各热源成分在全天内的物理积蓄与逐时释放关系（通过冷负荷系数 CLF 调节），仍是理解仿真负荷波动特性的理论和实际方法学基础。
+虽然 EnergyPlus 在底层采用的是更为复杂的数值有限差分传热法与房间空气热平衡法，但上述传统冷负荷温度/系数法中关于各热源成分在全天内的物理积蓄与逐时释放关系，仍是理解仿真负荷波动特性的理论和实际方法学基础。
 
 \subsection{EnergyPlus 逐时负荷积分与系统能耗评价指标}
 

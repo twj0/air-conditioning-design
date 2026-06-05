@@ -1,0 +1,162 @@
+\section{不同气候分区的技术方案对比及适宜性评价}
+
+前文第二章至第六章已分别给出了沈阳、天津、成都、重庆和深圳五城市各自的负荷计算结果和两类系统方案的设备选型与能耗结果。本章按照参考课程设计的统一分析方法，将上述结果汇总后进行跨城市、跨气候分区、跨系统方案的对比分析，并在此基础上开展技术方案适宜性评价。
+
+\subsection{冷负荷数据对比}
+
+\subsubsection{峰值冷负荷与年冷热负荷的分区差异}
+
+建筑冷热负荷是直接影响各地区技术方案差异的核心因素\cite{xu2013hscw_energy_standard,wu2022hscw_envelope_optimization}。表\ref{tab:load-comparison}汇总了五城市理想负荷基线下的全部关键指标。
+
+\begin{table}[tbp]
+\centering
+\caption{不同气候分区理想负荷数据对比}
+\label{tab:load-comparison}
+\scriptsize
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+城市 & 气候分区 & \makebox[3.5em][c]{$Q_{\mathrm{pc}}$} & \makebox[3.5em][c]{$q_{\mathrm{pc}}$} & \makebox[4em][c]{$E_{\mathrm{cool}}$} & \makebox[4em][c]{$E_{\mathrm{heat}}$} & \makebox[5em][c]{$E_{\mathrm{total}}/A_{\mathrm{f}}$} \\
+ & & \si{kW} & \si{W/m^2} & \si{kWh} & \si{kWh} & \si{kWh/m^2} \\
+\midrule
+沈阳 & 严寒 & 10.00 & 7.31 & 8814 & 203489 & 155.31 \\
+天津 & 寒冷 & 17.05 & 12.47 & 13486 & 169458 & 133.83 \\
+成都 & 夏热冬冷 & 13.00 & 9.51 & 12437 & 92799 & 76.98 \\
+重庆 & 夏热冬冷 & 13.97 & 10.22 & 19114 & 87752 & 78.18 \\
+深圳 & 夏热冬暖 & 15.74 & 11.51 & 27080 & 86479 & 83.07 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{peak_cooling_load_density_by_city.pdf}
+\caption{五城市理想负荷基线下的峰值冷负荷密度比较}
+\label{fig:peak-compare}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{annual_ideal_loads_by_city.pdf}
+\caption{五城市年冷负荷与年热负荷比较}
+\label{fig:annual-compare}
+\end{figure}
+
+由表\ref{tab:load-comparison}及图\ref{fig:peak-compare}、图\ref{fig:annual-compare}可见，五城市的冷热负荷随气候分区呈现出系统性的梯度变化。
+
+峰值冷负荷方面，天津最高（\SI{17.05}{\kilo\watt}）、深圳次之（\SI{15.74}{\kilo\watt}）、沈阳最低（\SI{10.00}{\kilo\watt}）。天津的峰值冷负荷高于深圳，反映天津夏季较高的室外干球温度（\SI{33.9}{\degreeCelsius} vs \SI{33.7}{\degreeCelsius}）是峰值冷负荷的更强驱动力，而深圳的制冷负荷优势主要体现在全年持续时间而非瞬时峰值。值得注意的是，年冷负荷的排序与峰值冷负荷并不完全一致：深圳年冷负荷最高（\SI{27080}{\kilo\watt\hour}），重庆次之（\SI{19114}{\kilo\watt\hour}），与深圳全年制冷季明显更长这一事实一致。天津年冷负荷（\SI{13486}{\kilo\watt\hour}）在五城市中仅排第四，说明天津虽峰值冷负荷突出，但全年实际制冷运行时长远不及南方城市。
+
+年热负荷方面，从北向南递减：沈阳（\SI{203489}{\kilo\watt\hour}）$ > $ 天津（\SI{169458}{\kilo\watt\hour}）$ > $ 成都（\SI{92799}{\kilo\watt\hour}）$ > $ 重庆（\SI{87752}{\kilo\watt\hour}）$ > $ 深圳（\SI{86479}{\kilo\watt\hour}）。成都、重庆和深圳三者的年热负荷非常接近（约$86$--$93 \times 10^3$ \si{\kilo\watt\hour}），表明在南方三大城市中，空调供热需求已趋于收敛到一个共同的基准水平。与此形成对比，在引入差异化围护结构设计后，沈阳与南方城市之间的热负荷差异达2.4倍（由之前的2.1倍扩大到2.4倍），体现了气候差异在针对性设计下的合理反映。
+
+年总单位面积负荷方面，沈阳最高（\SI{155.31}{\kilo\watt\hour\per\square\meter}），天津次之（\SI{133.83}{\kilo\watt\hour\per\square\meter}），成都最低（\SI{76.98}{\kilo\watt\hour\per\square\meter}）。成都和重庆两座夏热冬冷城市的总负荷强度十分接近（约\SI{78}{\kilo\watt\hour\per\square\meter}），但深圳（\SI{83.07}{\kilo\watt\hour\per\square\meter}）较之高出约8\%，反映了深圳终年维持室内设计温度所需的综合制冷总时数更长。
+
+\subsubsection{影响冷负荷差异的因素分析}
+
+影响空调冷负荷的因素可大致分为两类：与气象有关的因素和与气象无关的因素。在本设计中，与气象无关的因素——室内设计参数（温度、湿度、人员密度、设备及照明功率密度）在五个城市中均设置为同一数值（参见第一章表\ref{tab:indoor-params}），因此各城市间的负荷差异可主要归结为与气象参数相关的因素，包括但不限于室外干球温度、室外湿球温度、太阳辐射强度以及围护结构的传热边界条件。以下从室内冷负荷和新风冷负荷两个维度进行分析。
+
+\textbf{一、室内冷负荷差异}
+
+室内冷负荷主要受围护结构传热和透过外窗的太阳辐射得热影响。在本设计中，围护结构的传热系数在五城市间统一设定，因此室内冷负荷的差异主要来自各城市室外气象参数（尤其是逐时干球温度和外窗得热量）的差异。从表\ref{tab:load-comparison}可以看出，深圳、重庆等全年高温城市的峰值冷负荷高于沈阳等北方城市，这与较高的室外设计温度导致更大的围护结构传热温差直接相关。天津峰值冷负荷突出的现象则提示，峰值冷负荷的高低不仅取决于年平均温度，还与某些极端设计日的气象条件密切相关。
+
+\textbf{二、新风冷负荷差异}
+
+新风冷负荷与室内外空气焓差直接相关。在室内设计温湿度统一的前提下，新风冷负荷的差异主要来自于各城市室外空气的温湿度水平。由图\ref{fig:annual-compare}中各地年冷负荷的差异趋势可以看出，深圳、重庆等高温高湿城市的年冷负荷显著高于北方城市——深圳年冷负荷（\SI{27080}{\kilo\watt\hour}）约为沈阳（\SI{8814}{\kilo\watt\hour}）的3.1倍。即使同属夏热冬冷地区，重庆的年冷负荷（\SI{19114}{\kilo\watt\hour}）也明显高于成都（\SI{12437}{\kilo\watt\hour}），两者之间的差异主要可归因于重庆夏季更高的室外湿球温度（\SI{27.6}{\degreeCelsius} vs \SI{26.4}{\degreeCelsius}）和日平均温度（\SI{30.7}{\degreeCelsius} vs \SI{27.8}{\degreeCelsius}）。
+
+\subsection{系统能耗与设备容量对比}
+
+\subsubsection{年空调电耗强度比较}
+
+表\ref{tab:system-comparison}汇总了五城市两类实际系统的全部比较指标。
+
+\begin{table}[tbp]
+\centering
+\caption{五城市两类系统比较结果汇总（各系统均设15分区/末端，新风量1.175\,m$^3$/s）}
+\label{tab:system-comparison}
+\scriptsize
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+\multirow{2}{*}{城市} & \multirow{2}{*}{系统} & \multicolumn{2}{c}{设计容量 (\si{kW})} & \multirow{2}{*}{\makebox[4em][c]{$I_{\mathrm{elec}}$}} & \multirow{2}{*}{\makebox[4em][c]{天然气}} \\
+\cmidrule(lr){3-4}
+ & & \makebox[3em][c]{冷量} & \makebox[3em][c]{热量} & \si{kWh/m^2} & \si{kWh/m^2} \\
+\midrule
+沈阳 & VRF+DOAS & 61.05 & 61.05 & 60.25 & --- \\
+ & FCU+DOAS & 88.84 & 82.84 & 4.89 & 93.33 \\
+\midrule
+天津 & VRF+DOAS & 71.92 & 71.92 & 60.20 & --- \\
+ & FCU+DOAS & 115.71 & 67.26 & 4.81 & 77.03 \\
+\midrule
+成都 & VRF+DOAS & 76.63 & 76.63 & 48.85 & --- \\
+ & FCU+DOAS & 92.24 & 69.75 & 4.64 & 74.81 \\
+\midrule
+重庆 & VRF+DOAS & 76.59 & 76.59 & 48.06 & --- \\
+ & FCU+DOAS & 145.59 & 54.24 & 5.10 & 74.96 \\
+\midrule
+深圳 & VRF+DOAS & 88.51 & 88.51 & 56.20 & --- \\
+ & FCU+DOAS & 162.73 & 55.36 & 5.67 & 45.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{system_electricity_per_m2_by_city.pdf}
+\caption{五城市中VRF+DOAS与FCU+DOAS的年空调电耗强度对比}
+\label{fig:elec-compare}
+\end{figure}
+
+从图\ref{fig:elec-compare}可以看出：
+
+（1）VRF+DOAS的年空调电耗强度呈现北部城市高于南部城市的总体趋势：沈阳（\SI{60.25}{\kilo\watt\hour\per\square\meter}）$ > $ 天津（\SI{60.20}{\kilo\watt\hour\per\square\meter}）$ > $ 深圳（\SI{56.20}{\kilo\watt\hour\per\square\meter}）$ > $ 成都（\SI{48.85}{\kilo\watt\hour\per\square\meter}）$ > $ 重庆（\SI{48.06}{\kilo\watt\hour\per\square\meter}）。这一梯度与供暖需求的地理分布基本一致。北方VRF系统在冬季需以热泵模式长时间运行，低温工况下性能系数（COP）显著偏低，导致全年压缩机耗电量大幅上升。南方VRF系统虽以制冷为主，全年运行时段长，但制冷工况下VRF的能效比（EER）通常远高于热泵工况下的性能系数（COP），加上南方冬季供热需求较低、热泵总运行时长有限，使全年电耗反而低于北方。
+
+（2）在仅统计空调电耗的当前口径下，FCU+DOAS的年电耗强度（\SI{4.64}{\kilo\watt\hour\per\square\meter}至\SI{5.67}{\kilo\watt\hour\per\square\meter}）在五城市中均显著低于VRF+DOAS。这一差异的核心原因在于，锅炉是FCU+DOAS系统的主要供热设备，其消耗的天然气燃料并未纳入电耗统计。FCU+DOAS的电耗主要由冷水机组、冷却塔风机、冷冻水/热水循环泵及DOAS送风机等电力设备贡献。本研究通过提取并解析EnergyPlus系统底层报告，成功补齐了FCU+DOAS系统的全年天然气消耗总量。结果显示，各城市的年天然气消耗量分别为：沈阳\SI{127574.93}{\kilo\watt\hour}（折合强度\SI{93.33}{\kilo\watt\hour\per\square\meter}）、天津\SI{105295.70}{\kilo\watt\hour}（折合强度\SI{77.03}{\kilo\watt\hour\per\square\meter}）、%
+成都\SI{102261.53}{\kilo\watt\hour}（折合强度\SI{74.81}{\kilo\watt\hour\per\square\meter}）、重庆\SI{102472.47}{\kilo\watt\hour}（折合强度\SI{74.96}{\kilo\watt\hour\per\square\meter}）%
+和深圳\SI{61653.32}{\kilo\watt\hour}（折合强度\SI{45.10}{\kilo\watt\hour\per\square\meter}）。可以看出，天然气消耗强度随着气候供暖需求的降低而显著下降。
+
+（3）两种系统在五城市间的电耗波动幅度差异显著：VRF电耗强度的极差（最大值减最小值）为\SI{12.19}{\kilo\watt\hour\per\square\meter}，而FCU电耗强度的极差仅为\SI{1.03}{\kilo\watt\hour\per\square\meter}。这表明VRF系统的电耗对气候条件的敏感度远高于FCU+DOAS系统的"电耗"部分——这与VRF的直膨式压缩机直接响应室外气温和室内负荷变化有关，而FCU冷水机组的运行主要取决于供冷侧需求，供热侧电耗则因锅炉的存在而基本为零。
+
+\subsubsection{设备设计容量比较}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{design_cooling_capacity_by_city.pdf}
+\caption{五城市两类系统的设计冷量比较}
+\label{fig:capacity-compare}
+\end{figure}
+
+由图\ref{fig:capacity-compare}可得出以下规律：
+
+（1）VRF方案的设计冷量由北向南递增，从沈阳\SI{61.05}{\kilo\watt}到深圳\SI{88.51}{\kilo\watt}，%
+极差为\SI{27.46}{\kilo\watt}。各城市VRF冷热共用同一台热泵室外机，设计冷量与设计热量相等，因此该方案在满足制冷需求的同时也自动提供了等额的供热容量。
+
+（2）FCU方案中，冷水机组设计冷量随制冷需求从沈阳\SI{88.84}{\kilo\watt}增加至深圳\SI{162.73}{\kilo\watt}，各城市间的差异远大于VRF方案。FCU冷水机组设计冷量普遍高于同城市的VRF设计冷量，差异幅度从\SI{15.61}{\kilo\watt}（成都）至\SI{74.22}{\kilo\watt}（深圳）不等。这反映出集中冷源在自动选型时倾向于保留更大的设计余量，且该余量在不同城市间表现出明显差异。
+
+（3）FCU方案中锅炉设计热量在沈阳最高（\SI{82.84}{\kilo\watt}），其次为成都（\SI{69.75}{\kilo\watt}）、天津（\SI{67.26}{\kilo\watt}）、深圳（\SI{55.36}{\kilo\watt}）和重庆（\SI{54.24}{\kilo\watt}），与年热负荷的地理分布高度吻合。沈阳FCU的锅炉设计热量为重庆的1.53倍，反映了严寒地区与夏热冬冷地区在供热容量配置上的合理差异。
+
+\subsection{技术方案适宜性评价}
+
+综合上述跨城市、跨系统的对比分析，本节从以下几个方面对两类方案在不同气候分区的技术适宜性进行评价。
+
+\subsubsection{系统运行效率与气候适配性}
+
+VRF+DOAS方案的核心优势在于系统的简洁性与灵活调节能力：一台室外机通过制冷剂管路连接15台室内末端，无需建设集中的冷冻水和热水系统，设备占用空间小，系统环路控制相对简单\cite{liu2010vrf_gshp,kanisanchez2017vrf_whole_building}。然而，对该方案而言，其全年运行的经济性和能效高度依赖于室外气象条件：在深圳这样以制冷为主的城市，VRF以较高能效比（EER）运行，年电耗强度降至\SI{56.20}{\kilo\watt\hour\per\square\meter}；在沈阳这样冬季严寒的城市，VRF热泵在低温工况下性能系数（COP）下降明显\cite{aynur2010vrf_desiccant}，全年电耗显著上升。
+
+FCU+DOAS方案的核心优势在于冷热源分离：冷水机组供冷、燃气锅炉供热，各自在设计的温度范围内以较高的设备效率运行\cite{kim2016vrf_doas_control}。然而，FCU+DOAS需要设置集中冷热站、冷却塔、冷冻水与热水双管路系统，系统组成复杂度显著高于VRF方案。本课程设计的关键发现之一是：在仅统计电耗的情况下，FCU+DOAS的电耗极低，但这一指标掩盖了锅炉燃气消耗的实际占比\cite{wang2023hscw_heating}。因此，FCU+DOAS的完整技术适宜性评价仍有待合并天然气消耗之后。
+
+\subsubsection{设备容量配比与建筑负荷的匹配}
+
+从室内外机容量配比的角度来看（参照参考课程设计关于VRF机组组合率应在50\%--130\%范围内的分析逻辑），本文五个城市的VRF方案中，一台室外机连接15台室内末端，室外机设计冷量范围\SI{61.05}{\kilo\watt}至\SI{88.51}{\kilo\watt}，各分区的末端容量合计约为室外机容量的100\%--130\%，基本遵循了机组组合率的推荐范围。各城市VRF配比率基本一致，说明在相同的建筑分区和负荷分布下，VRF系统在不同气候分区间保持了较为稳定的容量匹配关系。
+
+FCU+DOAS方案中，冷水机组设计冷量与锅炉设计热量的比值随气候冷暖特征变化呈现显著梯度：沈阳1.07:1、成都1.32:1、天津1.72:1、重庆2.68:1、深圳2.94:1。这一比值本身即可作为气候分区的一个定量化标识——比值接近1.0表明该城市供冷与供暖高峰负荷并重（严寒地区），比值大于2.5则表明以绝对制冷需求为主导（夏热冬暖及湿热的夏热冬冷地区）。
+
+\subsubsection{综合评价与选型建议}
+
+在统一建筑原型和统一输入边界的条件下，本文的比较结果支持以下初步判断：
+
+（1）对于沈阳和天津所代表的寒冷及严寒地区，FCU+DOAS方案通过集中锅炉与冷水机组分别处理冷热需求，在容量配置上具有更高的灵活性，但需要关注锅炉燃料消耗带来的运行费用和碳排放。VRF+DOAS方案在严寒地区以较高的年电耗为代价换取了系统简洁性，是否优先选用取决于用户对投资成本、运行费用和系统管理复杂度的综合权衡。
+
+（2）对于成都、重庆和深圳所代表的夏热冬冷及夏热冬暖地区，VRF\kern0pt+DOAS方案在制冷主导的全年运行模式下表现出更好的电力经济性（年电耗强度较北方降低18\%--20\%），且系统简洁性的优势在南方较短的供暖季中更为突出。
+
+（3）重庆作为夏热冬冷地区中高温高湿特征最为突出的城市，其FCU冷水机组设计冷量（\SI{145.59}{\kilo\watt}）为五城市中次高（仅次于深圳\SI{162.73}{\kilo\watt}），而VRF设计冷量为\SI{76.59}{\kilo\watt}。重庆FCU冷水机组选型容量显著偏高的现象提示，该城市在采用集中冷源方案时，自动选型算法可能因夏季极端设计日的湿球温度较高而显著放大了设计冷量需求。因此，在重庆等高温高湿城市中，FCU方案在设计阶段应特别关注冷水机组选型的合理性和备用容量设定，避免设计冷量过度安全。
+
+\subsubsection{当前评价的限定条件}
+
+本设计的适宜性评价存在若干明确的限定条件，需要在结论解读时予以说明。第一，本研究已按GB~50189-2015实现了围护结构（外墙、屋面保温厚度）的差异化设定，但外窗传热系数和窗墙比等参数在当前五城市中仍保持统一，尚未进行更细致的分区窗型优化（例如北方严寒地区使用更低传热系数的三玻窗或Low-E窗）。第二，虽然本研究通过提取并解析EnergyPlus系统底层报告成功补齐了FCU+DOAS系统的年天然气消耗总量，但当前的系统能耗比较尚未统一转换为一次能源（标煤）或全生命周期碳排放指标，使得两种异质能源（电耗与燃气消耗）的对比仍显分离。第三，本课程设计未涉及初投资、运行维护费用和全生命周期经济性分析，因此本文的适宜性评价主要着眼于技术指标层面，尚未上升到全口径经济性比较层面。

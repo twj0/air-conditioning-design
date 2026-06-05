@@ -1,0 +1,57 @@
+\section{重庆多联机及风机盘管系统设计}
+
+本章以重庆（夏热冬冷地区）为目标城市。重庆位于四川盆地东部，属于建筑热工设计气候分区中的夏热冬冷B区，以长江流域典型的“高温高湿”夏季气候著称。该城市在本文中作为与成都同属夏热冬冷地区但气候特征有明显差异的补充对比样本。
+
+\subsection{室外设计参数}
+
+重庆夏季室外气象设计参数（CSWD气象年数据）为：夏季空调室外干球计算温度\SI{35.5}{\degreeCelsius}，夏季空调室外湿球计算温度\SI{27.6}{\degreeCelsius}，夏季空调室外计算日平均温度\SI{30.7}{\degreeCelsius}，夏季室外平均风速\SI{1.6}{\meter\per\second}。冬季空调室外干球计算温度为\SI{3.7}{\degreeCelsius}。重庆的夏季空调室外干球计算温度和湿球计算温度均为五城市中最高值，表明重庆夏季同时面临高温和高湿的气候挑战。其夏季室外日平均温度（\SI{30.7}{\degreeCelsius}）比室内设计温度（\SI{26}{\degreeCelsius}）高出\SI{4.7}{\degreeCelsius}，制冷期间的室内外温差驱动力在五城市中最强。
+
+\subsection{建筑概况}
+
+同第一章详述。
+
+\subsection{理想负荷计算结果}
+
+\begin{table}[tbp]
+\centering
+\caption{重庆负荷计算与系统方案比较结果}
+\label{tab:chongqing-ideal}
+\scriptsize
+\begin{minipage}[t]{0.42\textwidth}
+\centering
+\textbf{（a）理想负荷工况结果}\\[3pt]
+\begin{tabular}{@{}lr@{}}
+\toprule
+指标 & 数值 \\
+\midrule
+$Q_{\mathrm{pc}}$ (kW) & 13.97 \\
+$q_{\mathrm{pc}}$ (W/m$^{2}$) & 10.22 \\
+$E_{\mathrm{cool}}$ (kWh) & 19114 \\
+$E_{\mathrm{heat}}$ (kWh) & 87752 \\
+$E_{\mathrm{total}}$ (kWh) & 106866 \\
+$E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 78.18 \\
+\bottomrule
+\end{tabular}
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.54\textwidth}
+\centering
+\textbf{（b）两类系统比较}\\[3pt]
+\begin{tabular}{@{}lcc@{}}
+\toprule
+指标 & VRF+DOAS & FCU+DOAS \\
+\midrule
+设计冷量 (kW) & 76.59 & 145.59 \\
+设计热量 (kW) & 76.59 & 54.24 \\
+年电耗 (kWh) & 65704 & 6967 \\
+电耗强度 (kWh/m$^{2}$) & 48.06 & 5.10 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{table}
+
+重庆的峰值冷负荷（\SI{13.97}{\kilo\watt}）略高于成都（\SI{13.00}{\kilo\watt}），但在五城市中仍处于中间偏低位置，与天津（\SI{17.05}{\kilo\watt}）有明显差距。年冷负荷（\SI{19114.30}{\kilo\watt\hour}）则显著高于成都（\SI{12437.02}{\kilo\watt\hour}），高出约53.7\%，表明重庆夏季制冷需求不仅在峰值上更高，在持续时间上也更长——这与重庆较高的夏季室外日平均温度和湿球温度共同作用有关。年总单位面积负荷（\SI{78.18}{\kilo\watt\hour\per\square\meter}）与成都（\SI{76.98}{\kilo\watt\hour\per\square\meter}）接近，但重庆的冷负荷占比更高（17.9\% vs 11.8\%），说明同属夏热冬冷地区，重庆已表现出更强的制冷导向特征。
+
+\subsection{空调系统方案比较}
+
+重庆VRF+DOAS的年电耗强度为\SI{48.06}{\kilo\watt\hour\per\square\meter}，与成都（\SI{48.85}{\kilo\watt\hour\per\square\meter}）基本持平。FCU+DOAS电耗强度为\SI{5.10}{\kilo\watt\hour\per\square\meter}，其年度天然气消耗为\SI{102472.47}{\kilo\watt\hour}（强度为\SI{74.96}{\kilo\watt\hour\per\square\meter}）。值得注意的是，重庆FCU冷水机组设计冷量（\SI{145.59}{\kilo\watt}）为五城市中次高，仅次于深圳（\SI{162.73}{\kilo\watt}），而锅炉设计热量（\SI{54.24}{\kilo\watt}）为五城市中较低值。冷量与热量之比高达2.68:1，明确反映了重庆“以冷为主导，供暖需求有限”的负荷结构特征。

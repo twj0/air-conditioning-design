@@ -1,0 +1,59 @@
+\section{成都多联机及风机盘管系统设计}
+
+本章以成都（夏热冬冷地区）为目标城市。成都位于四川盆地，属于建筑热工设计气候分区中的夏热冬冷A区，夏季炎热、冬季湿冷，全年相对湿度较高。该城市在本文中代表内陆盆地型夏热冬冷气候特征。
+
+\subsection{室外设计参数}
+
+成都夏季室外气象设计参数（CSWD气象年数据）为：夏季空调室外干球计算温度\SI{31.9}{\degreeCelsius}，夏季空调室外湿球计算温度\SI{26.4}{\degreeCelsius}，夏季空调室外计算日平均温度\SI{27.8}{\degreeCelsius}，夏季室外平均风速\SI{1.3}{\meter\per\second}。冬季空调室外干球计算温度为\SI{1.3}{\degreeCelsius}。成都夏季室外风速为五城市中最低（\SI{1.3}{\meter\per\second}），这与盆地的静风气候特征一致。
+
+\subsection{建筑概况}
+
+同第一章详述。
+
+\subsection{理想负荷计算结果}
+
+\begin{table}[tbp]
+\centering
+\caption{成都负荷计算与系统方案比较结果}
+\label{tab:chengdu-ideal}
+\scriptsize
+\begin{minipage}[t]{0.42\textwidth}
+\centering
+\textbf{（a）理想负荷工况结果}\\[3pt]
+\begin{tabular}{@{}lr@{}}
+\toprule
+指标 & 数值 \\
+\midrule
+$Q_{\mathrm{pc}}$ (kW) & 13.00 \\
+$q_{\mathrm{pc}}$ (W/m$^{2}$) & 9.51 \\
+$E_{\mathrm{cool}}$ (kWh) & 12437 \\
+$E_{\mathrm{heat}}$ (kWh) & 92799 \\
+$E_{\mathrm{total}}$ (kWh) & 105236 \\
+$E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 76.98 \\
+\bottomrule
+\end{tabular}
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.54\textwidth}
+\centering
+\textbf{（b）两类系统比较}\\[3pt]
+\begin{tabular}{@{}lcc@{}}
+\toprule
+指标 & VRF+DOAS & FCU+DOAS \\
+\midrule
+设计冷量 (kW) & 76.63 & 92.24 \\
+设计热量 (kW) & 76.63 & 69.75 \\
+年电耗 (kWh) & 66780 & 6339 \\
+电耗强度 (kWh/m$^{2}$) & 48.85 & 4.64 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{table}
+
+成都年总单位面积负荷为\SI{76.98}{\kilo\watt\hour\per\square\meter}，是五城市中最低值。年热负荷（\SI{92799.40}{\kilo\watt\hour}）约为年冷负荷（\SI{12437.02}{\kilo\watt\hour}）的7.5倍。成都的峰值冷负荷（\SI{13.00}{\kilo\watt}）低于天津（\SI{17.05}{\kilo\watt}），这一结果与成都夏季室外干球温度（\SI{31.9}{\degreeCelsius}）低于天津（\SI{33.9}{\degreeCelsius}）的趋势一致。盆地地形和较高的云量减少了成都的太阳辐射得热量，从而抑制了制冷高峰负荷。
+
+\subsection{空调系统方案比较}
+
+成都VRF+DOAS的年电耗强度为\SI{48.85}{\kilo\watt\hour\per\square\meter}，已显著低于北方两城市，以制冷为主的全年运行模式有效降低了热泵供热工况的低温低效运行时间。FCU+DOAS电耗强度为\SI{4.64}{\kilo\watt\hour\per\square\meter}，其年度天然气消耗为\SI{102261.53}{\kilo\watt\hour}（强度为\SI{74.81}{\kilo\watt\hour\per\square\meter}）。
+
+成都FCU方案中，冷水机组设计冷量（\SI{92.24}{\kilo\watt}）与锅炉设计热量（\SI{69.75}{\kilo\watt}）之比为1.32:1，冷源容量首次超过了热源容量，标志着从供暖主导型向制冷主导型的过渡。VRF方案的设计冷/热量均为\SI{76.63}{\kilo\watt}。
