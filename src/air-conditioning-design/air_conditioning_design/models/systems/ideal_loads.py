@@ -5,8 +5,6 @@ from pathlib import Path
 
 from air_conditioning_design.config.cities import get_city_config
 from air_conditioning_design.config.paths import (
-    NEUTRAL_MODEL_PATH,
-    REFERENCE_MEDIUM_OFFICE_IDF,
     build_case_id,
     city_model_path,
     ensure_directories,
@@ -19,7 +17,7 @@ from air_conditioning_design.idf.io import (
     replace_object,
     write_idf,
 )
-from air_conditioning_design.models.base import neutralize_reference_model
+from air_conditioning_design.models.base import build_city_building_model
 from air_conditioning_design.models.common import (
     build_zone_maps,
     extract_design_objects,
@@ -124,10 +122,8 @@ def build_ideal_loads_case(city_id: str, output_root: Path | None = None) -> Pat
     city = get_city_config(city_id)
     manifest = load_city_manifest(city_id)
 
-    if not NEUTRAL_MODEL_PATH.exists():
-        neutralize_reference_model(REFERENCE_MEDIUM_OFFICE_IDF, NEUTRAL_MODEL_PATH)
-
-    neutral_objects = load_idf(NEUTRAL_MODEL_PATH)
+    city_model = build_city_building_model(city_id)  # per-climate-zone envelope
+    neutral_objects = load_idf(city_model)
     zone_node_map, outdoor_air_map = build_zone_maps(neutral_objects)
 
     filtered = filter_objects(
@@ -171,7 +167,7 @@ def build_ideal_loads_case(city_id: str, output_root: Path | None = None) -> Pat
                 "0.0400",
                 "0.2000",
                 "FullInteriorAndExterior",
-                "25",
+                "100",
                 "6",
             ],
         ),

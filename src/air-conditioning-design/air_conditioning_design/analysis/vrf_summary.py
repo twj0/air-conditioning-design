@@ -38,8 +38,10 @@ def _annual_meter_kwh(meter_csv_path: Path) -> float:
         headers = next(reader)
         indexes = _matching_indexes(headers, PRIMARY_METER_KEYWORD)
         if indexes:
-            series = [sum(_safe_float(row[i]) for i in indexes) for row in reader]
-            return sum(series) / 3_600_000.0
+            month_values: dict[str, float] = {}
+            for row in reader:
+                month_values[row[0]] = sum(_safe_float(row[i]) for i in indexes)
+            return sum(month_values.values()) / 3_600_000.0
 
     with meter_csv_path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.reader(handle)
@@ -51,8 +53,10 @@ def _annual_meter_kwh(meter_csv_path: Path) -> float:
             raise ValueError(
                 "Could not find Electricity:HVAC or fallback HVAC electricity meters in eplusmtr.csv"
             )
-        series = [sum(_safe_float(row[i]) for i in fallback_indexes) for row in reader]
-        return sum(series) / 3_600_000.0
+        month_values: dict[str, float] = {}
+        for row in reader:
+            month_values[row[0]] = sum(_safe_float(row[i]) for i in fallback_indexes)
+        return sum(month_values.values()) / 3_600_000.0
 
 
 def _vrf_terminal_count(idf_path: Path) -> int:
@@ -87,6 +91,8 @@ def build_vrf_summary(
         "annual_hvac_electricity_per_m2": round(
             annual_hvac_electricity / floor_area_m2, 3
         ),
+        "annual_hvac_natural_gas": 0.0,
+        "annual_hvac_natural_gas_per_m2": 0.0,
         "vrf_terminal_count": terminal_count,
     }
 

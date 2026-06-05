@@ -5,8 +5,6 @@ from pathlib import Path
 
 from air_conditioning_design.config.cities import get_city_config
 from air_conditioning_design.config.paths import (
-    NEUTRAL_MODEL_PATH,
-    REFERENCE_MEDIUM_OFFICE_IDF,
     VRF_DOAS_DONOR_IDF,
     build_case_id,
     city_model_path,
@@ -20,12 +18,13 @@ from air_conditioning_design.idf.io import (
     replace_object,
     write_idf,
 )
-from air_conditioning_design.models.base import neutralize_reference_model
 from air_conditioning_design.models.common import (
     build_zone_maps,
     extract_design_objects,
     load_city_manifest,
+    make_thermostat_objects,
 )
+from air_conditioning_design.models.base import build_city_building_model
 
 DONOR_SCHEDULE_NAMES = {
     "VRFCondAvailSched",
@@ -546,10 +545,8 @@ def build_vrf_case(city_id: str, output_root: Path | None = None) -> Path:
     city = get_city_config(city_id)
     manifest = load_city_manifest(city_id)
 
-    if not NEUTRAL_MODEL_PATH.exists():
-        neutralize_reference_model(REFERENCE_MEDIUM_OFFICE_IDF, NEUTRAL_MODEL_PATH)
-
-    neutral_objects = load_idf(NEUTRAL_MODEL_PATH)
+    city_model = build_city_building_model(city_id)
+    neutral_objects = load_idf(city_model)
     donor_objects = _load_donor_objects()
     zone_node_map, outdoor_air_map = build_zone_maps(neutral_objects)
     zone_names = sorted(zone_node_map)
@@ -599,7 +596,7 @@ def build_vrf_case(city_id: str, output_root: Path | None = None) -> Path:
                 "0.0400",
                 "0.2000",
                 "FullInteriorAndExterior",
-                "25",
+                "100",
                 "6",
             ],
         ),
@@ -641,6 +638,7 @@ def build_vrf_case(city_id: str, output_root: Path | None = None) -> Path:
         support_objects
         + vrf_objects
         + generated_zone_objects
+        + make_thermostat_objects(zone_names)
         + _make_heat_recovery_lockout_objects()
         + _make_vrf_output_objects(),
     )

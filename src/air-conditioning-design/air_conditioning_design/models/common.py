@@ -42,3 +42,52 @@ def build_zone_maps(
 def conditioned_zone_names(objects: list[IdfObject]) -> list[str]:
     zone_node_map, _ = build_zone_maps(objects)
     return sorted(zone_node_map.keys())
+
+
+def make_thermostat_objects(zone_names: list[str]) -> list[IdfObject]:
+    """Generate ZoneControl:Thermostat and supporting objects for all zones."""
+    objects: list[IdfObject] = []
+
+    objects.append(IdfObject("ScheduleTypeLimits", [
+        "Control Type", "0", "4", "DISCRETE",
+    ]))
+
+    objects.append(IdfObject("Schedule:Compact", [
+        "Htg-SetP-Sch", "Temperature",
+        "Through: 12/31", "For: SummerDesignDay", "Until: 24:00", "21.1",
+        "For: WinterDesignDay", "Until: 24:00", "21.1",
+        "For: WeekDays", "Until: 7:00", "21.1", "Until: 18:00", "21.1", "Until: 24:00", "21.1",
+        "For: WeekEnds Holiday", "Until: 7:00", "21.1", "Until: 13:00", "21.1", "Until: 24:00", "21.1",
+        "For: AllOtherDays", "Until: 7:00", "21.1", "Until: 18:00", "21.1", "Until: 24:00", "21.1",
+    ]))
+
+    objects.append(IdfObject("Schedule:Compact", [
+        "Clg-SetP-Sch", "Temperature",
+        "Through: 12/31", "For: SummerDesignDay", "Until: 24:00", "23.9",
+        "For: WinterDesignDay", "Until: 24:00", "23.9",
+        "For: WeekDays", "Until: 7:00", "23.9", "Until: 18:00", "23.9", "Until: 24:00", "23.9",
+        "For: WeekEnds Holiday", "Until: 7:00", "23.9", "Until: 13:00", "23.9", "Until: 24:00", "23.9",
+        "For: AllOtherDays", "Until: 7:00", "23.9", "Until: 18:00", "23.9", "Until: 24:00", "23.9",
+    ]))
+
+    objects.append(IdfObject("Schedule:Compact", [
+        "Zone Control Type Sched", "Control Type",
+        "Through: 12/31", "For: SummerDesignDay", "Until: 24:00", "4",
+        "For: WinterDesignDay", "Until: 24:00", "4",
+        "For: AllOtherDays", "Until: 24:00", "4",
+    ]))
+
+    objects.append(IdfObject("ThermostatSetpoint:DualSetpoint", [
+        "DualSetPoint", "Htg-SetP-Sch", "Clg-SetP-Sch",
+    ]))
+
+    for zone_name in zone_names:
+        objects.append(IdfObject("ZoneControl:Thermostat", [
+            f"{zone_name} Control",
+            zone_name,
+            "Zone Control Type Sched",
+            "ThermostatSetpoint:DualSetpoint",
+            "DualSetPoint",
+        ]))
+
+    return objects

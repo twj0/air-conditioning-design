@@ -122,6 +122,10 @@ def _polygon_centroid(points: tuple[tuple[float, float], ...]) -> tuple[float, f
 
 def _zone_category(zone_name: str) -> str:
     upper_name = zone_name.upper()
+    if upper_name.endswith("_C"):
+        return "core"
+    if upper_name.endswith("_S") or upper_name.endswith("_N") or upper_name.endswith("_E") or upper_name.endswith("_W"):
+        return "perimeter"
     if "CORE" in upper_name:
         return "core"
     if "PERIMETER" in upper_name:
@@ -130,6 +134,11 @@ def _zone_category(zone_name: str) -> str:
 
 
 def _floor_title(zone_names: tuple[str, ...]) -> str:
+    import re
+    for name in zone_names:
+        m = re.match(r"ZF(\d+)", name.upper())
+        if m:
+            return f"Floor {m.group(1)} Plan"
     upper_names = tuple(name.upper() for name in zone_names)
     if any("_MID" in name for name in upper_names):
         return "Typical Floor Plan"
@@ -199,17 +208,19 @@ def _window_segment(
 
 
 def _window_orientation(window_name: str, parent_surface_name: str) -> str:
+    import re
     text = f"{window_name} {parent_surface_name}".upper()
-    for orientation in ("SOUTH", "EAST", "NORTH", "WEST"):
-        if orientation in text:
-            return orientation.title()
+    m = re.search(r"WALL_([SENW])\b", text)
+    if m:
+        return {"S": "South", "E": "East", "N": "North", "W": "West"}[m.group(1)]
     return "Unknown"
 
 
 def _surface_orientation(surface_name: str) -> str:
+    """Detect facade orientation from the Wall_ suffix, e.g. Wall_S → South."""
     upper_name = surface_name.upper()
     for orientation in ("SOUTH", "EAST", "NORTH", "WEST"):
-        if orientation in upper_name:
+        if f"WALL_{orientation[0]}" in upper_name:
             return orientation.title()
     return "Unknown"
 
@@ -252,13 +263,31 @@ def _window_annotations_from_objects(
 
 
 def _roof_outline_from_objects(objects: list[IdfObject]) -> tuple[tuple[float, float], ...]:
+    roof_surfaces: list[tuple[tuple[float, float], ...]] = []
     for obj in objects:
         if obj.class_name != "BuildingSurface:Detailed" or len(obj.fields) < 11:
             continue
         if obj.fields[1] != "Roof":
             continue
-        return tuple((x, y) for x, y, _ in _surface_vertices(obj))
-    raise ValueError("No roof surface was found in the IDF objects.")
+        roof_surfaces.append(tuple((x, y) for x, y, _ in _surface_vertices(obj)))
+    if not roof_surfaces:
+        raise ValueError("No roof surface was found in the IDF objects.")
+
+    all_points: set[tuple[float, float]] = set()
+    for surface in roof_surfaces:
+        all_points.update(surface)
+
+    xs = [p[0] for p in all_points]
+    ys = [p[1] for p in all_points]
+    x_min, x_max = min(xs), max(xs)
+    y_min, y_max = min(ys), max(ys)
+
+    return (
+        (x_min, y_min),
+        (x_max, y_min),
+        (x_max, y_max),
+        (x_min, y_max),
+    )
 
 
 def _facade_annotations_from_objects(objects: list[IdfObject]) -> tuple[FacadeAnnotation, ...]:
@@ -378,9 +407,6 @@ def _representative_floor_elevation(
     surfaces: list[tuple[str, float, tuple[tuple[float, float], ...]]],
     geometry: FloorplanGeometry | None,
 ) -> float:
-    if geometry is not None:
-        return geometry.representative_floor_level().elevation
-
     occupied_levels = sorted(
         {
             elevation
@@ -390,6 +416,12 @@ def _representative_floor_elevation(
     )
     if not occupied_levels:
         raise ValueError("No occupied floor elevations were found in the IDF surfaces.")
+
+    if geometry is not None:
+        geom_elevation = geometry.representative_floor_level().elevation
+        # Map to the closest available occupied floor elevation in IDF surfaces
+        return min(occupied_levels, key=lambda x: abs(x - geom_elevation))
+
     return occupied_levels[len(occupied_levels) // 2]
 
 

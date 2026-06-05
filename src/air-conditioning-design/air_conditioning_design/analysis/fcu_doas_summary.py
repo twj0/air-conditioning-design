@@ -38,8 +38,10 @@ def _annual_meter_kwh(meter_csv_path: Path) -> float:
         headers = next(reader)
         indexes = _matching_indexes(headers, PRIMARY_METER_KEYWORD)
         if indexes:
-            series = [sum(_safe_float(row[i]) for i in indexes) for row in reader]
-            return sum(series) / 3_600_000.0
+            month_values: dict[str, float] = {}
+            for row in reader:
+                month_values[row[0]] = sum(_safe_float(row[i]) for i in indexes)
+            return sum(month_values.values()) / 3_600_000.0
 
     with meter_csv_path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.reader(handle)
@@ -51,14 +53,28 @@ def _annual_meter_kwh(meter_csv_path: Path) -> float:
             raise ValueError(
                 "Could not find Electricity:HVAC or fallback HVAC electricity meters in eplusmtr.csv"
             )
-        series = [sum(_safe_float(row[i]) for i in fallback_indexes) for row in reader]
-        return sum(series) / 3_600_000.0
+        month_values: dict[str, float] = {}
+        for row in reader:
+            month_values[row[0]] = sum(_safe_float(row[i]) for i in fallback_indexes)
+        return sum(month_values.values()) / 3_600_000.0
 
 
 def _count_objects(idf_path: Path, class_name: str) -> int:
     objects = load_idf(idf_path)
     class_upper = class_name.upper()
     return sum(1 for obj in objects if obj.class_name.upper() == class_upper)
+
+
+def _annual_natural_gas_kwh(results_dir: Path) -> float:
+    html_path = results_dir / "eplustbl.htm"
+    if not html_path.exists():
+        return 0.0
+    import re
+    html = html_path.read_text(encoding="utf-8", errors="ignore")
+    m = re.search(r"NaturalGas:Facility</td>\s*<td[^>]*>\s*([\d\.]+)", html)
+    if m:
+        return float(m.group(1))
+    return 0.0
 
 
 def build_fcu_doas_summary(
@@ -73,6 +89,7 @@ def build_fcu_doas_summary(
         raise FileNotFoundError(f"Expected EnergyPlus meter output at {meter_csv_path}")
 
     annual_hvac_electricity = _annual_meter_kwh(meter_csv_path)
+    annual_hvac_natural_gas = _annual_natural_gas_kwh(results_dir)
     target_idf_path = idf_path or system_model_path(build_case_id(city_id, "fcu_doas"))
     terminal_count = _count_objects(target_idf_path, "ZoneHVAC:FourPipeFanCoil")
     plant_loop_count = _count_objects(target_idf_path, "PlantLoop")
@@ -84,6 +101,10 @@ def build_fcu_doas_summary(
         "annual_hvac_electricity": round(annual_hvac_electricity, 3),
         "annual_hvac_electricity_per_m2": round(
             annual_hvac_electricity / floor_area_m2, 3
+        ),
+        "annual_hvac_natural_gas": round(annual_hvac_natural_gas, 3),
+        "annual_hvac_natural_gas_per_m2": round(
+            annual_hvac_natural_gas / floor_area_m2, 3
         ),
         "fcu_terminal_count": terminal_count,
         "plant_loop_count": plant_loop_count,

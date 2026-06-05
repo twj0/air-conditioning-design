@@ -48,14 +48,10 @@ def build_model_figures(
         raise ValueError(f"Unsupported figure_set for current task: {figure_set}")
 
     idf_path = system_model_path(case_id)
-    requires_dxf = figure_set in {"base", "zones", "vrf_doas", "fcu_doas", "all"}
-    geometry = None
     annotations = None
-    if requires_dxf:
+    if figure_set in {"base", "zones", "vrf_doas", "fcu_doas", "all"}:
         dxf_path = results_dir_for_case(case_id) / "eplusout.dxf"
-        if not dxf_path.exists():
-            raise FileNotFoundError(f"DXF geometry was not found for case: {case_id}")
-        geometry = load_floorplan_geometry(dxf_path)
+        geometry = load_floorplan_geometry(dxf_path) if dxf_path.exists() else None
         annotations = build_floor_annotations(idf_path, geometry=geometry)
     structure = (
         build_building_structure_annotations(idf_path)

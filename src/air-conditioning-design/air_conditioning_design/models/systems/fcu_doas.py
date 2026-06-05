@@ -6,8 +6,6 @@ from pathlib import Path
 from air_conditioning_design.config.cities import get_city_config
 from air_conditioning_design.config.paths import (
     FCU_DOAS_DONOR_IDF,
-    NEUTRAL_MODEL_PATH,
-    REFERENCE_MEDIUM_OFFICE_IDF,
     build_case_id,
     city_model_path,
     ensure_directories,
@@ -20,12 +18,13 @@ from air_conditioning_design.idf.io import (
     replace_object,
     write_idf,
 )
-from air_conditioning_design.models.base import neutralize_reference_model
 from air_conditioning_design.models.common import (
     build_zone_maps,
     extract_design_objects,
     load_city_manifest,
+    make_thermostat_objects,
 )
+from air_conditioning_design.models.base import build_city_building_model
 
 DYNAMIC_DONOR_OBJECTS = {
     ("AirLoopHVAC:ZoneSplitter", "DOAS Zone Splitter"),
@@ -191,6 +190,15 @@ def _retune_support_objects(objects: list[IdfObject]) -> list[IdfObject]:
             and clone.name == "Chilled Water Loop ChW Temp Manager"
         ):
             clone.fields[2] = "7.2"
+        elif clone.class_name == "Boiler:HotWater" and clone.name == "Main Boiler":
+            clone.fields[12] = "82"
+            clone.fields[13] = "NotModulated"
+            clone.fields[15] = "0.3"
+        elif (
+            clone.class_name == "PlantLoop"
+            and clone.name == "Hot Water Loop Hot Water Loop"
+        ):
+            clone.fields[5] = "95"
         tuned.append(clone)
     return tuned
 
@@ -598,10 +606,8 @@ def build_fcu_doas_case(city_id: str, output_root: Path | None = None) -> Path:
     city = get_city_config(city_id)
     manifest = load_city_manifest(city_id)
 
-    if not NEUTRAL_MODEL_PATH.exists():
-        neutralize_reference_model(REFERENCE_MEDIUM_OFFICE_IDF, NEUTRAL_MODEL_PATH)
-
-    neutral_objects = load_idf(NEUTRAL_MODEL_PATH)
+    city_model = build_city_building_model(city_id)
+    neutral_objects = load_idf(city_model)
     donor_objects = _load_donor_objects()
     zone_node_map, outdoor_air_map = build_zone_maps(neutral_objects)
     zone_names = sorted(zone_node_map)
@@ -673,7 +679,7 @@ def build_fcu_doas_case(city_id: str, output_root: Path | None = None) -> Path:
                 "0.0400",
                 "0.2000",
                 "FullInteriorAndExterior",
-                "25",
+                "100",
                 "6",
             ],
         ),
@@ -694,6 +700,7 @@ def build_fcu_doas_case(city_id: str, output_root: Path | None = None) -> Path:
         _build_zone_mixer(zone_names, zone_node_map),
         *_build_chilled_water_demand_objects(zone_names),
         *_build_hot_water_demand_objects(zone_names),
+        *make_thermostat_objects(zone_names),
         *_make_fcu_output_objects(),
     ]
     case_id = build_case_id(city_id, "fcu_doas")

@@ -210,6 +210,12 @@ def build_system_energy_comparison(
                     "annual_hvac_electricity_per_m2_kwh_m2": round(
                         _safe_float(summary["annual_hvac_electricity_per_m2"]), 3
                     ),
+                    "annual_hvac_natural_gas_kwh": round(
+                        _safe_float(summary.get("annual_hvac_natural_gas")), 3
+                    ),
+                    "annual_hvac_natural_gas_per_m2_kwh_m2": round(
+                        _safe_float(summary.get("annual_hvac_natural_gas_per_m2")), 3
+                    ),
                     "terminal_count": terminal_count,
                     "plant_loop_count": plant_loop_count,
                     "design_cooling_equipment_name": cooling_name or "",
@@ -288,6 +294,8 @@ def build_case_matrix(city_ids: Iterable[str] | None = None) -> list[dict[str, f
                 "annual_total_load_per_m2_kwh_m2": base["annual_total_load_per_m2_kwh_m2"],
                 "annual_hvac_electricity_kwh": "",
                 "annual_hvac_electricity_per_m2_kwh_m2": "",
+                "annual_hvac_natural_gas_kwh": "",
+                "annual_hvac_natural_gas_per_m2_kwh_m2": "",
                 "terminal_count": "",
                 "plant_loop_count": "",
                 "design_cooling_capacity_kw": "",
@@ -315,6 +323,10 @@ def build_case_matrix(city_ids: Iterable[str] | None = None) -> list[dict[str, f
                 "annual_hvac_electricity_kwh": row["annual_hvac_electricity_kwh"],
                 "annual_hvac_electricity_per_m2_kwh_m2": row[
                     "annual_hvac_electricity_per_m2_kwh_m2"
+                ],
+                "annual_hvac_natural_gas_kwh": row["annual_hvac_natural_gas_kwh"],
+                "annual_hvac_natural_gas_per_m2_kwh_m2": row[
+                    "annual_hvac_natural_gas_per_m2_kwh_m2"
                 ],
                 "terminal_count": row["terminal_count"],
                 "plant_loop_count": row["plant_loop_count"],

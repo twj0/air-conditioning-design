@@ -62,8 +62,8 @@ def test_build_tianjin_fcu_doas_case_creates_case_file(tmp_path: Path) -> None:
         obj
         for obj in objects
         if obj.class_name == "DesignSpecification:OutdoorAir"
-        and obj.name == "SZ DSOA Core_bottom"
+        and obj.name == "ZF1_C Outdoor Air"
     ]
     assert len(outdoor_air_specs) == 1
-    assert outdoor_air_specs[0].fields[1] == "Flow/Zone"
-    assert float(outdoor_air_specs[0].fields[4]) > 0.0
+    assert outdoor_air_specs[0].fields[1] == "Flow/Person"
+    assert float(outdoor_air_specs[0].fields[2]) > 0.0
