@@ -8,7 +8,7 @@
 
 \subsection{建筑概况}
 
-同第一章详述。室内设计参数与围护结构参数参见第一章表\ref{tab:indoor-params}与表\ref{tab:envelope}。建筑共3层15个热工分区，空调服务面积\SI{1367}{\meter^2}。
+同第一章详述。室内设计参数与围护结构参数参见第一章表\ref{tab:indoor-params}与表\ref{tab:envelope}。建筑共2层10个热工分区，空调服务面积\SI{911}{\meter^2}。
 
 \subsection{理想负荷计算结果}
 
@@ -30,8 +30,8 @@ $Q_{\mathrm{pc}}$ (kW) & 10.00 \\
 $q_{\mathrm{pc}}$ (W/m$^{2}$) & 7.31 \\
 $E_{\mathrm{cool}}$ (kWh) & 8814 \\
 $E_{\mathrm{heat}}$ (kWh) & 203489 \\
-$E_{\mathrm{total}}$ (kWh) & 212304 \\
-$E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 155.31 \\
+$E_{\mathrm{total}}$ (kWh) & 212303 \\
+$E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 232.95 \\
 \bottomrule
 \end{tabular}
 \end{minipage}%
@@ -43,19 +43,19 @@ $E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 155.31 \\
 \toprule
 指标 & VRF+DOAS & FCU+DOAS \\
 \midrule
-设计冷量 (kW) & 61.05 & 88.84 \\
-设计热量 (kW) & 61.05 & 82.84 \\
-年电耗 (kWh) & 82365 & 6684 \\
+设计冷量 (kW) & 35.60 & 54.71 \\
+设计热量 (kW) & 35.60 & 57.38 \\
+年电耗 (kWh) & 54889 & 4455 \\
 电耗强度 (kWh/m$^{2}$) & 60.25 & 4.89 \\
 \bottomrule
 \end{tabular}
 \end{minipage}
 \end{table}
 
-沈阳的峰值冷负荷为五城市中最低（\SI{10.00}{\kilo\watt}），但年热负荷为五城市中最高（\SI{203489.47}{\kilo\watt\hour}），年总单位面积负荷也是最高（\SI{155.31}{\kilo\watt\hour\per\square\meter}）。年热负荷约为年冷负荷的23.1倍，供暖需求在该地区占据绝对主导地位。
+沈阳的峰值冷负荷为五城市中最低（\SI{10.00}{\kilo\watt}），但年热负荷为五城市中最高（\SI{203489}{\kilo\watt\hour}），年总单位面积负荷也是最高（\SI{232.95}{\kilo\watt\hour\per\square\meter}）。年热负荷约为年冷负荷的23.1倍，供暖需求在该地区占据绝对主导地位。
 
 \subsection{空调系统方案比较}
 
-在沈阳严寒气候条件下，VRF+DOAS的年空调电耗为\SI{82365.34}{\kilo\watt\hour}，电耗强度\SI{60.25}{\kilo\watt\hour\per\square\meter}，为五城市中最高的VRF电耗强度。这主要归因于沈阳漫长的供暖季中VRF热泵需要持续运行以满足供热需求，其压缩机在低温工况下的性能系数（COP）较低。FCU+DOAS的电耗强度仅为\SI{4.89}{\kilo\watt\hour\per\square\meter}，但需注意其供热主要依赖燃气锅炉（设计热量\SI{82.84}{\kilo\watt}），锅炉燃气消耗（\SI{127574.93}{\kilo\watt\hour}，折合能耗强度\SI{93.33}{\kilo\watt\hour\per\square\meter}）未计入此电耗口径。
+在沈阳严寒气候条件下，VRF+DOAS的年空调电耗为\SI{54889}{\kilo\watt\hour}，电耗强度\SI{60.25}{\kilo\watt\hour\per\square\meter}，为五城市中最高的VRF电耗强度。这主要归因于沈阳漫长的供暖季中VRF热泵需要持续运行以满足供热需求，其压缩机在低温工况下的性能系数（COP）较低。FCU+DOAS的电耗强度仅为\SI{4.89}{\kilo\watt\hour\per\square\meter}，但需注意其供热主要依赖燃气锅炉（设计热量\SI{57.38}{\kilo\watt}），锅炉燃气消耗（\SI{85044}{\kilo\watt\hour}，折合能耗强度\SI{93.33}{\kilo\watt\hour\per\square\meter}）未计入此电耗口径。
 
-沈阳FCU方案中，冷水机组设计冷量（\SI{88.84}{\kilo\watt}）明显高于VRF室外机设计冷量（\SI{61.05}{\kilo\watt}），而锅炉设计热量（\SI{82.84}{\kilo\watt}）约为VRF设计热量（\SI{61.05}{\kilo\watt}）的1.36倍。这表明在严寒地区，FCU+DOAS方案通过集中冷热源配置提供了更高的容量储备，但相应地增加了设备占地和系统复杂度。
+沈阳FCU方案中，冷水机组设计冷量（\SI{54.71}{\kilo\watt}）高于VRF室外机设计冷量（\SI{35.60}{\kilo\watt}），而锅炉设计热量（\SI{57.38}{\kilo\watt}）约为VRF设计热量（\SI{35.60}{\kilo\watt}）的1.61倍。这表明在严寒地区，FCU+DOAS方案通过集中冷热源配置提供了更高的容量储备，但相应地增加了设备占地和系统复杂度。

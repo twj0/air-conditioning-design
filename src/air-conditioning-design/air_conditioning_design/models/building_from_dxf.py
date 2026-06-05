@@ -1,9 +1,9 @@
 """Generate the neutral EnergyPlus mother model from the teacher's actual building geometry.
 
 Derived from analysis of example/building2000.dxf:
-  - 3 floors, each 32 m × 14.24 m in plan
+  - 2 floors, each 32 m × 14.24 m in plan
   - 3.6 m column grid, 3.5 m floor-to-floor height
-  - 5 thermal zones per floor (4 perimeter + 1 core) = 15 conditioned zones
+  - 5 thermal zones per floor (4 perimeter + 1 core) = 10 conditioned zones
   - Windows on south and north facades
 """
 
@@ -17,17 +17,17 @@ from air_conditioning_design.idf.io import IdfObject, write_idf
 # ---------------------------------------------------------------------------
 # Building geometry constants (from DXF analysis)
 # ---------------------------------------------------------------------------
-FLOOR_COUNT = 3
+FLOOR_COUNT = 2
 FLOOR_WIDTH_X = 32.0  # m (building length / X direction)
 FLOOR_DEPTH_Y = 14.24  # m (building width / Y direction)
 PERIMETER_DEPTH = 3.6  # m (one column bay)
 
-# Z-levels (bottom of each floor slab) from actual DXF elevations
-FLOOR_Z = [0.0, 4.2, 7.8]
-ROOF_Z = 11.4
+# Z-levels (bottom of each floor slab) — 2-storey building, 3.5 m/floor
+FLOOR_Z = [0.0, 3.5]
+ROOF_Z = 7.0
 
-# Floor heights from actual DXF elevations: 1st floor 4.2m, 2nd & 3rd floor 3.6m
-FLOOR_HEIGHTS = [4.2, 3.6, 3.6]
+# Floor heights: uniform 3.5 m per floor
+FLOOR_HEIGHTS = [3.5, 3.5]
 
 # ---------------------------------------------------------------------------
 # Zone definitions per floor
@@ -46,7 +46,7 @@ FLOOR_HEIGHTS = [4.2, 3.6, 3.6]
 #   S (y=0)
 #
 # Each zone is a rectangular box.
-# ZF{n}_{S,N,W,E,C} where n = 1,2,3 (floor number)
+# ZF{n}_{S,N,W,E,C} where n = 1,2 (floor number)
 # ---------------------------------------------------------------------------
 
 
