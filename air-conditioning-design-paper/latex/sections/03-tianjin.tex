@@ -1,59 +1,73 @@
-\section{天津多联机及风机盘管系统设计}
+\section{天津多联机系统设计}
 
-本章以天津（寒冷地区）为目标城市。天津属于建筑热工设计气候分区中的寒冷B区，冬季较长且干冷，夏季炎热。该城市是本文中代表华北沿海寒冷气候的典型样本。
+本章按三层办公楼房间级参数完成天津工况下的夏季冷负荷计算和VRF设备选型。天津属于寒冷地区，设计重点为夏季高温和太阳辐射明显，兼顾围护保温。计算模型采用50个房间级热源参数和15个天正暖通计算分区，房间热源参数包括人员、照明、设备、新风和外窗朝向。
 
-\subsection{室外设计参数}
+\subsection{室外设计参数与围护结构}
 
-天津夏季室外气象设计参数（CSWD气象年数据）为：夏季空调室外干球计算温度\SI{33.9}{\degreeCelsius}，夏季空调室外湿球计算温度\SI{26.9}{\degreeCelsius}，夏季空调室外计算日平均温度\SI{29.4}{\degreeCelsius}，夏季室外平均风速\SI{2.3}{\meter\per\second}。冬季空调室外干球计算温度为\SI{-9.6}{\degreeCelsius}。天津夏季干球温度在五城市中处于中间偏高水平，冬季温度则介于严寒区沈阳与南方城市之间，呈现典型的“冷热并重”过渡型气候特征。
+天津室内设计参数统一取\SI{26}{\degreeCelsius}、相对湿度60\%，基准新风量40~m$^3$/(h$\cdot$人)。围护结构采用本设计的优化参数，和参考设计相比，南方城市强化遮阳控制，北方城市强化保温控制。
 
-\subsection{建筑概况}
-
-同第一章详述。
-
-\subsection{理想负荷计算结果}
-
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
-\caption{天津负荷计算与系统方案比较结果}
-\label{tab:tianjin-ideal}
-\scriptsize
-\begin{minipage}[t]{0.42\textwidth}
-\centering
-\textbf{（a）理想负荷工况结果}\\[3pt]
-\begin{tabular}{@{}lr@{}}
+\caption{天津室外设计参数与围护结构参数}
+\label{tab:tianjin-envelope}
+\zihao{-5}
+\begin{tabular}{@{}lccccccc@{}}
 \toprule
-指标 & 数值 \\
+城市 & 干球温度 & 湿球温度 & 日平均温度 & 外墙K & 屋面K & 外窗K & SC \\
+ & \si{\degreeCelsius} & \si{\degreeCelsius} & \si{\degreeCelsius} & \si{W/(m^2\cdot K)} & \si{W/(m^2\cdot K)} & \si{W/(m^2\cdot K)} & -- \\
 \midrule
-$Q_{\mathrm{pc}}$ (kW) & 17.05 \\
-$q_{\mathrm{pc}}$ (W/m$^{2}$) & 12.47 \\
-$E_{\mathrm{cool}}$ (kWh) & 13486 \\
-$E_{\mathrm{heat}}$ (kWh) & 169458 \\
-$E_{\mathrm{total}}$ (kWh) & 182944 \\
-$E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 200.74 \\
+天津 & 33.9 & 26.9 & 29.4 & 0.45 & 0.38 & 2.50 & 0.40 \\
 \bottomrule
 \end{tabular}
-\end{minipage}%
-\hfill%
-\begin{minipage}[t]{0.54\textwidth}
-\centering
-\textbf{（b）两类系统比较}\\[3pt]
-\begin{tabular}{@{}lcc@{}}
-\toprule
-指标 & VRF+DOAS & FCU+DOAS \\
-\midrule
-设计冷量 (kW) & 41.70 & 73.79 \\
-设计热量 (kW) & 41.70 & 47.56 \\
-年电耗 (kWh) & 54842 & 4381 \\
-电耗强度 (kWh/m$^{2}$) & 60.20 & 4.81 \\
-\bottomrule
-\end{tabular}
-\end{minipage}
 \end{table}
 
-天津理想负荷结果的显著特点是：峰值冷负荷为\SI{17.05}{\kilo\watt}，明显高于沈阳（\SI{10.00}{\kilo\watt}），但低于南方城市。年热负荷为\SI{169458}{\kilo\watt\hour}，仍占年总负荷的约92.6\%，表明供暖需求在天津仍占据主导地位。年冷负荷为\SI{13486}{\kilo\watt\hour}，约为年热负荷的8.0\%。
+\subsection{房间级冷负荷计算结果}
 
-\subsection{空调系统方案比较}
+天津全楼峰值冷负荷为\SI{133.90}{kW}，峰值冷负荷指标为\SI{98.6}{W/m^2}，峰值时刻为14:00。其中室内侧负荷为\SI{74.74}{kW}，新风冷负荷为\SI{59.17}{kW}，新风占比约44.2\%。主要高负荷房间见表~\ref{tab:tianjin-top-rooms}。
 
-天津VRF+DOAS的年电耗强度为\SI{60.20}{\kilo\watt\hour\per\square\meter}，略低于沈阳（\SI{60.25}{\kilo\watt\hour\per\square\meter}），反映出较温和的冬季使VRF热泵在供热工况下的运行时间有所减少。FCU+DOAS电耗强度为\SI{4.81}{\kilo\watt\hour\per\square\meter}，其年度天然气消耗为\SI{70174}{\kilo\watt\hour}（强度为\SI{77.03}{\kilo\watt\hour\per\square\meter}）。
+\begin{table}[!htbp]
+\centering
+\caption{天津主要房间峰值冷负荷与热源参数}
+\label{tab:tianjin-top-rooms}
+\zihao{-5}
+\begin{tabular}{@{}cccccccc@{}}
+\toprule
+楼层 & 房间编号 & 房间名称 & 面积 & 人数 & 新风量 & 峰值冷负荷 & 新风冷负荷 \\
+ & -- & -- & \si{m^2} & 人 & \si{m^3/h} & \si{kW} & \si{kW} \\
+\midrule
+1 & 1001 & 外贸办公室 & 78.5 & 14 & 630 & 10.82 & 5.14 \\
+2 & 2008 & 办公大厅 & 54.9 & 10 & 450 & 7.92 & 3.67 \\
+3 & 3007 & 会客室 & 37.8 & 11 & 440 & 7.08 & 3.59 \\
+3 & 3013 & 小型会议室 & 38.6 & 11 & 440 & 6.61 & 3.59 \\
+1 & 1012 & 值班室 & 54.1 & 8 & 320 & 6.39 & 2.61 \\
+1 & 1008 & 陈列室 & 73.9 & 7 & 245 & 6.18 & 2.00 \\
+1 & 1011 & 接待大厅 & 61.0 & 7 & 245 & 5.61 & 2.00 \\
+2 & 2001 & 办公室1 & 39.3 & 6 & 240 & 5.12 & 1.96 \\
+3 & 3018 & 办公茶歇区 & 25.9 & 7 & 280 & 4.11 & 2.29 \\
+2 & 2002 & 办公室2 & 39.3 & 6 & 240 & 4.05 & 1.96 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-天津FCU方案中，冷水机组设计冷量（\SI{73.79}{\kilo\watt}）与锅炉设计热量（\SI{47.56}{\kilo\watt}）之比约为1.55:1，与沈阳（冷热比约0.95:1，即54.71/57.38）形成对比，体现从北向南冷热需求量此消彼长的趋势。VRF方案的设计冷/热量均为\SI{41.70}{\kilo\watt}，位于五城市的中间水平。
+\subsection{VRF室内外机选型与容量配比}
+
+室内机按房间峰值冷负荷乘1.3安全系数选型，普通办公、会议和会客房间优先采用四面出风嵌入式室内机，卫生间、走廊、档案和储藏类房间采用薄型风管或壁挂式末端。天津共配置48台室内机，室内机名义制冷量合计\SI{218.9}{kW}。每层设置一个室外机系统，容量配比范围为113.6\%--116.2\%，满足JGJ~174-2010中50\%--130\%的组合率要求。
+
+\begin{table}[!htbp]
+\centering
+\caption{天津各楼层VRF室内外机容量配比}
+\label{tab:tianjin-vrf-ratio}
+\zihao{-5}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+楼层 & 室内机台数 & 室内容量 & 室外机型号 & 室外机台数 & 室外容量 & 配比 \\
+ & 台 & \si{kW} & -- & 台 & \si{kW} & \% \\
+\midrule
+1 & 12 & 63.6 & VRF-O560 & 1 & 56.0 & 113.6 \\
+2 & 16 & 69.9 & VRF-O615 & 1 & 61.5 & 113.7 \\
+3 & 20 & 85.4 & VRF-O735 & 1 & 73.5 & 116.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+从负荷组成看，天津的新风冷负荷占比为44.2\%，该比例直接影响DOAS或新风预处理设备的容量。若施工图阶段采用厂家样本深化，应优先复核高负荷房间的室内机布置、冷媒管长修正和室外机通风散热条件。

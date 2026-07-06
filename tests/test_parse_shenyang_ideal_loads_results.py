@@ -7,7 +7,7 @@ def test_build_ideal_loads_summary_returns_shenyang_case_metadata(tmp_path) -> N
     csv_path.write_text(
         "\n".join(
             [
-                "Date/Time,Core_bottom:Zone Ideal Loads Supply Air Sensible Cooling Rate [W](Hourly),Core_bottom:Zone Ideal Loads Supply Air Sensible Heating Rate [W](Hourly)",
+                "Date/Time,Core_bottom:Zone Ideal Loads Supply Air Total Cooling Rate [W](Hourly),Core_bottom:Zone Ideal Loads Supply Air Sensible Heating Rate [W](Hourly)",
                 "01/01  01:00:00,1000,0",
                 "01/01  02:00:00,2500,500",
             ]

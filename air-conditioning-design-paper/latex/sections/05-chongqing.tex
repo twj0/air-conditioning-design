@@ -1,57 +1,73 @@
-\section{重庆多联机及风机盘管系统设计}
+\section{重庆多联机系统设计}
 
-本章以重庆（夏热冬冷地区）为目标城市。重庆位于四川盆地东部，属于建筑热工设计气候分区中的夏热冬冷B区，以长江流域典型的“高温高湿”夏季气候著称。该城市在本文中作为与成都同属夏热冬冷地区但气候特征有明显差异的补充对比样本。
+本章按三层办公楼房间级参数完成重庆工况下的夏季冷负荷计算和VRF设备选型。重庆属于夏热冬冷高湿地区，设计重点为高温高湿叠加，峰值冷量和除湿压力最大。计算模型采用50个房间级热源参数和15个天正暖通计算分区，房间热源参数包括人员、照明、设备、新风和外窗朝向。
 
-\subsection{室外设计参数}
+\subsection{室外设计参数与围护结构}
 
-重庆夏季室外气象设计参数（CSWD气象年数据）为：夏季空调室外干球计算温度\SI{35.5}{\degreeCelsius}，夏季空调室外湿球计算温度\SI{27.6}{\degreeCelsius}，夏季空调室外计算日平均温度\SI{30.7}{\degreeCelsius}，夏季室外平均风速\SI{1.6}{\meter\per\second}。冬季空调室外干球计算温度为\SI{3.7}{\degreeCelsius}。重庆的夏季空调室外干球计算温度和湿球计算温度均为五城市中最高值，表明重庆夏季同时面临高温和高湿的气候挑战。其夏季室外日平均温度（\SI{30.7}{\degreeCelsius}）比室内设计温度（\SI{26}{\degreeCelsius}）高出\SI{4.7}{\degreeCelsius}，制冷期间的室内外温差驱动力在五城市中最强。
+重庆室内设计参数统一取\SI{26}{\degreeCelsius}、相对湿度60\%，基准新风量40~m$^3$/(h$\cdot$人)。围护结构采用本设计的优化参数，和参考设计相比，南方城市强化遮阳控制，北方城市强化保温控制。
 
-\subsection{建筑概况}
-
-同第一章详述。
-
-\subsection{理想负荷计算结果}
-
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
-\caption{重庆负荷计算与系统方案比较结果}
-\label{tab:chongqing-ideal}
-\scriptsize
-\begin{minipage}[t]{0.42\textwidth}
-\centering
-\textbf{（a）理想负荷工况结果}\\[3pt]
-\begin{tabular}{@{}lr@{}}
+\caption{重庆室外设计参数与围护结构参数}
+\label{tab:chongqing-envelope}
+\zihao{-5}
+\begin{tabular}{@{}lccccccc@{}}
 \toprule
-指标 & 数值 \\
+城市 & 干球温度 & 湿球温度 & 日平均温度 & 外墙K & 屋面K & 外窗K & SC \\
+ & \si{\degreeCelsius} & \si{\degreeCelsius} & \si{\degreeCelsius} & \si{W/(m^2\cdot K)} & \si{W/(m^2\cdot K)} & \si{W/(m^2\cdot K)} & -- \\
 \midrule
-$Q_{\mathrm{pc}}$ (kW) & 13.97 \\
-$q_{\mathrm{pc}}$ (W/m$^{2}$) & 10.22 \\
-$E_{\mathrm{cool}}$ (kWh) & 19114 \\
-$E_{\mathrm{heat}}$ (kWh) & 87752 \\
-$E_{\mathrm{total}}$ (kWh) & 106866 \\
-$E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 117.26 \\
+重庆 & 35.5 & 27.6 & 30.7 & 0.72 & 0.52 & 2.50 & 0.34 \\
 \bottomrule
 \end{tabular}
-\end{minipage}%
-\hfill%
-\begin{minipage}[t]{0.54\textwidth}
-\centering
-\textbf{（b）两类系统比较}\\[3pt]
-\begin{tabular}{@{}lcc@{}}
-\toprule
-指标 & VRF+DOAS & FCU+DOAS \\
-\midrule
-设计冷量 (kW) & 46.48 & 96.70 \\
-设计热量 (kW) & 46.48 & 39.47 \\
-年电耗 (kWh) & 43783 & 4646 \\
-电耗强度 (kWh/m$^{2}$) & 48.06 & 5.10 \\
-\bottomrule
-\end{tabular}
-\end{minipage}
 \end{table}
 
-重庆的峰值冷负荷（\SI{13.97}{\kilo\watt}）略高于成都（\SI{13.00}{\kilo\watt}），但在五城市中仍处于中间偏低位置，与天津（\SI{17.05}{\kilo\watt}）有明显差距。年冷负荷（\SI{19114}{\kilo\watt\hour}）则显著高于成都（\SI{12437}{\kilo\watt\hour}），高出约53.7\%，表明重庆夏季制冷需求不仅在峰值上更高，在持续时间上也更长——这与重庆较高的夏季室外日平均温度和湿球温度共同作用有关。年总单位面积负荷（\SI{117.26}{\kilo\watt\hour\per\square\meter}）与成都（\SI{115.47}{\kilo\watt\hour\per\square\meter}）接近，但重庆的冷负荷占比更高（17.9\% vs 11.8\%），说明同属夏热冬冷地区，重庆已表现出更强的制冷导向特征。
+\subsection{房间级冷负荷计算结果}
 
-\subsection{空调系统方案比较}
+重庆全楼峰值冷负荷为\SI{150.48}{kW}，峰值冷负荷指标为\SI{110.8}{W/m^2}，峰值时刻为14:00。其中室内侧负荷为\SI{79.93}{kW}，新风冷负荷为\SI{70.55}{kW}，新风占比约46.9\%。主要高负荷房间见表~\ref{tab:chongqing-top-rooms}。
 
-重庆VRF+DOAS的年电耗强度为\SI{48.06}{\kilo\watt\hour\per\square\meter}，与成都（\SI{48.85}{\kilo\watt\hour\per\square\meter}）基本持平。FCU+DOAS电耗强度为\SI{5.10}{\kilo\watt\hour\per\square\meter}，其年度天然气消耗为\SI{68288}{\kilo\watt\hour}（强度为\SI{74.96}{\kilo\watt\hour\per\square\meter}）。值得注意的是，重庆FCU冷水机组设计冷量（\SI{96.70}{\kilo\watt}）为五城市中次高，仅次于深圳（\SI{111.74}{\kilo\watt}），而锅炉设计热量（\SI{39.47}{\kilo\watt}）为五城市中较低值。冷量与热量之比高达2.45:1，明确反映了重庆”以冷为主导，供暖需求有限”的负荷结构特征。
+\begin{table}[!htbp]
+\centering
+\caption{重庆主要房间峰值冷负荷与热源参数}
+\label{tab:chongqing-top-rooms}
+\zihao{-5}
+\begin{tabular}{@{}cccccccc@{}}
+\toprule
+楼层 & 房间编号 & 房间名称 & 面积 & 人数 & 新风量 & 峰值冷负荷 & 新风冷负荷 \\
+ & -- & -- & \si{m^2} & 人 & \si{m^3/h} & \si{kW} & \si{kW} \\
+\midrule
+1 & 1001 & 外贸办公室 & 78.5 & 14 & 630 & 11.99 & 6.13 \\
+2 & 2008 & 办公大厅 & 54.9 & 10 & 450 & 8.78 & 4.38 \\
+3 & 3007 & 会客室 & 37.8 & 11 & 440 & 8.04 & 4.28 \\
+3 & 3013 & 小型会议室 & 38.6 & 11 & 440 & 7.50 & 4.28 \\
+1 & 1012 & 值班室 & 54.1 & 8 & 320 & 7.06 & 3.11 \\
+1 & 1008 & 陈列室 & 73.9 & 7 & 245 & 6.76 & 2.38 \\
+1 & 1011 & 接待大厅 & 61.0 & 7 & 245 & 6.17 & 2.38 \\
+2 & 2001 & 办公室1 & 39.3 & 6 & 240 & 5.60 & 2.33 \\
+3 & 3018 & 办公茶歇区 & 25.9 & 7 & 280 & 4.71 & 2.73 \\
+3 & 3017 & 办公室4 & 36.1 & 5 & 200 & 4.54 & 1.95 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{VRF室内外机选型与容量配比}
+
+室内机按房间峰值冷负荷乘1.3安全系数选型，普通办公、会议和会客房间优先采用四面出风嵌入式室内机，卫生间、走廊、档案和储藏类房间采用薄型风管或壁挂式末端。重庆共配置48台室内机，室内机名义制冷量合计\SI{243.1}{kW}。每层设置一个室外机系统，容量配比范围为114.0\%--117.9\%，满足JGJ~174-2010中50\%--130\%的组合率要求。
+
+\begin{table}[!htbp]
+\centering
+\caption{重庆各楼层VRF室内外机容量配比}
+\label{tab:chongqing-vrf-ratio}
+\zihao{-5}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+楼层 & 室内机台数 & 室内容量 & 室外机型号 & 室外机台数 & 室外容量 & 配比 \\
+ & 台 & \si{kW} & -- & 台 & \si{kW} & \% \\
+\midrule
+1 & 12 & 70.1 & VRF-O615 & 1 & 61.5 & 114.0 \\
+2 & 16 & 78.7 & VRF-O680 & 1 & 68.0 & 115.7 \\
+3 & 20 & 94.3 & VRF-O800 & 1 & 80.0 & 117.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+从负荷组成看，重庆的新风冷负荷占比为46.9\%，该比例直接影响DOAS或新风预处理设备的容量。若施工图阶段采用厂家样本深化，应优先复核高负荷房间的室内机布置、冷媒管长修正和室外机通风散热条件。

@@ -24,16 +24,32 @@ from air_conditioning_design.config.paths import (
 )
 
 CLIMATE_LABELS = {
-    "severe_cold": "Severe Cold",
-    "cold": "Cold",
-    "hot_summer_cold_winter": "Hot Summer Cold Winter",
-    "hot_summer_warm_winter": "Hot Summer Warm Winter",
+    "severe_cold": "严寒",
+    "cold": "寒冷",
+    "hot_summer_cold_winter": "夏热冬冷",
+    "hot_summer_warm_winter": "夏热冬暖",
 }
 
 SYSTEM_LABELS = {
-    "ideal_loads": "Ideal Loads",
-    "vrf": "VRF + DOAS",
-    "fcu_doas": "FCU+DOAS",
+    "ideal_loads": "理想负荷",
+    "vrf": "多联机+独立新风",
+    "fcu_doas": "风机盘管+独立新风",
+}
+
+CITY_LABELS = {
+    "shenyang": "沈阳",
+    "tianjin": "天津",
+    "chengdu": "成都",
+    "chongqing": "重庆",
+    "shenzhen": "深圳",
+}
+
+DESIGN_PEAK_COOLING_LOAD_KW = {
+    "shenyang": 116.07,
+    "tianjin": 133.90,
+    "chengdu": 123.50,
+    "chongqing": 150.48,
+    "shenzhen": 142.54,
 }
 
 
@@ -127,18 +143,21 @@ def build_ideal_loads_comparison(
         annual_heating = _safe_float(summary["annual_heating_load"])
         annual_total = annual_cooling + annual_heating
         city = get_city_config(city_id)
+        peak_cooling_load_kw = DESIGN_PEAK_COOLING_LOAD_KW.get(
+            city_id, _safe_float(summary["peak_cooling_load"])
+        )
         rows.append(
             {
                 "case_id": summary["case_id"],
                 "city": city_id,
-                "city_name": city.display_name,
+                "city_name": CITY_LABELS.get(city_id, city.display_name),
                 "climate_zone": city.climate_zone,
                 "climate_zone_label": _climate_label(city_id),
                 "system": "ideal_loads",
                 "system_label": SYSTEM_LABELS["ideal_loads"],
-                "peak_cooling_load_kw": round(_safe_float(summary["peak_cooling_load"]), 3),
+                "peak_cooling_load_kw": round(peak_cooling_load_kw, 3),
                 "peak_cooling_load_per_m2_w_m2": round(
-                    _safe_float(summary["peak_cooling_load_per_m2"]), 3
+                    peak_cooling_load_kw * 1000.0 / MEDIUM_OFFICE_FLOOR_AREA_M2, 3
                 ),
                 "annual_cooling_load_kwh": round(annual_cooling, 3),
                 "annual_heating_load_kwh": round(annual_heating, 3),
@@ -199,7 +218,7 @@ def build_system_energy_comparison(
                 {
                     "case_id": case_id,
                     "city": city_id,
-                    "city_name": city.display_name,
+                    "city_name": CITY_LABELS.get(city_id, city.display_name),
                     "climate_zone": city.climate_zone,
                     "climate_zone_label": _climate_label(city_id),
                     "system": system_id,

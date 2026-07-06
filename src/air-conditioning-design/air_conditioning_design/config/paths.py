@@ -105,7 +105,7 @@ TIANJIN_SUMMARY_PATH = summary_path_for_case("tianjin__ideal_loads")
 TIANJIN_VRF_SUMMARY_PATH = summary_path_for_case("tianjin__vrf")
 TIANJIN_FCU_DOAS_SUMMARY_PATH = summary_path_for_case("tianjin__fcu_doas")
 
-MEDIUM_OFFICE_FLOOR_AREA_M2 = 911.36
+MEDIUM_OFFICE_FLOOR_AREA_M2 = 1358.4
 
 
 def ensure_directories() -> None:

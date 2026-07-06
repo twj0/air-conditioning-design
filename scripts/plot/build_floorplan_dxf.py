@@ -76,9 +76,9 @@ def _room_tuple(room):
     return (room.name, room.x1, room.y1, room.x2, room.y2)
 
 
-FLOOR1_ROOMS = [_room_tuple(room) for room in rooms_for_floor(1) if room.name != "走廊"]
-FLOOR2_ROOMS = [_room_tuple(room) for room in rooms_for_floor(2) if room.name != "走廊"]
-FLOOR3_ROOMS = [_room_tuple(room) for room in rooms_for_floor(3) if room.name != "走廊"]
+FLOOR1_ROOMS = [_room_tuple(room) for room in rooms_for_floor(1) if room.name not in {"走廊", "楼梯间"}]
+FLOOR2_ROOMS = [_room_tuple(room) for room in rooms_for_floor(2) if room.name not in {"走廊", "楼梯间"}]
+FLOOR3_ROOMS = [_room_tuple(room) for room in rooms_for_floor(3) if room.name not in {"走廊", "楼梯间"}]
 FLOOR_ROOMS = {1: FLOOR1_ROOMS, 2: FLOOR2_ROOMS, 3: FLOOR3_ROOMS}
 STAIR = ("楼梯间", 10.80, CORRIDOR_Y1, 13.90, CORRIDOR_Y2)
 

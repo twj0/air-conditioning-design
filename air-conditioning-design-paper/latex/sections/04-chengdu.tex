@@ -1,59 +1,73 @@
-\section{成都多联机及风机盘管系统设计}
+\section{成都多联机系统设计}
 
-本章以成都（夏热冬冷地区）为目标城市。成都位于四川盆地，属于建筑热工设计气候分区中的夏热冬冷A区，夏季炎热、冬季湿冷，全年相对湿度较高。该城市在本文中代表内陆盆地型夏热冬冷气候特征。
+本章按三层办公楼房间级参数完成成都工况下的夏季冷负荷计算和VRF设备选型。成都属于夏热冬冷地区，设计重点为湿负荷不可忽略，需关注新风除湿。计算模型采用50个房间级热源参数和15个天正暖通计算分区，房间热源参数包括人员、照明、设备、新风和外窗朝向。
 
-\subsection{室外设计参数}
+\subsection{室外设计参数与围护结构}
 
-成都夏季室外气象设计参数（CSWD气象年数据）为：夏季空调室外干球计算温度\SI{31.9}{\degreeCelsius}，夏季空调室外湿球计算温度\SI{26.4}{\degreeCelsius}，夏季空调室外计算日平均温度\SI{27.8}{\degreeCelsius}，夏季室外平均风速\SI{1.3}{\meter\per\second}。冬季空调室外干球计算温度为\SI{1.3}{\degreeCelsius}。成都夏季室外风速为五城市中最低（\SI{1.3}{\meter\per\second}），这与盆地的静风气候特征一致。
+成都室内设计参数统一取\SI{26}{\degreeCelsius}、相对湿度60\%，基准新风量40~m$^3$/(h$\cdot$人)。围护结构采用本设计的优化参数，和参考设计相比，南方城市强化遮阳控制，北方城市强化保温控制。
 
-\subsection{建筑概况}
-
-同第一章详述。
-
-\subsection{理想负荷计算结果}
-
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering
-\caption{成都负荷计算与系统方案比较结果}
-\label{tab:chengdu-ideal}
-\scriptsize
-\begin{minipage}[t]{0.42\textwidth}
-\centering
-\textbf{（a）理想负荷工况结果}\\[3pt]
-\begin{tabular}{@{}lr@{}}
+\caption{成都室外设计参数与围护结构参数}
+\label{tab:chengdu-envelope}
+\zihao{-5}
+\begin{tabular}{@{}lccccccc@{}}
 \toprule
-指标 & 数值 \\
+城市 & 干球温度 & 湿球温度 & 日平均温度 & 外墙K & 屋面K & 外窗K & SC \\
+ & \si{\degreeCelsius} & \si{\degreeCelsius} & \si{\degreeCelsius} & \si{W/(m^2\cdot K)} & \si{W/(m^2\cdot K)} & \si{W/(m^2\cdot K)} & -- \\
 \midrule
-$Q_{\mathrm{pc}}$ (kW) & 13.00 \\
-$q_{\mathrm{pc}}$ (W/m$^{2}$) & 9.51 \\
-$E_{\mathrm{cool}}$ (kWh) & 12437 \\
-$E_{\mathrm{heat}}$ (kWh) & 92799 \\
-$E_{\mathrm{total}}$ (kWh) & 105236 \\
-$E/A_{\mathrm{f}}$ (kWh/m$^{2}$) & 115.47 \\
+成都 & 31.9 & 26.4 & 27.8 & 0.70 & 0.50 & 2.60 & 0.36 \\
 \bottomrule
 \end{tabular}
-\end{minipage}%
-\hfill%
-\begin{minipage}[t]{0.54\textwidth}
-\centering
-\textbf{（b）两类系统比较}\\[3pt]
-\begin{tabular}{@{}lcc@{}}
-\toprule
-指标 & VRF+DOAS & FCU+DOAS \\
-\midrule
-设计冷量 (kW) & 45.80 & 56.70 \\
-设计热量 (kW) & 45.80 & 50.16 \\
-年电耗 (kWh) & 44503 & 4227 \\
-电耗强度 (kWh/m$^{2}$) & 48.85 & 4.64 \\
-\bottomrule
-\end{tabular}
-\end{minipage}
 \end{table}
 
-成都年总单位面积负荷为\SI{115.47}{\kilo\watt\hour\per\square\meter}，是五城市中最低值。年热负荷（\SI{92799}{\kilo\watt\hour}）约为年冷负荷（\SI{12437}{\kilo\watt\hour}）的7.5倍。成都的峰值冷负荷（\SI{13.00}{\kilo\watt}）低于天津（\SI{17.05}{\kilo\watt}），这一结果与成都夏季室外干球温度（\SI{31.9}{\degreeCelsius}）低于天津（\SI{33.9}{\degreeCelsius}）的趋势一致。盆地地形和较高的云量减少了成都的太阳辐射得热量，从而抑制了制冷高峰负荷。
+\subsection{房间级冷负荷计算结果}
 
-\subsection{空调系统方案比较}
+成都全楼峰值冷负荷为\SI{123.50}{kW}，峰值冷负荷指标为\SI{90.9}{W/m^2}，峰值时刻为14:00。其中室内侧负荷为\SI{74.57}{kW}，新风冷负荷为\SI{48.93}{kW}，新风占比约39.6\%。主要高负荷房间见表~\ref{tab:chengdu-top-rooms}。
 
-成都VRF+DOAS的年电耗强度为\SI{48.85}{\kilo\watt\hour\per\square\meter}，已显著低于北方两城市，以制冷为主的全年运行模式有效降低了热泵供热工况的低温低效运行时间。FCU+DOAS电耗强度为\SI{4.64}{\kilo\watt\hour\per\square\meter}，其年度天然气消耗为\SI{68152}{\kilo\watt\hour}（强度为\SI{74.81}{\kilo\watt\hour\per\square\meter}）。
+\begin{table}[!htbp]
+\centering
+\caption{成都主要房间峰值冷负荷与热源参数}
+\label{tab:chengdu-top-rooms}
+\zihao{-5}
+\begin{tabular}{@{}cccccccc@{}}
+\toprule
+楼层 & 房间编号 & 房间名称 & 面积 & 人数 & 新风量 & 峰值冷负荷 & 新风冷负荷 \\
+ & -- & -- & \si{m^2} & 人 & \si{m^3/h} & \si{kW} & \si{kW} \\
+\midrule
+1 & 1001 & 外贸办公室 & 78.5 & 14 & 630 & 9.84 & 4.25 \\
+2 & 2008 & 办公大厅 & 54.9 & 10 & 450 & 7.20 & 3.04 \\
+3 & 3007 & 会客室 & 37.8 & 11 & 440 & 6.43 & 2.97 \\
+3 & 3013 & 小型会议室 & 38.6 & 11 & 440 & 6.04 & 2.97 \\
+1 & 1012 & 值班室 & 54.1 & 8 & 320 & 5.89 & 2.16 \\
+1 & 1008 & 陈列室 & 73.9 & 7 & 245 & 5.73 & 1.65 \\
+1 & 1011 & 接待大厅 & 61.0 & 7 & 245 & 5.18 & 1.65 \\
+2 & 2001 & 办公室1 & 39.3 & 6 & 240 & 4.70 & 1.62 \\
+3 & 3018 & 办公茶歇区 & 25.9 & 7 & 280 & 3.75 & 1.89 \\
+3 & 3017 & 办公室4 & 36.1 & 5 & 200 & 3.73 & 1.35 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-成都FCU方案中，冷水机组设计冷量（\SI{56.70}{\kilo\watt}）与锅炉设计热量（\SI{50.16}{\kilo\watt}）之比为1.13:1，冷源容量首次超过了热源容量，标志着从供暖主导型向制冷主导型的过渡。VRF方案的设计冷/热量均为\SI{45.80}{\kilo\watt}。
+\subsection{VRF室内外机选型与容量配比}
+
+室内机按房间峰值冷负荷乘1.3安全系数选型，普通办公、会议和会客房间优先采用四面出风嵌入式室内机，卫生间、走廊、档案和储藏类房间采用薄型风管或壁挂式末端。成都共配置47台室内机，室内机名义制冷量合计\SI{208.3}{kW}。每层设置一个室外机系统，容量配比范围为107.7\%--117.6\%，满足JGJ~174-2010中50\%--130\%的组合率要求。
+
+\begin{table}[!htbp]
+\centering
+\caption{成都各楼层VRF室内外机容量配比}
+\label{tab:chengdu-vrf-ratio}
+\zihao{-5}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+楼层 & 室内机台数 & 室内容量 & 室外机型号 & 室外机台数 & 室外容量 & 配比 \\
+ & 台 & \si{kW} & -- & 台 & \si{kW} & \% \\
+\midrule
+1 & 11 & 60.3 & VRF-O560 & 1 & 56.0 & 107.7 \\
+2 & 16 & 68.0 & VRF-O615 & 1 & 61.5 & 110.6 \\
+3 & 20 & 80.0 & VRF-O680 & 1 & 68.0 & 117.6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+从负荷组成看，成都的新风冷负荷占比为39.6\%，该比例直接影响DOAS或新风预处理设备的容量。若施工图阶段采用厂家样本深化，应优先复核高负荷房间的室内机布置、冷媒管长修正和室外机通风散热条件。

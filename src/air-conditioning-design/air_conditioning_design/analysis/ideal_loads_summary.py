@@ -11,7 +11,7 @@ from air_conditioning_design.config.paths import (
     summary_path_for_case,
 )
 
-COOLING_KEYWORD = "zone ideal loads supply air sensible cooling rate"
+COOLING_KEYWORD = "zone ideal loads supply air total cooling rate"
 HEATING_KEYWORD = "zone ideal loads supply air sensible heating rate"
 
 

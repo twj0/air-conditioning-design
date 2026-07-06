@@ -36,6 +36,46 @@ DOAS_COLOR = "#6b7280"
 PIPE_COLOR = "#2f855a"
 VRF_PLATFORM_FILL = "#fff1b8"
 
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "SimSun", "DejaVu Sans"]
+plt.rcParams["axes.unicode_minus"] = False
+
+ORIENTATION_LABELS_ZH = {
+    "North": "北",
+    "South": "南",
+    "East": "东",
+    "West": "西",
+}
+SURFACE_TYPE_LABELS_ZH = {
+    "Wall": "外墙",
+    "Floor": "地板",
+    "Ceiling": "楼板",
+    "Roof": "屋面",
+}
+ZONE_SUFFIX_LABELS_ZH = {
+    "C": "核心区",
+    "S": "南区",
+    "N": "北区",
+    "E": "东区",
+    "W": "西区",
+}
+
+
+def _zone_label_zh(zone_name: str) -> str:
+    parts = zone_name.upper().split("_")
+    if len(parts) >= 2 and parts[0].startswith("ZF") and parts[0][2:].isdigit():
+        return f"{parts[0][2:]}层\n{ZONE_SUFFIX_LABELS_ZH.get(parts[1], parts[1])}"
+    return zone_name.replace("_", "\n")
+
+
+def _floor_title_zh(title: str) -> str:
+    if title.startswith("Floor ") and title.endswith(" Plan"):
+        return f"{title.removeprefix('Floor ').removesuffix(' Plan')} 层平面"
+    return title
+
+
+def _counts_zh(counts: tuple[tuple[str, int], ...], labels: dict[str, str]) -> str:
+    return "，".join(f"{labels.get(name, name)} {count}" for name, count in counts)
+
 
 def _figure_bounds(annotations: FloorAnnotationSet) -> tuple[float, float, float, float]:
     return _zone_bounds(annotations.zone_annotations)
@@ -275,8 +315,8 @@ def _draw_dimension_annotations(
     width = max_x - min_x
     depth = max_y - min_y
 
-    horizontal_y = min_y - depth * 0.14
-    vertical_x = min_x - width * 0.14
+    horizontal_y = min_y - depth * 0.10
+    vertical_x = min_x - width * 0.10
 
     ax.plot((min_x, min_x), (min_y, horizontal_y), color=DIMENSION_COLOR, linewidth=0.8)
     ax.plot((max_x, max_x), (min_y, horizontal_y), color=DIMENSION_COLOR, linewidth=0.8)
@@ -413,7 +453,7 @@ def _draw_facade_labels(
         ax.text(
             x,
             y,
-            f"{orientation[0]}{suffix}",
+            f"{ORIENTATION_LABELS_ZH.get(orientation, orientation)}{suffix}",
             ha=ha,
             va=va,
             fontsize=7.1,
@@ -431,8 +471,8 @@ def _render_floor_structure_panel(
     width = max_x - min_x
     height = max_y - min_y
 
-    ax.set_xlim(min_x - width * 0.25, max_x + width * 0.16)
-    ax.set_ylim(min_y - height * 0.28, max_y + height * 0.17)
+    ax.set_xlim(min_x - width * 0.10, max_x + width * 0.08)
+    ax.set_ylim(min_y - height * 0.12, max_y + height * 0.10)
     ax.set_aspect("equal", adjustable="box")
     ax.set_axis_off()
 
@@ -467,7 +507,7 @@ def _render_floor_structure_panel(
         ax.text(
             zone.anchor[0],
             zone.anchor[1],
-            zone.zone_name.replace("_", "\n"),
+            _zone_label_zh(zone.zone_name),
             ha="center",
             va="center",
             fontsize=6.3,
@@ -489,14 +529,14 @@ def _render_floor_structure_panel(
     _draw_facade_labels(ax, bounds, floor)
     _draw_north_arrow(ax, bounds, label="N")
 
-    title_lines = [floor.floor_title, f"Occupied z = {floor.floor_elevation:.3f} m"]
+    title_lines = [_floor_title_zh(floor.floor_title), f"使用层 z = {floor.floor_elevation:.3f} m"]
     if floor.plenum_elevation is not None:
-        title_lines.append(f"Plenum z = {floor.plenum_elevation:.3f} m")
+        title_lines.append(f"吊顶层 z = {floor.plenum_elevation:.3f} m")
     ax.set_title("\n".join(title_lines), fontsize=10.6, color="#102a43", pad=10)
     ax.text(
         0.02,
         0.98,
-        f"{len(floor.occupied_zones)} thermal zones",
+        f"{len(floor.occupied_zones)} 个热区",
         transform=ax.transAxes,
         ha="left",
         va="top",
@@ -586,8 +626,8 @@ def _render_roof_plan(
     width = max_x - min_x
     height = max_y - min_y
 
-    ax.set_xlim(min_x - width * 0.25, max_x + width * 0.16)
-    ax.set_ylim(min_y - height * 0.28, max_y + height * 0.17)
+    ax.set_xlim(min_x - width * 0.08, max_x + width * 0.08)
+    ax.set_ylim(min_y - height * 0.10, max_y + height * 0.10)
     ax.set_aspect("equal", adjustable="box")
     ax.set_axis_off()
 
@@ -604,7 +644,7 @@ def _render_roof_plan(
     ax.text(
         (min_x + max_x) / 2,
         (min_y + max_y) / 2,
-        f"Roof slab\nz = {structure.roof_elevation:.4f} m",
+        f"屋面板\nz = {structure.roof_elevation:.4f} m",
         ha="center",
         va="center",
         fontsize=8.2,
@@ -612,7 +652,7 @@ def _render_roof_plan(
     )
     _draw_dimension_annotations(ax, bounds)
     _draw_north_arrow(ax, bounds, label="N")
-    ax.set_title("Roof Plan", fontsize=10.8, color="#102a43", pad=10)
+    ax.set_title("屋面平面", fontsize=10.8, color="#102a43", pad=10)
 
 
 def _render_system_roof_plan(
@@ -681,8 +721,8 @@ def _render_facade_elevation(
     width = max_x - min_x
     height = max_y - min_y
 
-    ax.set_xlim(min_x - width * 0.05, max_x + width * 0.14)
-    ax.set_ylim(min_y - height * 0.12, max_y + height * 0.1)
+    ax.set_xlim(min_x - width * 0.05, max_x + width * 0.10)
+    ax.set_ylim(min_y - height * 0.08, max_y + height * 0.08)
     ax.set_aspect("equal", adjustable="box")
     ax.set_axis_off()
 
@@ -750,7 +790,7 @@ def _render_facade_elevation(
     ax.text(
         min_x,
         max_y + height * 0.11,
-        f"{facade.orientation} Elevation",
+        f"{ORIENTATION_LABELS_ZH.get(facade.orientation, facade.orientation)}立面",
         ha="left",
         va="bottom",
         fontsize=10.1,
@@ -760,7 +800,7 @@ def _render_facade_elevation(
     ax.text(
         min_x,
         min_y - height * 0.07,
-        f"{len(facade.walls)} exterior wall panels, {len(facade.windows)} window bands",
+        f"{len(facade.walls)} 块外墙，{len(facade.windows)} 条窗带",
         ha="left",
         va="top",
         fontsize=7.1,
@@ -876,7 +916,7 @@ def _render_story_section(
         ax.text(
             block_left + block_width / 2,
             floor.floor_elevation + (occupied_top - floor.floor_elevation) / 2,
-            f"{index + 1}F occupied\n{occupied_top - floor.floor_elevation:.3f} m",
+            f"{index + 1} 层使用区\n{occupied_top - floor.floor_elevation:.3f} m",
             ha="center",
             va="center",
             fontsize=8.1,
@@ -900,7 +940,7 @@ def _render_story_section(
             ax.text(
                 block_right + 0.45,
                 floor.plenum_elevation + (next_floor_elevation - floor.plenum_elevation) / 2,
-                f"Plenum {next_floor_elevation - floor.plenum_elevation:.3f} m",
+                f"吊顶 {next_floor_elevation - floor.plenum_elevation:.3f} m",
                 ha="left",
                 va="center",
                 fontsize=7.7,
@@ -928,7 +968,7 @@ def _render_story_section(
     ax.text(
         1.15,
         structure.roof_elevation,
-        f"{structure.roof_elevation:.4f} m roof",
+        f"{structure.roof_elevation:.4f} m 屋面",
         ha="right",
         va="center",
         fontsize=7.7,
@@ -944,7 +984,7 @@ def _render_story_section(
     ax.text(
         2.0,
         (structure.roof_elevation + structure.floors[0].floor_elevation) / 2,
-        f"Total height\n{structure.roof_elevation - structure.floors[0].floor_elevation:.3f} m",
+        f"总高\n{structure.roof_elevation - structure.floors[0].floor_elevation:.3f} m",
         ha="right",
         va="center",
         fontsize=7.9,
@@ -961,13 +1001,13 @@ def _render_story_section(
     ax.text(
         block_left + block_width / 2,
         -0.38,
-        f"Footprint width {structure.footprint_width:.3f} m",
+        f"占地宽度 {structure.footprint_width:.3f} m",
         ha="center",
         va="top",
         fontsize=7.8,
         color=MUTED_TEXT,
     )
-    ax.set_title("Sectional Story Stack", fontsize=11, color="#102a43", pad=8)
+    ax.set_title("楼层剖面", fontsize=11, color="#102a43", pad=8)
 
 
 def _render_system_story_section(
@@ -1199,14 +1239,14 @@ def _render_structure_info_panel(
         for floor in structure.floors
         if floor.plenum_elevation is not None
     )
-    window_summary = ", ".join(f"{name} {count}" for name, count in structure.window_orientation_counts)
-    surface_summary = ", ".join(f"{name} {count}" for name, count in structure.surface_type_counts)
+    window_summary = _counts_zh(structure.window_orientation_counts, ORIENTATION_LABELS_ZH)
+    surface_summary = _counts_zh(structure.surface_type_counts, SURFACE_TYPE_LABELS_ZH)
     total_windows = sum(count for _, count in structure.window_orientation_counts)
 
     ax.text(
         0.05,
         0.97,
-        "Model Summary",
+        "模型概况",
         transform=ax.transAxes,
         ha="left",
         va="top",
@@ -1217,14 +1257,14 @@ def _render_structure_info_panel(
 
     summary_text = "\n".join(
         [
-            f"Occupied stories: {len(structure.floors)}",
-            f"Footprint: {structure.footprint_width:.3f} m x {structure.footprint_depth:.3f} m",
-            f"Roof elevation: {structure.roof_elevation:.4f} m",
-            f"Occupied levels: {occupied_levels} m",
-            f"Plenum levels: {plenum_levels} m",
-            f"Facade window bands: {total_windows}",
-            f"Window orientations: {window_summary}",
-            f"Envelope surfaces: {surface_summary}",
+            f"使用楼层：{len(structure.floors)} 层",
+            f"占地尺寸：{structure.footprint_width:.3f} m × {structure.footprint_depth:.3f} m",
+            f"屋面标高：{structure.roof_elevation:.4f} m",
+            f"使用层标高：{occupied_levels} m",
+            f"吊顶层标高：{plenum_levels} m",
+            f"立面窗带：{total_windows} 条",
+            f"窗带朝向：{window_summary}",
+            f"围护构件：{surface_summary}",
         ]
     )
     ax.text(
@@ -1240,16 +1280,16 @@ def _render_structure_info_panel(
     )
 
     legend_handles = [
-        Patch(facecolor=CORE_FILL, edgecolor=OUTLINE_COLOR, label="Core zone"),
-        Patch(facecolor=PERIMETER_FILL, edgecolor=OUTLINE_COLOR, label="Perimeter zone"),
+        Patch(facecolor=CORE_FILL, edgecolor=OUTLINE_COLOR, label="核心区"),
+        Patch(facecolor=PERIMETER_FILL, edgecolor=OUTLINE_COLOR, label="周边区"),
         Patch(
             facecolor=PLENUM_FILL,
             edgecolor="#9aa5b1",
-            label="Plenum footprint",
+            label="吊顶投影",
             hatch="////",
         ),
-        Line2D([0], [0], color=WINDOW_COLOR, linewidth=2.8, label="Facade window band"),
-        Patch(facecolor=SECTION_OCCUPIED_FILL, edgecolor=OUTLINE_COLOR, label="Occupied section"),
+        Line2D([0], [0], color=WINDOW_COLOR, linewidth=2.8, label="立面窗带"),
+        Patch(facecolor=SECTION_OCCUPIED_FILL, edgecolor=OUTLINE_COLOR, label="使用区剖面"),
     ]
     ax.legend(
         handles=legend_handles,
@@ -1358,15 +1398,15 @@ def render_building_structure(
     *,
     file_format: str,
 ) -> Path:
-    fig = plt.figure(figsize=(19.2, 14.0), constrained_layout=True)
+    fig = plt.figure(figsize=(16.0, 7.2), constrained_layout=True)
     outer = fig.add_gridspec(
-        3,
         2,
-        width_ratios=(5.2, 1.45),
-        height_ratios=(2.3, 2.0, 1.45),
+        3,
+        width_ratios=(4.8, 4.4, 1.9),
+        height_ratios=(1.05, 1.0),
     )
 
-    plans_grid = outer[0, 0].subgridspec(1, 4, wspace=0.08)
+    plans_grid = outer[0, 0:2].subgridspec(1, 4, wspace=0.08)
     for index, floor in enumerate(structure.floors):
         ax = fig.add_subplot(plans_grid[0, index])
         _render_floor_structure_panel(ax, floor, structure)
@@ -1378,16 +1418,15 @@ def render_building_structure(
         ax = fig.add_subplot(facades_grid[index // 2, index % 2])
         _render_facade_elevation(ax, facade, structure)
 
-    section_ax = fig.add_subplot(outer[2, 0])
+    section_ax = fig.add_subplot(outer[1, 1])
     _render_story_section(section_ax, structure)
 
-    info_ax = fig.add_subplot(outer[:, 1])
+    info_ax = fig.add_subplot(outer[:, 2])
     _render_structure_info_panel(info_ax, structure)
 
     fig.suptitle(
-        "IDF-Derived Medium Office Building Structure\n"
-        "Plan, roof, facade, and section views reconstructed from EnergyPlus model geometry",
-        fontsize=14,
+        "中型办公建筑原型（整体结构）",
+        fontsize=13.5,
         color="#102a43",
     )
     return _save_figure(fig, output_path, file_format=file_format)
@@ -1404,7 +1443,7 @@ def render_system_overlay_building(
     outer = fig.add_gridspec(
         3,
         2,
-        width_ratios=(5.2, 1.45),
+        width_ratios=(6.5, 1.6),
         height_ratios=(2.3, 2.0, 1.45),
     )
 

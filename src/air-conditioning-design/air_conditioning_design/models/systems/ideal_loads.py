@@ -22,6 +22,7 @@ from air_conditioning_design.models.common import (
     build_zone_maps,
     extract_design_objects,
     load_city_manifest,
+    make_thermostat_objects,
 )
 
 
@@ -86,9 +87,9 @@ def _make_equipment_objects(
                     "",
                     "",
                     "ConstantSupplyHumidityRatio",
-                    "",
+                    "",  # Field 19: Cooling Sensible Heat Ratio (blank = autosize)
                     "ConstantSupplyHumidityRatio",
-                    outdoor_air_map.get(zone_name, ""),
+                    outdoor_air_map.get(zone_name, ""),  # Field 21: Design Specification Outdoor Air Object Name
                     "",
                     "",
                     "",
@@ -113,6 +114,26 @@ def _make_output_objects() -> list[IdfObject]:
         IdfObject(
             "Output:Variable",
             ["*", "Zone Ideal Loads Supply Air Sensible Heating Rate", "Hourly"],
+        ),
+        IdfObject(
+            "Output:Variable",
+            ["*", "Zone Ideal Loads Supply Air Total Cooling Rate", "Hourly"],
+        ),
+        IdfObject(
+            "Output:Variable",
+            ["*", "Zone Ideal Loads Supply Air Total Heating Rate", "Hourly"],
+        ),
+        IdfObject(
+            "Output:Variable",
+            ["*", "Zone Ideal Loads Supply Air Latent Cooling Rate", "Hourly"],
+        ),
+        IdfObject(
+            "Output:Variable",
+            ["*", "Zone Ideal Loads Zone Total Cooling Rate", "Hourly"],
+        ),
+        IdfObject(
+            "Output:Variable",
+            ["*", "Zone Ideal Loads Outdoor Air Total Cooling Rate", "Hourly"],
         ),
     ]
 
@@ -174,9 +195,10 @@ def build_ideal_loads_case(city_id: str, output_root: Path | None = None) -> Pat
     )
 
     design_objects = extract_design_objects(Path(manifest["ddy_path"]))
+    zone_names = sorted(zone_node_map)
     generated_objects = filtered + design_objects + _make_equipment_objects(
         zone_node_map, outdoor_air_map
-    ) + _make_output_objects()
+    ) + make_thermostat_objects(zone_names) + _make_output_objects()
 
     case_id = build_case_id(city_id, "ideal_loads")
     city_variant_path = (

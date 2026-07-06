@@ -107,6 +107,12 @@
     200,
     CONTINUOUS;
 
+  ScheduleTypeLimits,
+    ActivityLevel,
+    0,
+    500,
+    CONTINUOUS;
+
   Schedule:Compact,
     ALWAYS_ON,
     On/Off,
@@ -140,6 +146,14 @@
     For: AllOtherDays,
     Until: 24:00,
     0.0;
+
+  Schedule:Compact,
+    Office Activity,
+    ActivityLevel,
+    Through: 12/31,
+    For: AllDays,
+    Until: 24:00,
+    120;
 
   Schedule:Compact,
     Office Lighting,
@@ -2234,12 +2248,12 @@
     ZF1_S,
     Office Occupancy,
     People,
-    12,
+    19,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF1_S Lights,
@@ -2253,7 +2267,7 @@
     ZF1_S,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF1_S Infiltration,
@@ -2300,12 +2314,12 @@
     ZF1_N,
     Office Occupancy,
     People,
-    12,
+    19,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF1_N Lights,
@@ -2319,7 +2333,7 @@
     ZF1_N,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF1_N Infiltration,
@@ -2366,12 +2380,12 @@
     ZF1_W,
     Office Occupancy,
     People,
-    3,
+    4,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF1_W Lights,
@@ -2385,7 +2399,7 @@
     ZF1_W,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF1_W Infiltration,
@@ -2432,12 +2446,12 @@
     ZF1_E,
     Office Occupancy,
     People,
-    3,
+    4,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF1_E Lights,
@@ -2451,7 +2465,7 @@
     ZF1_E,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF1_E Infiltration,
@@ -2498,12 +2512,12 @@
     ZF1_C,
     Office Occupancy,
     People,
-    17,
+    29,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF1_C Lights,
@@ -2517,7 +2531,7 @@
     ZF1_C,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF1_C Infiltration,
@@ -2564,12 +2578,12 @@
     ZF2_S,
     Office Occupancy,
     People,
-    12,
+    19,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF2_S Lights,
@@ -2583,7 +2597,7 @@
     ZF2_S,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF2_S Infiltration,
@@ -2630,12 +2644,12 @@
     ZF2_N,
     Office Occupancy,
     People,
-    12,
+    19,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF2_N Lights,
@@ -2649,7 +2663,7 @@
     ZF2_N,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF2_N Infiltration,
@@ -2696,12 +2710,12 @@
     ZF2_W,
     Office Occupancy,
     People,
-    3,
+    4,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF2_W Lights,
@@ -2715,7 +2729,7 @@
     ZF2_W,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF2_W Infiltration,
@@ -2762,12 +2776,12 @@
     ZF2_E,
     Office Occupancy,
     People,
-    3,
+    4,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF2_E Lights,
@@ -2781,7 +2795,7 @@
     ZF2_E,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF2_E Infiltration,
@@ -2828,12 +2842,12 @@
     ZF2_C,
     Office Occupancy,
     People,
-    17,
+    29,
     ,
     ,
     0.3,
-    ,
-    ALWAYS_ON;
+    autocalculate,
+    Office Activity;
 
   Lights,
     ZF2_C Lights,
@@ -2847,7 +2861,7 @@
     ZF2_C,
     Office Equipment,
     Watts/Area,
-    15.0;
+    20.0;
 
   ZoneInfiltration:DesignFlowRate,
     ZF2_C Infiltration,
@@ -6572,6 +6586,165 @@
     ,
     ;
 
+  ScheduleTypeLimits,
+    Control Type,
+    0,
+    4,
+    DISCRETE;
+
+  Schedule:Compact,
+    Htg-SetP-Sch,
+    Temperature,
+    Through: 12/31,
+    For: SummerDesignDay,
+    Until: 24:00,
+    21.1,
+    For: WinterDesignDay,
+    Until: 24:00,
+    21.1,
+    For: WeekDays,
+    Until: 7:00,
+    21.1,
+    Until: 18:00,
+    21.1,
+    Until: 24:00,
+    21.1,
+    For: WeekEnds Holiday,
+    Until: 7:00,
+    21.1,
+    Until: 13:00,
+    21.1,
+    Until: 24:00,
+    21.1,
+    For: AllOtherDays,
+    Until: 7:00,
+    21.1,
+    Until: 18:00,
+    21.1,
+    Until: 24:00,
+    21.1;
+
+  Schedule:Compact,
+    Clg-SetP-Sch,
+    Temperature,
+    Through: 12/31,
+    For: SummerDesignDay,
+    Until: 24:00,
+    23.9,
+    For: WinterDesignDay,
+    Until: 24:00,
+    23.9,
+    For: WeekDays,
+    Until: 7:00,
+    23.9,
+    Until: 18:00,
+    23.9,
+    Until: 24:00,
+    23.9,
+    For: WeekEnds Holiday,
+    Until: 7:00,
+    23.9,
+    Until: 13:00,
+    23.9,
+    Until: 24:00,
+    23.9,
+    For: AllOtherDays,
+    Until: 7:00,
+    23.9,
+    Until: 18:00,
+    23.9,
+    Until: 24:00,
+    23.9;
+
+  Schedule:Compact,
+    Zone Control Type Sched,
+    Control Type,
+    Through: 12/31,
+    For: SummerDesignDay,
+    Until: 24:00,
+    4,
+    For: WinterDesignDay,
+    Until: 24:00,
+    4,
+    For: AllOtherDays,
+    Until: 24:00,
+    4;
+
+  ThermostatSetpoint:DualSetpoint,
+    DualSetPoint,
+    Htg-SetP-Sch,
+    Clg-SetP-Sch;
+
+  ZoneControl:Thermostat,
+    ZF1_C Control,
+    ZF1_C,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF1_E Control,
+    ZF1_E,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF1_N Control,
+    ZF1_N,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF1_S Control,
+    ZF1_S,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF1_W Control,
+    ZF1_W,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF2_C Control,
+    ZF2_C,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF2_E Control,
+    ZF2_E,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF2_N Control,
+    ZF2_N,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF2_S Control,
+    ZF2_S,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
+  ZoneControl:Thermostat,
+    ZF2_W Control,
+    ZF2_W,
+    Zone Control Type Sched,
+    ThermostatSetpoint:DualSetpoint,
+    DualSetPoint;
+
   OutputControl:Table:Style,
     CommaAndHTML,
     JtoKWH;
@@ -6587,4 +6760,29 @@
   Output:Variable,
     *,
     Zone Ideal Loads Supply Air Sensible Heating Rate,
+    Hourly;
+
+  Output:Variable,
+    *,
+    Zone Ideal Loads Supply Air Total Cooling Rate,
+    Hourly;
+
+  Output:Variable,
+    *,
+    Zone Ideal Loads Supply Air Total Heating Rate,
+    Hourly;
+
+  Output:Variable,
+    *,
+    Zone Ideal Loads Supply Air Latent Cooling Rate,
+    Hourly;
+
+  Output:Variable,
+    *,
+    Zone Ideal Loads Zone Total Cooling Rate,
+    Hourly;
+
+  Output:Variable,
+    *,
+    Zone Ideal Loads Outdoor Air Total Cooling Rate,
     Hourly;

@@ -63,11 +63,11 @@ def make_thermostat_objects(zone_names: list[str]) -> list[IdfObject]:
 
     objects.append(IdfObject("Schedule:Compact", [
         "Clg-SetP-Sch", "Temperature",
-        "Through: 12/31", "For: SummerDesignDay", "Until: 24:00", "23.9",
-        "For: WinterDesignDay", "Until: 24:00", "23.9",
-        "For: WeekDays", "Until: 7:00", "23.9", "Until: 18:00", "23.9", "Until: 24:00", "23.9",
-        "For: WeekEnds Holiday", "Until: 7:00", "23.9", "Until: 13:00", "23.9", "Until: 24:00", "23.9",
-        "For: AllOtherDays", "Until: 7:00", "23.9", "Until: 18:00", "23.9", "Until: 24:00", "23.9",
+        "Through: 12/31", "For: SummerDesignDay", "Until: 24:00", "26.0",
+        "For: WinterDesignDay", "Until: 24:00", "26.0",
+        "For: WeekDays", "Until: 7:00", "26.0", "Until: 18:00", "26.0", "Until: 24:00", "26.0",
+        "For: WeekEnds Holiday", "Until: 7:00", "26.0", "Until: 13:00", "26.0", "Until: 24:00", "26.0",
+        "For: AllOtherDays", "Until: 7:00", "26.0", "Until: 18:00", "26.0", "Until: 24:00", "26.0",
     ]))
 
     objects.append(IdfObject("Schedule:Compact", [

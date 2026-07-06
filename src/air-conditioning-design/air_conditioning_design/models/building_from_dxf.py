@@ -1,9 +1,9 @@
 """Generate the neutral EnergyPlus mother model from the teacher's actual building geometry.
 
-Derived from analysis of example/building2000.dxf:
-  - 2 floors, each 32 m × 14.24 m in plan
-  - 3.6 m column grid, 3.5 m floor-to-floor height
-  - 5 thermal zones per floor (4 perimeter + 1 core) = 10 conditioned zones
+Derived from the three-storey course-design building:
+  - 3 floors, each about 32 m × 14.15 m in plan
+  - 3.0 m floor-to-floor height
+  - 5 thermal zones per floor (4 perimeter + 1 core) = 15 conditioned zones
   - Windows on south and north facades
 """
 
@@ -11,23 +11,28 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from air_conditioning_design.config.three_story_design import (
+    FLOOR_DEPTH,
+    FLOOR_HEIGHT,
+    FLOOR_WIDTH,
+)
 from air_conditioning_design.config.paths import NEUTRAL_MODEL_PATH, ensure_directories
 from air_conditioning_design.idf.io import IdfObject, write_idf
 
 # ---------------------------------------------------------------------------
 # Building geometry constants (from DXF analysis)
 # ---------------------------------------------------------------------------
-FLOOR_COUNT = 2
-FLOOR_WIDTH_X = 32.0  # m (building length / X direction)
-FLOOR_DEPTH_Y = 14.24  # m (building width / Y direction)
+FLOOR_COUNT = 3
+FLOOR_WIDTH_X = FLOOR_WIDTH  # m (building length / X direction)
+FLOOR_DEPTH_Y = FLOOR_DEPTH  # m (building width / Y direction)
 PERIMETER_DEPTH = 3.6  # m (one column bay)
 
-# Z-levels (bottom of each floor slab) — 2-storey building, 3.5 m/floor
-FLOOR_Z = [0.0, 3.5]
-ROOF_Z = 7.0
+# Z-levels (bottom of each floor slab) — 3-storey building, 3.0 m/floor
+FLOOR_Z = [0.0, FLOOR_HEIGHT, FLOOR_HEIGHT * 2]
+ROOF_Z = FLOOR_HEIGHT * FLOOR_COUNT
 
-# Floor heights: uniform 3.5 m per floor
-FLOOR_HEIGHTS = [3.5, 3.5]
+# Floor heights: uniform 3.0 m per floor
+FLOOR_HEIGHTS = [FLOOR_HEIGHT, FLOOR_HEIGHT, FLOOR_HEIGHT]
 
 # ---------------------------------------------------------------------------
 # Zone definitions per floor
@@ -411,6 +416,7 @@ def _make_schedules() -> list[IdfObject]:
         IdfObject("ScheduleTypeLimits", ["Fraction", "0.0", "1.0", "CONTINUOUS"]),
         IdfObject("ScheduleTypeLimits", ["On/Off", "0", "1", "DISCRETE"]),
         IdfObject("ScheduleTypeLimits", ["Temperature", "-60", "200", "CONTINUOUS"]),
+        IdfObject("ScheduleTypeLimits", ["ActivityLevel", "0", "500", "CONTINUOUS"]),
         # Always on
         IdfObject("Schedule:Compact", [
             "ALWAYS_ON", "On/Off",
@@ -434,6 +440,14 @@ def _make_schedules() -> list[IdfObject]:
             "Until: 24:00", "0.0",
             "For: AllOtherDays",
             "Until: 24:00", "0.0",
+        ]),
+        # Office activity level schedule — 120 W/person for seated office work
+        # (ASHRAE 55: ~1.2 met, 1 met = 58.2 W/m², ~1.8 m² body surface → ~126 W)
+        IdfObject("Schedule:Compact", [
+            "Office Activity", "ActivityLevel",
+            "Through: 12/31",
+            "For: AllDays",
+            "Until: 24:00", "120",
         ]),
         # Lighting schedule
         IdfObject("Schedule:Compact", [
@@ -493,16 +507,17 @@ def _make_schedules() -> list[IdfObject]:
 def _make_internal_loads(zone_name: str, floor_area: float) -> list[IdfObject]:
     """People, Lights, ElectricEquipment, Infiltration for one zone.
 
-    Values from reference paper:
-      - Personnel density: 10 m²/person
-      - Lighting power density: 10 W/m²
-      - Equipment power density: 15 W/m²
-      - Fresh air: 30 m³/(h·person)
+    Values:
+      - Personnel density: 6 m²/person (typical Chinese office)
+      - Lighting power density: 10 W/m² (GB 50189 target)
+      - Equipment power density: 20 W/m² (typical office)
+      - Fresh air: 30 m³/(h·person) (GB 50736)
     """
     obj: list[IdfObject] = []
-    n_people = max(1, round(floor_area / 10.0))
+    n_people = max(1, round(floor_area / 6.0))
 
-    # People
+    # People — 120 W/person activity level (~1.2 met, seated office work)
+    # Sensible fraction auto-calculated by EnergyPlus (~0.6 for office work)
     obj.append(IdfObject("People", [
         f"{zone_name} People",
         zone_name,
@@ -512,8 +527,8 @@ def _make_internal_loads(zone_name: str, floor_area: float) -> list[IdfObject]:
         "",
         "",
         "0.3",
-        "",
-        "ALWAYS_ON",
+        "autocalculate",
+        "Office Activity",
     ]))
 
     # Lights
@@ -531,7 +546,7 @@ def _make_internal_loads(zone_name: str, floor_area: float) -> list[IdfObject]:
         zone_name,
         "Office Equipment",
         "Watts/Area",
-        f"{15.0:.1f}",
+        f"{20.0:.1f}",
     ]))
 
     # Infiltration
@@ -551,9 +566,9 @@ def _make_internal_loads(zone_name: str, floor_area: float) -> list[IdfObject]:
 # Sizing objects
 # ---------------------------------------------------------------------------
 def _make_sizing_zone(zone_name: str, floor_area: float) -> list[IdfObject]:
-    """Sizing:Zone and DesignSpecification:OutdoorAir for a perimeter zone."""
+    """Sizing:Zone and DesignSpecification:OutdoorAir for a zone."""
     dsoa_name = f"{zone_name} Outdoor Air"
-    n_people = max(1, round(floor_area / 10.0))
+    n_people = max(1, round(floor_area / 6.0))
     fresh_air_m3h = n_people * 30.0
     # Convert m³/h to m³/s
     fresh_air_m3s = fresh_air_m3h / 3600.0
